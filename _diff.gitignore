@@ -1,0 +1,28 @@
+--- .gitignore (原始)
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
++++ .gitignore (修改后)
+Nothing should be ignored based on the provided file changes. The only added file is `plataforma-alunos.html`, which is a source code file and should not be ignored.
