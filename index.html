@@ -1,775 +1,1741 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prof Empreendedor — Plataforma para Professores de Idiomas</title>
-<style>
-:root{
-  --green:#10b981; --green-d:#059669; --green-dd:#065f46;
-  --blue:#2563eb; --blue-d:#1d4ed8;
-  --bg:#f1f5f9; --card:#ffffff; --line:#e2e8f0;
-  --txt:#0f172a; --muted:#64748b; --soft:#f8fafc;
-  --red:#ef4444; --amber:#f59e0b; --shadow:0 1px 3px rgba(15,23,42,.08),0 1px 2px rgba(15,23,42,.04);
-  --shadow-lg:0 10px 25px rgba(15,23,42,.10);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);font-size:14px}
-button{font-family:inherit;cursor:pointer;border:none}
-input,select,textarea{font-family:inherit;font-size:14px}
-a{color:inherit;text-decoration:none}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prof Empreendedor — Plataforma para Professores de Idiomas</title>
+  <style>
+    /* ===== RESET & VARIÁVEIS ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+      --radius: 14px;
+      --green: #10b981;
+      --green-d: #059669;
+      --blue: #2563eb;
+      --blue-d: #1d4ed8;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --sidebar-bg: linear-gradient(145deg, #0f172a, #1e293b);
+      --sidebar-text: #ecfdf5;
+      --topbar-bg: linear-gradient(90deg, #0f172a, #1e293b);
+      --topbar-text: #ffffff;
+      --input-bg: #fff;
+      --input-border: #e2e8f0;
+      --hover-bg: #f8fafc;
+      --badge-bg: #e2e8f0;
+      --badge-text: #475569;
+      --card-hover: #fafcfc;
+      --toggle-bg: #e2e8f0;
+      --toggle-dot: #ffffff;
+    }
+    .dark {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #334155;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+      --input-bg: #1e293b;
+      --input-border: #475569;
+      --hover-bg: #2d3748;
+      --badge-bg: #334155;
+      --badge-text: #cbd5e1;
+      --card-hover: #2d3748;
+      --toggle-bg: #475569;
+      --toggle-dot: #0f172a;
+      --sidebar-bg: linear-gradient(145deg, #0b1120, #1a2634);
+      --topbar-bg: linear-gradient(90deg, #0b1120, #1a2634);
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      transition: background 0.25s, color 0.25s;
+    }
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: 14px;
+      border: none;
+      outline: none;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 99px; }
 
-/* ===== TOPBAR ===== */
-.topbar{height:60px;background:linear-gradient(90deg,#0f172a,#1e293b);display:flex;align-items:center;padding:0 18px;color:#fff;position:sticky;top:0;z-index:50;gap:14px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
-.brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--green),var(--green-d));display:grid;place-items:center;font-size:18px}
-.brand small{color:#94a3b8;font-weight:500;font-size:13px;border-left:1px solid #334155;padding-left:10px;margin-left:4px}
-.topbar .spacer{flex:1}
-.btn-test{background:var(--green);color:#fff;padding:9px 16px;border-radius:9px;font-weight:600;font-size:13px}
-.btn-test:hover{background:var(--green-d)}
-.menu-toggle{display:none;background:none;color:#fff;font-size:22px}
+    /* ===== TOPBAR ===== */
+    .topbar {
+      height: 64px;
+      background: var(--topbar-bg);
+      color: var(--topbar-text);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .brand .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--green), var(--green-d));
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      color: #fff;
+    }
+    .brand small {
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 13px;
+      border-left: 1px solid #334155;
+      padding-left: 12px;
+      margin-left: 4px;
+    }
+    .topbar .spacer { flex: 1; }
+    .topbar .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-test {
+      background: var(--green);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+    .btn-test:hover { background: var(--green-d); transform: scale(1.02); }
+    .theme-toggle {
+      background: var(--toggle-bg);
+      border-radius: 99px;
+      width: 44px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      cursor: pointer;
+      transition: 0.25s;
+      position: relative;
+    }
+    .theme-toggle .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--toggle-dot);
+      transition: 0.25s;
+      transform: translateX(0);
+    }
+    .dark .theme-toggle .dot { transform: translateX(20px); }
+    .menu-toggle {
+      display: none;
+      background: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
 
-/* ===== LAYOUT ===== */
-.layout{display:flex;min-height:calc(100vh - 60px)}
-.sidebar{width:230px;background:linear-gradient(180deg,#059669,#047857);color:#ecfdf5;padding:16px 12px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:9px;color:#d1fae5;font-weight:500;font-size:13.5px;margin-bottom:3px;cursor:pointer;transition:.15s;width:100%;text-align:left;background:none}
-.nav-item .ic{width:20px;text-align:center;font-size:15px}
-.nav-item:hover{background:rgba(255,255,255,.12);color:#fff}
-.nav-item.active{background:#fff;color:var(--green-dd);font-weight:700;box-shadow:var(--shadow)}
-.nav-sep{height:1px;background:rgba(255,255,255,.18);margin:12px 6px}
-.side-foot{margin-top:14px;background:rgba(0,0,0,.18);border-radius:10px;padding:12px;font-size:12px;color:#a7f3d0}
-.side-foot b{color:#fff}
+    /* ===== LAYOUT ===== */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      padding: 18px 12px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      transition: transform 0.3s ease, background 0.25s;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
+    }
+    .sidebar .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #cbd5e1;
+      font-weight: 500;
+      font-size: 13.5px;
+      margin-bottom: 2px;
+      cursor: pointer;
+      transition: 0.15s;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+    }
+    .sidebar .nav-item .ic {
+      width: 24px;
+      text-align: center;
+      font-size: 17px;
+    }
+    .sidebar .nav-item:hover {
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+    }
+    .sidebar .nav-item.active {
+      background: #fff;
+      color: var(--green-dd, #065f46);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      color: #065f46;
+    }
+    .dark .sidebar .nav-item.active {
+      background: #1e293b;
+      color: #10b981;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .sidebar .nav-sep {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 12px 6px;
+    }
+    .side-foot {
+      margin-top: 18px;
+      background: rgba(0, 0, 0, 0.20);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 12.5px;
+      color: #a7f3d0;
+    }
+    .side-foot b { color: #fff; }
+    .side-foot .btn {
+      background: #fff;
+      color: #065f46;
+      width: 100%;
+      padding: 8px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 13px;
+      margin-top: 8px;
+      transition: 0.2s;
+    }
+    .side-foot .btn:hover { transform: scale(1.02); }
 
-.main{flex:1;padding:24px;max-width:100%;overflow-x:hidden}
-.page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
-.page-head h1{font-size:22px;font-weight:700}
-.page-head p{color:var(--muted);font-size:13px;margin-top:2px}
+    /* ===== MAIN ===== */
+    .main {
+      flex: 1;
+      padding: 28px 32px;
+      max-width: 100%;
+      overflow-x: hidden;
+      transition: padding 0.2s;
+    }
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .page-head h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .page-head p {
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-top: 2px;
+    }
 
-/* ===== CARDS / GRID ===== */
-.grid{display:grid;gap:16px}
-.g4{grid-template-columns:repeat(4,1fr)}
-.g3{grid-template-columns:repeat(3,1fr)}
-.g2{grid-template-columns:repeat(2,1fr)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
-.stat{display:flex;flex-direction:column;gap:6px}
-.stat .top{display:flex;align-items:center;justify-content:space-between}
-.stat .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:18px}
-.stat .lbl{color:var(--muted);font-size:12.5px;font-weight:500}
-.stat .val{font-size:26px;font-weight:800;letter-spacing:-.5px}
-.stat .delta{font-size:12px;font-weight:600}
-.up{color:var(--green-d)} .down{color:var(--red)}
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+    .g4 { grid-template-columns: repeat(4, 1fr); }
+    .g3 { grid-template-columns: repeat(3, 1fr); }
+    .g2 { grid-template-columns: repeat(2, 1fr); }
 
-.sec-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.muted{color:var(--muted)}
+    /* ===== STAT CARD ===== */
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stat .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .stat .ic {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+    }
+    .stat .lbl {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    .stat .val {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .stat .delta {
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+    .up { color: var(--green-d); }
+    .down { color: var(--red); }
 
-/* buttons */
-.btn{padding:9px 15px;border-radius:9px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:7px;transition:.15s}
-.btn-primary{background:var(--green);color:#fff} .btn-primary:hover{background:var(--green-d)}
-.btn-blue{background:var(--blue);color:#fff} .btn-blue:hover{background:var(--blue-d)}
-.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--txt)} .btn-ghost:hover{background:var(--soft)}
-.btn-danger{background:#fee2e2;color:var(--red)} .btn-danger:hover{background:#fecaca}
-.btn-sm{padding:6px 11px;font-size:12px}
+    /* ===== BUTTONS ===== */
+    .btn {
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      cursor: pointer;
+      border: none;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .btn-primary {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+    .btn-primary:hover { background: var(--green-d); }
+    .btn-blue {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    .btn-blue:hover { background: var(--blue-d); }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { background: var(--hover-bg); }
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--red);
+      border-color: #fecaca;
+    }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-sm { padding: 5px 14px; font-size: 12px; }
 
-/* table */
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:11px 12px;color:var(--muted);font-weight:600;font-size:12px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
-tr:hover td{background:var(--soft)}
-.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:600}
-.b-green{background:#d1fae5;color:#065f46}
-.b-blue{background:#dbeafe;color:#1e40af}
-.b-amber{background:#fef3c7;color:#92400e}
-.b-red{background:#fee2e2;color:#991b1b}
-.b-gray{background:#e2e8f0;color:#475569}
-.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
-.row-act{display:flex;gap:6px}
-.icon-btn{width:30px;height:30px;border-radius:8px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;font-size:13px}
-.icon-btn:hover{background:#e2e8f0}
+    /* ===== TABLES ===== */
+    .tbl-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:hover td { background: var(--hover-bg); }
 
-/* toolbar */
-.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.search{flex:1;min-width:200px;position:relative}
-.search input{width:100%;padding:10px 12px 10px 36px;border:1px solid var(--line);border-radius:9px;background:#fff}
-.search::before{content:"🔍";position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.6}
-select.sel{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff}
+    /* ===== BADGES ===== */
+    .badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 99px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .b-green { background: #d1fae5; color: #065f46; }
+    .b-blue { background: #dbeafe; color: #1e40af; }
+    .b-amber { background: #fef3c7; color: #92400e; }
+    .b-red { background: #fee2e2; color: #991b1b; }
+    .b-gray { background: var(--badge-bg); color: var(--badge-text); }
+    .dark .b-green { background: #065f46; color: #d1fae5; }
+    .dark .b-blue { background: #1e40af; color: #dbeafe; }
+    .dark .b-amber { background: #92400e; color: #fef3c7; }
+    .dark .b-red { background: #991b1b; color: #fee2e2; }
 
-/* modal */
-.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
-.overlay.open{display:flex}
-.modal{background:#fff;border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
-.modal-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
-.modal-head h3{font-size:17px;font-weight:700}
-.modal-body{padding:20px}
-.modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
-.x{background:none;font-size:20px;color:var(--muted);line-height:1}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px;color:#334155}
-.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff}
-.field textarea{resize:vertical;min-height:70px}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    /* ===== AVATAR ===== */
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
 
-/* calendar */
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
-.cal-nav{display:flex;align-items:center;gap:10px}
-.cal-nav button{width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid var(--line);font-size:15px}
-.cal-nav .mname{font-weight:700;font-size:16px;min-width:170px;text-align:center}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line);gap:1px}
-.cal-dow{background:#f8fafc;padding:9px;text-align:center;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase}
-.cal-cell{background:#fff;min-height:96px;padding:7px;vertical-align:top;cursor:pointer;transition:.12s}
-.cal-cell:hover{background:var(--soft)}
-.cal-cell.other{background:#f8fafc;color:#cbd5e1}
-.cal-cell.today .dnum{background:var(--blue);color:#fff}
-.dnum{font-size:12px;font-weight:600;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-bottom:4px}
-.ev{font-size:10.5px;background:#dbeafe;color:#1e40af;border-radius:5px;padding:2px 5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid var(--blue)}
-.ev.done{background:#d1fae5;color:#065f46;border-left-color:var(--green)}
-.ev.cancel{background:#fee2e2;color:#991b1b;border-left-color:var(--red);text-decoration:line-through}
+    /* ===== TOOLBAR ===== */
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+    .search input {
+      width: 100%;
+      padding: 10px 14px 10px 40px;
+      border: 1px solid var(--input-border);
+      border-radius: 99px;
+      background: var(--input-bg);
+      color: var(--text);
+      transition: 0.2s;
+    }
+    .search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+    .search::before {
+      content: "🔍";
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      opacity: 0.6;
+    }
+    select.sel {
+      padding: 10px 14px;
+      border: 1px solid var(--input-border);
+      border-radius: 99px;
+      background: var(--input-bg);
+      color: var(--text);
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    select.sel:focus { border-color: var(--green); }
 
-/* finance bars */
-.bar-chart{display:flex;align-items:flex-end;gap:10px;height:180px;padding:10px 4px 0;border-bottom:1px solid var(--line)}
-.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
-.bar{width:100%;max-width:34px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--green-d));transition:.3s}
-.bar.exp{background:linear-gradient(180deg,#f87171,var(--red))}
-.bar-lbl{font-size:11px;color:var(--muted)}
-.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:10px}
-.legend span{display:flex;align-items:center;gap:6px}
-.dot{width:10px;height:10px;border-radius:3px}
+    /* ===== MODAL ===== */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: var(--card);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-head {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: var(--card);
+      z-index: 2;
+      border-radius: 18px 18px 0 0;
+    }
+    .modal-head h3 { font-size: 18px; font-weight: 700; }
+    .modal-head .x {
+      background: none;
+      font-size: 22px;
+      color: var(--muted);
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: 0.15s;
+    }
+    .modal-head .x:hover { background: var(--hover-bg); }
+    .modal-body { padding: 24px; }
+    .modal-foot {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: var(--card);
+      border-radius: 0 0 18px 18px;
+      position: sticky;
+      bottom: 0;
+    }
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--text);
+      transition: 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+    }
+    .field textarea { resize: vertical; min-height: 70px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-.list-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;background:#fff}
-.list-item .li-ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:16px;flex-shrink:0}
-.list-item .li-body{flex:1;min-width:0}
-.list-item .li-body b{font-size:13.5px}
-.list-item .li-body small{color:var(--muted);font-size:12px;display:block}
-.li-right{text-align:right;font-weight:700;font-size:13px;white-space:nowrap}
+    /* ===== CALENDAR ===== */
+    .cal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cal-nav button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.15s;
+      display: grid;
+      place-items: center;
+    }
+    .cal-nav button:hover { background: var(--hover-bg); }
+    .cal-nav .mname {
+      font-weight: 700;
+      font-size: 16px;
+      min-width: 150px;
+      text-align: center;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--border);
+      gap: 1px;
+    }
+    .cal-dow {
+      background: var(--card);
+      padding: 10px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cal-cell {
+      background: var(--card);
+      min-height: 90px;
+      padding: 6px 8px;
+      cursor: pointer;
+      transition: 0.12s;
+    }
+    .cal-cell:hover { background: var(--hover-bg); }
+    .cal-cell.other { background: var(--bg); color: var(--muted); }
+    .cal-cell.today .dnum {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    }
+    .dnum {
+      font-size: 13px;
+      font-weight: 600;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 4px;
+    }
+    .ev {
+      font-size: 10.5px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 6px;
+      padding: 2px 6px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-left: 3px solid var(--blue);
+    }
+    .ev.done { background: #d1fae5; color: #065f46; border-left-color: var(--green); }
+    .ev.cancel { background: #fee2e2; color: #991b1b; border-left-color: var(--red); text-decoration: line-through; }
+    .dark .ev { background: #1e3a5f; color: #93c5fd; border-left-color: #3b82f6; }
+    .dark .ev.done { background: #064e3b; color: #6ee7b7; border-left-color: #10b981; }
+    .dark .ev.cancel { background: #7f1d1d; color: #fca5a5; border-left-color: #ef4444; }
 
-.empty{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty .e-ic{font-size:40px;margin-bottom:10px;opacity:.5}
+    /* ===== LIST ITEMS ===== */
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: var(--card);
+      transition: 0.15s;
+    }
+    .list-item:hover { background: var(--hover-bg); }
+    .list-item .li-ic {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .list-item .li-body { flex: 1; min-width: 0; }
+    .list-item .li-body b { font-size: 14px; display: block; }
+    .list-item .li-body small { color: var(--muted); font-size: 12px; display: block; }
+    .li-right { text-align: right; font-weight: 700; font-size: 13px; white-space: nowrap; }
 
-.toast{position:fixed;bottom:22px;right:22px;background:#0f172a;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);transform:translateY(120%);transition:.3s;z-index:200}
-.toast.show{transform:translateY(0)}
+    /* ===== EMPTY STATE ===== */
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+    .empty .e-ic { font-size: 44px; margin-bottom: 12px; opacity: 0.5; }
 
-.help-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.feat{padding:18px;border:1px solid var(--line);border-radius:13px;background:#fff}
-.feat .f-ic{width:42px;height:42px;border-radius:11px;background:#d1fae5;color:var(--green-dd);display:grid;place-items:center;font-size:19px;margin-bottom:10px}
-.feat h4{font-size:14px;margin-bottom:5px}
-.feat p{font-size:12.5px;color:var(--muted);line-height:1.5}
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 14px 24px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(120%);
+      transition: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 200;
+      max-width: 90vw;
+    }
+    .toast.show { transform: translateY(0); }
 
-.price-card{background:linear-gradient(135deg,#065f46,#059669);color:#fff;border-radius:18px;padding:28px;text-align:center}
-.price-card .pr{font-size:46px;font-weight:800}
-.price-card .pr small{font-size:18px;font-weight:600;opacity:.85}
-.price-card ul{list-style:none;text-align:left;margin:18px 0;display:grid;gap:9px}
-.price-card li{display:flex;gap:9px;font-size:13.5px;align-items:flex-start}
-.price-card li::before{content:"✓";background:rgba(255,255,255,.25);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;flex-shrink:0}
+    /* ===== HELP / FEATURES ===== */
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .feat {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      transition: 0.2s;
+    }
+    .feat:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .feat .f-ic {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #d1fae5;
+      color: var(--green-dd, #065f46);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .dark .feat .f-ic { background: #064e3b; color: #6ee7b7; }
+    .feat h4 { font-size: 15px; margin-bottom: 6px; }
+    .feat p { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
 
-.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.tab{padding:8px 15px;border-radius:9px;background:#fff;border:1px solid var(--line);font-weight:600;font-size:13px;color:var(--muted)}
-.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+    /* ===== PRICE CARD ===== */
+    .price-card {
+      background: linear-gradient(135deg, #065f46, #059669);
+      color: #fff;
+      border-radius: 18px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
+    }
+    .price-card .pr {
+      font-size: 48px;
+      font-weight: 800;
+    }
+    .price-card .pr small {
+      font-size: 20px;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+    .price-card ul {
+      list-style: none;
+      text-align: left;
+      margin: 20px 0;
+      display: grid;
+      gap: 10px;
+    }
+    .price-card li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      align-items: flex-start;
+    }
+    .price-card li::before {
+      content: "✓";
+      background: rgba(255, 255, 255, 0.20);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
 
-.contract-doc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px;line-height:1.7;font-size:13.5px}
-.contract-doc h2{text-align:center;margin-bottom:4px}
-.contract-doc .sub{text-align:center;color:var(--muted);margin-bottom:18px;font-size:12px}
-.contract-doc p{margin-bottom:10px}
+    /* ===== TABS ===== */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 8px 18px;
+      border-radius: 99px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .tab.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    .tab:hover:not(.active) { background: var(--hover-bg); }
 
-@media(max-width:980px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr 1fr}}
-@media(max-width:760px){
-  .menu-toggle{display:block}
-  .sidebar{position:fixed;left:0;top:60px;z-index:40;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow-lg)}
-  .sidebar.open{transform:translateX(0)}
-  .g4,.g3,.g2{grid-template-columns:1fr}
-  .main{padding:16px}
-  .field-row{grid-template-columns:1fr}
-  .cal-cell{min-height:64px}
-  .ev{font-size:9px}
-}
-</style>
+    /* ===== CONTRACT DOC ===== */
+    .contract-doc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      line-height: 1.7;
+      font-size: 13.5px;
+    }
+    .contract-doc h2 { text-align: center; margin-bottom: 4px; }
+    .contract-doc .sub {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 12px;
+    }
+    .contract-doc p { margin-bottom: 12px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .g4 { grid-template-columns: repeat(2, 1fr); }
+      .g3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 64px;
+        z-index: 40;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        height: calc(100vh - 64px);
+        width: 260px;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { padding: 16px; }
+      .g4, .g3, .g2 { grid-template-columns: 1fr; }
+      .field-row { grid-template-columns: 1fr; }
+      .cal-cell { min-height: 70px; }
+      .ev { font-size: 9px; padding: 1px 4px; }
+      .modal { max-width: 100%; margin: 12px; }
+      .topbar .brand small { display: none; }
+      .topbar .actions .btn-test { font-size: 12px; padding: 6px 14px; }
+    }
+    @media (max-width: 480px) {
+      .stat .val { font-size: 22px; }
+      .page-head h1 { font-size: 20px; }
+      .toolbar .search { min-width: 140px; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- TOPBAR -->
-<header class="topbar">
-  <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-  <div class="brand">
-    <span class="logo">🚀</span> Prof Empreendedor <small>Plataforma</small>
-  </div>
-  <div class="spacer"></div>
-  <button class="btn-test" onclick="toast('Você já está no modo demonstração completo 🙂')">Teste Grátis</button>
-</header>
-
-<div class="layout">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar"></aside>
-
-  <!-- MAIN -->
-  <main class="main" id="main"></main>
-</div>
-
-<!-- MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="modal-head"><h3 id="modalTitle">Título</h3><button class="x" onclick="closeModal()">✕</button></div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-foot" id="modalFoot"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-/* ============ STATE / STORAGE ============ */
-const LS_KEY = "profEmpreendedor_v1";
-const COLORS = ["#10b981","#2563eb","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4","#f97316"];
-const colorFor = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0)%COLORS.length];
-const initials = n => n.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
-const BRL = v => "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
-const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-const todayISO = () => new Date().toISOString().slice(0,10);
-const fmtDate = d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}/${y}`; };
-const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-const DOW = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-
-function seed(){
-  const t = todayISO();
-  const d = new Date();
-  const mk = (off,h,al,dur=60,tipo="Aula",status="agendada")=>{
-    const x=new Date(d); x.setDate(x.getDate()+off);
-    return {id:uid(),alunoId:al,data:x.toISOString().slice(0,10),hora:h,duracao:dur,tipo,status};
-  };
-  const alunos = [
-    {id:"a1",nome:"Maria Silva",idioma:"Inglês",nivel:"Intermediário",telefone:"(11) 98888-1111",email:"maria@email.com",mensalidade:280,diaSemana:"Seg/Qua",horario:"18:00",status:"ativo"},
-    {id:"a2",nome:"João Pereira",idioma:"Espanhol",nivel:"Iniciante",telefone:"(11) 97777-2222",email:"joao@email.com",mensalidade:250,diaSemana:"Ter/Qui",horario:"19:00",status:"ativo"},
-    {id:"a3",nome:"Ana Costa",idioma:"Inglês",nivel:"Avançado",telefone:"(21) 96666-3333",email:"ana@email.com",mensalidade:320,diaSemana:"Qua/Sex",horario:"17:00",status:"ativo"},
-    {id:"a4",nome:"Pedro Lima",idioma:"Francês",nivel:"Iniciante",telefone:"(11) 95555-4444",email:"pedro@email.com",mensalidade:260,diaSemana:"Seg",horario:"20:00",status:"ativo"},
-    {id:"a5",nome:"Carla Souza",idioma:"Inglês",nivel:"Intermediário",telefone:"(31) 94444-5555",email:"carla@email.com",mensalidade:280,diaSemana:"Ter",horario:"18:30",status:"inadimplente"},
-    {id:"a6",nome:"Lucas Rocha",idioma:"Alemão",nivel:"Iniciante",telefone:"(11) 93333-6666",email:"lucas@email.com",mensalidade:300,diaSemana:"Qui",horario:"19:30",status:"ativo"},
-  ];
-  const aulas = [mk(0,"18:00","a1"),mk(0,"19:00","a2"),mk(1,"17:00","a3"),mk(1,"20:00","a4"),mk(2,"18:30","a5"),mk(3,"19:30","a6"),mk(-1,"18:00","a1",60,"Aula","concluida"),mk(-2,"19:00","a2",60,"Aula","concluida")];
-  const ym = t.slice(0,7);
-  const fin = [
-    {id:uid(),tipo:"receita",descricao:"Mensalidade — Maria Silva",valor:280,data:t,categoria:"Mensalidade",alunoId:"a1"},
-    {id:uid(),tipo:"receita",descricao:"Mensalidade — João Pereira",valor:250,data:t,categoria:"Mensalidade",alunoId:"a2"},
-    {id:uid(),tipo:"receita",descricao:"Mensalidade — Ana Costa",valor:320,data:t,categoria:"Mensalidade",alunoId:"a3"},
-    {id:uid(),tipo:"despesa",descricao:"Plataforma de videochamada",valor:79,data:t,categoria:"Software"},
-    {id:uid(),tipo:"despesa",descricao:"Material didático",valor:120,data:t,categoria:"Material"},
-    {id:uid(),tipo:"receita",descricao:"Mensalidade — Pedro Lima",valor:260,data:`${ym}-05`,categoria:"Mensalidade",alunoId:"a4"},
-    {id:uid(),tipo:"despesa",descricao:"Internet",valor:99,data:`${ym}-10`,categoria:"Infraestrutura"},
-  ];
-  const contratos = [
-    {id:uid(),alunoId:"a1",dataInicio:`${ym}-01`,valor:280,vigencia:"12 meses",status:"ativo",termos:"Aula de 60 minutos, 2x por semana. Pagamento até o dia 5."},
-    {id:uid(),alunoId:"a3",dataInicio:`${ym}-03`,valor:320,vigencia:"6 meses",status:"ativo",termos:"Aula de 60 minutos, 2x por semana. Material incluso."},
-  ];
-  const msgs = [
-    {id:uid(),destinatario:"Todos os alunos",texto:"Lembrete: pagamento da mensalidade vence dia 5.",data:t,hora:"09:00",enviado:true},
-    {id:uid(),destinatario:"Carla Souza",texto:"Oi Carla! Sua mensalidade está pendente. Podemos regularizar?",data:t,hora:"10:30",enviado:false},
-  ];
-  const tarefas = [
-    {id:uid(),alunoId:"a1",descricao:"Exercícios Unit 5 — Past Tense",dataEntrega:t,status:"pendente"},
-    {id:uid(),alunoId:"a2",descricao:"Vocabulário: comidas e restaurantes",dataEntrega:t,status:"pendente"},
-    {id:uid(),alunoId:"a3",descricao:"Redação: My last vacation",dataEntrega:t,status:"entregue"},
-  ];
-  return {alunos,aulas,fin,contratos,msgs,tarefas,config:{nomeProf:"Professor(a)",moeda:"BRL"}};
-}
-
-let DB = JSON.parse(localStorage.getItem(LS_KEY)) || seed();
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
-function resetDemo(){ if(confirm("Restaurar dados de demonstração? Isso apaga suas alterações.")){ DB=seed(); save(); route(current); toast("Dados restaurados"); } }
-
-/* ============ NAV ============ */
-const NAV = [
-  {id:"dashboard",ic:"📊",label:"Dashboard"},
-  {id:"alunos",ic:"👥",label:"Alunos"},
-  {id:"agenda",ic:"📅",label:"Agenda"},
-  {id:"financas",ic:"💰",label:"Finanças"},
-  {id:"contratos",ic:"📄",label:"Contratos"},
-  {id:"mensagens",ic:"💬",label:"Mensagens"},
-  {sep:true},
-  {id:"tarefas",ic:"📝",label:"Tarefas de Casa"},
-  {id:"relatorios",ic:"📈",label:"Relatórios"},
-  {id:"config",ic:"⚙️",label:"Configurações"},
-  {id:"ajuda",ic:"❓",label:"Ajuda"},
-];
-let current = "dashboard";
-
-function renderNav(){
-  document.getElementById("sidebar").innerHTML = NAV.map(n=> n.sep
-    ? `<div class="nav-sep"></div>`
-    : `<button class="nav-item ${n.id===current?'active':''}" onclick="route('${n.id}')"><span class="ic">${n.ic}</span>${n.label}</button>`
-  ).join("") + `<div class="side-foot"><b>Plano Completo</b><br>R$ 99/mês · sem fidelidade<br><br><button class="btn btn-sm" style="background:#fff;color:#065f46;width:100%" onclick="route('ajuda')">Ver recursos</button></div>`;
-}
-
-function route(id){
-  current=id; renderNav();
-  document.getElementById("sidebar").classList.remove("open");
-  const fn = PAGES[id] || PAGES.dashboard;
-  document.getElementById("main").innerHTML = fn();
-  if(fn.after) fn.after();
-  window.scrollTo(0,0);
-}
-
-/* ============ HELPERS ============ */
-function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2600); }
-function openModal(title,body,foot){ document.getElementById("modalTitle").textContent=title; document.getElementById("modalBody").innerHTML=body; document.getElementById("modalFoot").innerHTML=foot||""; document.getElementById("overlay").classList.add("open"); }
-function closeModal(){ document.getElementById("overlay").classList.remove("open"); }
-document.getElementById("overlay").addEventListener("click",e=>{ if(e.target.id==="overlay") closeModal(); });
-function alunoNome(id){ const a=DB.alunos.find(x=>x.id===id); return a?a.nome:"—"; }
-function del(type,id,label){ if(confirm(`Excluir ${label}?`)){ DB[type]=DB[type].filter(x=>x.id!==id); save(); route(current); toast("Excluído"); } }
-
-/* ============ PAGES ============ */
-const PAGES = {};
-
-/* ---- DASHBOARD ---- */
-PAGES.dashboard = ()=>{
-  const ativos = DB.alunos.filter(a=>a.status==="ativo").length;
-  const inad = DB.alunos.filter(a=>a.status==="inadimplente").length;
-  const t = todayISO();
-  const aulasHoje = DB.aulas.filter(a=>a.data===t).length;
-  const recMes = DB.fin.filter(f=>f.tipo==="receita"&&f.data.startsWith(t.slice(0,7))).reduce((s,f)=>s+f.valor,0);
-  const despMes = DB.fin.filter(f=>f.tipo==="despesa"&&f.data.startsWith(t.slice(0,7))).reduce((s,f)=>s+f.valor,0);
-  const prox = DB.aulas.filter(a=>a.data>=t&&a.status!=="cancelada").sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora)).slice(0,5);
-  const prevCaixa = recMes - despMes + DB.alunos.filter(a=>a.status==="ativo").reduce((s,a)=>s+a.mensalidade,0)*0; // simplificado
-  const saldo = recMes - despMes;
-
-  return `
-  <div class="page-head"><div><h1>Olá, ${DB.config.nomeProf} 👋</h1><p>Aqui está o resumo do seu negócio de idiomas hoje.</p></div>
-    <button class="btn btn-primary" onclick="openAlunoModal()">＋ Novo Aluno</button></div>
-
-  <div class="grid g4" style="margin-bottom:16px">
-    ${statCard("👥","Alunos ativos",ativos,"","#d1fae5","#065f46",`${inad} inadimplente(s)`,"down")}
-    ${statCard("📅","Aulas hoje",aulasHoje,"","#dbeafe","#1e40af","agenda do dia","")}
-    ${statCard("💰","Receita do mês",BRL(recMes),"up","#d1fae5","#065f46",`despesas ${BRL(despMes)}`,"")}
-    ${statCard("📊","Saldo do mês",BRL(saldo),saldo>=0?"up":"down",saldo>=0?"#d1fae5":"#fee2e2",saldo>=0?"#065f46":"#991b1b","previsão de caixa","")}
-  </div>
-
-  <div class="grid g2" style="margin-bottom:16px">
-    <div class="card">
-      <div class="sec-title">📈 Receita vs Despesas (últimos registros)</div>
-      ${barChart()}
-      <div class="legend"><span><i class="dot" style="background:var(--green)"></i>Receitas</span><span><i class="dot" style="background:var(--red)"></i>Despesas</span></div>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+    <div class="brand">
+      <span class="logo">🚀</span> Prof Empreendedor <small>Plataforma</small>
     </div>
-    <div class="card">
-      <div class="sec-title">🗓️ Próximas aulas</div>
-      ${prox.length? prox.map(a=>{const al=DB.alunos.find(x=>x.id===a.alunoId); return `
-        <div class="list-item">
-          <div class="li-ic" style="background:${al?colorFor(al.nome):'#ccc'}22;color:${al?colorFor(al.nome):'#666'}">${al?initials(al.nome):'?'}</div>
-          <div class="li-body"><b>${al?al.nome:'—'}</b><small>${al?al.idioma+' · '+al.nivel:''}</small></div>
-          <div class="li-right">${fmtDate(a.data)}<br><small class="muted" style="font-weight:500">${a.hora}</small></div>
-        </div>`;}).join("") : `<div class="empty"><div class="e-ic">️</div>Nenhuma aula agendada</div>`}
-    </div>
-  </div>
-
-  <div class="grid g2">
-    <div class="card">
-      <div class="sec-title">⚠️ Atenção — Inadimplência</div>
-      ${inad? DB.alunos.filter(a=>a.status==="inadimplente").map(a=>`
-        <div class="list-item">
-          <div class="li-ic" style="background:#fee2e2;color:#991b1b">!</div>
-          <div class="li-body"><b>${a.nome}</b><small>${a.idioma} · mensalidade ${BRL(a.mensalidade)}</small></div>
-          <button class="btn btn-sm btn-ghost" onclick="openAlunoModal('${a.id}')">Regularizar</button>
-        </div>`).join("") : `<div class="empty"><div class="e-ic">✅</div>Todos os alunos em dia!</div>`}
-    </div>
-    <div class="card">
-      <div class="sec-title">🚀 Recursos da plataforma</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
-        ${["Gestão de alunos","Agenda inteligente","Controle financeiro","Previsão de caixa","Contratos digitais","Mensagens e lembretes","Dashboard com métricas","Relatórios"].map(f=>`<div style="display:flex;gap:7px;align-items:center"><span style="color:var(--green-d)">✓</span>${f}</div>`).join("")}
+    <div class="spacer"></div>
+    <div class="actions">
+      <div class="theme-toggle" role="button" tabindex="0" aria-label="Alternar tema" onclick="toggleTheme()">
+        <span class="dot"></span>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:14px;justify-content:center" onclick="route('ajuda')">Conhecer todos os recursos →</button>
+      <button class="btn-test" onclick="toast('Você já está no modo demonstração completo 🙂')">Teste Grátis</button>
     </div>
-  </div>`;
-};
-function statCard(ic,lbl,val,delta,bg,fg,sub,dcls){
-  return `<div class="card stat"><div class="top"><span class="lbl">${lbl}</span><span class="ic" style="background:${bg};color:${fg}">${ic}</span></div>
-    <span class="val">${val}</span><span class="delta ${dcls}">${sub||""}</span></div>`;
-}
-function barChart(){
-  // agrupa por dia do mês atual receitas/despesas
-  const ym = todayISO().slice(0,7);
-  const rec = {}, desp={};
-  DB.fin.filter(f=>f.data.startsWith(ym)).forEach(f=>{ const day=+f.data.slice(8); if(f.tipo==="receita")rec[day]=(rec[day]||0)+f.valor; else desp[day]=(desp[day]||0)+f.valor;});
-  const days = [...new Set([...Object.keys(rec),...Object.keys(desp)])].map(Number).sort((a,b)=>a-b).slice(-7);
-  if(!days.length) return `<div class="empty" style="padding:20px"><div class="e-ic">📈</div>Sem movimentação este mês</div>`;
-  const max = Math.max(...days.map(d=>Math.max(rec[d]||0,desp[d]||0)),1);
-  return `<div class="bar-chart">${days.map(d=>`
-    <div class="bar-col">
-      <div style="display:flex;gap:3px;align-items:flex-end;height:100%">
-        <div class="bar" style="height:${((rec[d]||0)/max)*100}%" title="Receita ${BRL(rec[d]||0)}"></div>
-        <div class="bar exp" style="height:${((desp[d]||0)/max)*100}%" title="Despesa ${BRL(desp[d]||0)}"></div>
-      </div><span class="bar-lbl">dia ${d}</span></div>`).join("")}</div>`;
-}
+  </header>
 
-/* ---- ALUNOS ---- */
-let alunoSearch="", alunoFilter="todos";
-PAGES.alunos = ()=>{
-  let list = DB.alunos.slice();
-  if(alunoFilter!=="todos") list=list.filter(a=>a.status===alunoFilter);
-  if(alunoSearch) list=list.filter(a=>(a.nome+a.idioma+a.email).toLowerCase().includes(alunoSearch.toLowerCase()));
-  const totalMen = DB.alunos.filter(a=>a.status==="ativo").reduce((s,a)=>s+a.mensalidade,0);
-  return `
-  <div class="page-head"><div><h1>Gestão de Alunos</h1><p>${DB.alunos.length} alunos cadastrados · receita potencial ${BRL(totalMen)}/mês</p></div>
-    <button class="btn btn-primary" onclick="openAlunoModal()">＋ Novo Aluno</button></div>
-  <div class="toolbar">
-    <div class="search"><input placeholder="Buscar por nome, idioma ou email..." value="${alunoSearch}" oninput="alunoSearch=this.value;route('alunos')"></div>
-    <select class="sel" onchange="alunoFilter=this.value;route('alunos')">
-      <option value="todos" ${alunoFilter==='todos'?'selected':''}>Todos</option>
-      <option value="ativo" ${alunoFilter==='ativo'?'selected':''}>Ativos</option>
-      <option value="inadimplente" ${alunoFilter==='inadimplente'?'selected':''}>Inadimplentes</option>
-      <option value="inativo" ${alunoFilter==='inativo'?'selected':''}>Inativos</option>
-    </select>
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegação principal"></aside>
+    <!-- MAIN -->
+    <main class="main" id="main" role="main"></main>
   </div>
-  <div class="card"><div class="tbl-wrap"><table>
-    <thead><tr><th>Aluno</th><th>Idioma / Nível</th><th>Contato</th><th>Dia / Horário</th><th>Mensalidade</th><th>Status</th><th></th></tr></thead>
-    <tbody>
-    ${list.length? list.map(a=>`<tr>
-      <td><div style="display:flex;gap:10px;align-items:center"><span class="avatar" style="background:${colorFor(a.nome)}">${initials(a.nome)}</span><div><b>${a.nome}</b><br><small class="muted">${a.email}</small></div></div></td>
-      <td>${a.idioma}<br><small class="muted">${a.nivel}</small></td>
-      <td>${a.telefone}</td>
-      <td>${a.diaSemana}<br><small class="muted">${a.horario}</small></td>
-      <td><b>${BRL(a.mensalidade)}</b></td>
-      <td>${statusBadge(a.status)}</td>
-      <td><div class="row-act"><button class="icon-btn" title="Editar" onclick="openAlunoModal('${a.id}')">✏️</button><button class="icon-btn" title="Excluir" onclick="del('alunos','${a.id}','${a.nome}')">🗑️</button></div></td>
-    </tr>`).join("") : `<tr><td colspan="7"><div class="empty"><div class="e-ic">👥</div>Nenhum aluno encontrado</div></td></tr>`}
-    </tbody></table></div></div>`;
-};
-function statusBadge(s){ return {ativo:'<span class="badge b-green">Ativo</span>',inadimplente:'<span class="badge b-red">Inadimplente</span>',inativo:'<span class="badge b-gray">Inativo</span>'}[s]||s; }
-function openAlunoModal(id){
-  const a = id? DB.alunos.find(x=>x.id===id) : {nome:"",idioma:"Inglês",nivel:"Iniciante",telefone:"",email:"",mensalidade:250,diaSemana:"",horario:"",status:"ativo"};
-  openModal(id?"Editar Aluno":"Novo Aluno", `
-    <div class="field"><label>Nome completo</label><input id="f_nome" value="${a.nome}"></div>
-    <div class="field-row">
-      <div class="field"><label>Idioma</label><select id="f_idioma">${["Inglês","Espanhol","Francês","Alemão","Italiano","Português","Japonês","Mandarim"].map(o=>`<option ${a.idioma===o?'selected':''}>${o}</option>`).join("")}</select></div>
-      <div class="field"><label>Nível</label><select id="f_nivel">${["Iniciante","Básico","Intermediário","Avançado","Fluente"].map(o=>`<option ${a.nivel===o?'selected':''}>${o}</option>`).join("")}</select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Telefone</label><input id="f_tel" value="${a.telefone}"></div>
-      <div class="field"><label>Email</label><input id="f_email" value="${a.email}"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Dias de aula</label><input id="f_dia" value="${a.diaSemana}" placeholder="Seg/Qua"></div>
-      <div class="field"><label>Horário</label><input id="f_hor" value="${a.horario}" placeholder="18:00"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Mensalidade (R$)</label><input id="f_val" type="number" value="${a.mensalidade}"></div>
-      <div class="field"><label>Status</label><select id="f_st">${["ativo","inadimplente","inativo"].map(o=>`<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
-    </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveAluno('${id||''}')">Salvar</button>`);
-}
-function saveAluno(id){
-  const data={nome:f_nome.value.trim(),idioma:f_idioma.value,nivel:f_nivel.value,telefone:f_tel.value,email:f_email.value,diaSemana:f_dia.value,horario:f_hor.value,mensalidade:+f_val.value||0,status:f_st.value};
-  if(!data.nome){toast("Informe o nome");return;}
-  if(id){ Object.assign(DB.alunos.find(x=>x.id===id),data); } else { DB.alunos.push({id:uid(),...data}); }
-  save(); closeModal(); route("alunos"); toast("Aluno salvo");
-}
 
-/* ---- AGENDA ---- */
-let calYear, calMonth;
-PAGES.agenda = ()=>{
-  if(calYear==null){ const d=new Date(); calYear=d.getFullYear(); calMonth=d.getMonth(); }
-  return `
-  <div class="page-head"><div><h1>Agenda Inteligente</h1><p>Organize todas as suas aulas e horários num calendário visual.</p></div>
-    <button class="btn btn-primary" onclick="openAulaModal()">＋ Nova Aula</button></div>
-  <div class="card">
-    <div class="cal-head">
-      <div class="cal-nav"><button onclick="mvMonth(-1)">‹</button><span class="mname">${MONTHS[calMonth]} ${calYear}</span><button onclick="mvMonth(1)">›</button></div>
-      <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="goToday()">Hoje</button></div>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-    <div class="legend" style="margin-top:12px"><span><i class="dot" style="background:var(--blue)"></i>Agendada</span><span><i class="dot" style="background:var(--green)"></i>Concluída</span><span><i class="dot" style="background:var(--red)"></i>Cancelada</span></div>
-  </div>`;
-};
-PAGES.agenda.after = renderCalendar;
-function mvMonth(d){ calMonth+=d; if(calMonth<0){calMonth=11;calYear--;} if(calMonth>11){calMonth=0;calYear++;} route("agenda"); }
-function goToday(){ const d=new Date(); calYear=d.getFullYear(); calMonth=d.getMonth(); route("agenda"); }
-function renderCalendar(){
-  const g=document.getElementById("calGrid"); if(!g)return;
-  const first=new Date(calYear,calMonth,1).getDay();
-  const days=new Date(calYear,calMonth+1,0).getDate();
-  const prevDays=new Date(calYear,calMonth,0).getDate();
-  const t=todayISO();
-  let html=DOW.map(d=>`<div class="cal-dow">${d}</div>`).join("");
-  for(let i=0;i<first;i++){ html+=`<div class="cal-cell other"><div class="dnum">${prevDays-first+1+i}</div></div>`; }
-  for(let d=1;d<=days;d++){
-    const iso=`${calYear}-${String(calMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    const evs=DB.aulas.filter(a=>a.data===iso).sort((a,b)=>a.hora.localeCompare(b.hora));
-    html+=`<div class="cal-cell ${iso===t?'today':''}" onclick="openAulaModal(null,'${iso}')"><div class="dnum">${d}</div>
-      ${evs.slice(0,3).map(a=>{const al=alunoNome(a.alunoId); return `<div class="ev ${a.status==='concluida'?'done':a.status==='cancelada'?'cancel':''}" title="${a.hora} ${al}" onclick="event.stopPropagation();openAulaModal('${a.id}')">${a.hora} ${al}</div>`;}).join("")}
-      ${evs.length>3?`<div class="ev" style="background:#e2e8f0;color:#475569;border-left-color:#94a3b8">+${evs.length-3} mais</div>`:""}</div>`;
-  }
-  const total=first+days; const trail=(7-total%7)%7;
-  for(let i=1;i<=trail;i++){ html+=`<div class="cal-cell other"><div class="dnum">${i}</div></div>`; }
-  g.innerHTML=html;
-}
-function openAulaModal(id,presetDate){
-  const a = id? DB.aulas.find(x=>x.id===id) : {alunoId:DB.alunos[0]?.id||"",data:presetDate||todayISO(),hora:"18:00",duracao:60,tipo:"Aula",status:"agendada"};
-  if(!DB.alunos.length){ toast("Cadastre um aluno primeiro"); route("alunos"); return; }
-  openModal(id?"Editar Aula":"Nova Aula", `
-    <div class="field"><label>Aluno</label><select id="g_al">${DB.alunos.map(o=>`<option value="${o.id}" ${a.alunoId===o.id?'selected':''}>${o.nome} — ${o.idioma}</option>`).join("")}</select></div>
-    <div class="field-row">
-      <div class="field"><label>Data</label><input id="g_dt" type="date" value="${a.data}"></div>
-      <div class="field"><label>Hora</label><input id="g_hr" type="time" value="${a.hora}"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Duração (min)</label><input id="g_dur" type="number" value="${a.duracao}"></div>
-      <div class="field"><label>Tipo</label><select id="g_tp">${["Aula","Reposição","Avaliação","Experimental"].map(o=>`<option ${a.tipo===o?'selected':''}>${o}</option>`).join("")}</select></div>
-    </div>
-    <div class="field"><label>Status</label><select id="g_st">${["agendada","concluida","cancelada"].map(o=>`<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>${id?`<button class="btn btn-danger" onclick="del('aulas','${id}','esta aula')">Excluir</button>`:""}<button class="btn btn-primary" onclick="saveAula('${id||''}')">Salvar</button>`);
-}
-function saveAula(id){
-  const data={alunoId:g_al.value,data:g_dt.value,hora:g_hr.value,duracao:+g_dur.value||60,tipo:g_tp.value,status:g_st.value};
-  if(id){ Object.assign(DB.aulas.find(x=>x.id===id),data);} else { DB.aulas.push({id:uid(),...data}); }
-  save(); closeModal(); route("agenda"); toast("Aula salva");
-}
-
-/* ---- FINANÇAS ---- */
-let finTab="movimentacoes";
-PAGES.financas = ()=>{
-  const ym=todayISO().slice(0,7);
-  const rec=DB.fin.filter(f=>f.tipo==="receita"&&f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
-  const desp=DB.fin.filter(f=>f.tipo==="despesa"&&f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
-  const saldo=rec-desp;
-  const prevRec=DB.alunos.filter(a=>a.status==="ativo").reduce((s,a)=>s+a.mensalidade,0);
-  const lista=DB.fin.slice().sort((a,b)=>b.data.localeCompare(a.data));
-  return `
-  <div class="page-head"><div><h1>Controle Financeiro</h1><p>Receitas, despesas e previsão de caixa do mês.</p></div>
-    <button class="btn btn-primary" onclick="openFinModal()">＋ Lançamento</button></div>
-  <div class="grid g4" style="margin-bottom:16px">
-    ${statCard("⬆️","Receitas",BRL(rec),"up","#d1fae5","#065f46","este mês","")}
-    ${statCard("⬇️","Despesas",BRL(desp),"","#fee2e2","#991b1b","este mês","")}
-    ${statCard("💵","Saldo",BRL(saldo),saldo>=0?"up":"down",saldo>=0?"#d1fae5":"#fee2e2",saldo>=0?"#065f46":"#991b1b","receitas − despesas","")}
-    ${statCard("🔮","Previsão de caixa",BRL(prevRec),"up","#dbeafe","#1e40af","mensalidades ativas","")}
-  </div>
-  <div class="tabs">
-    <button class="tab ${finTab==='movimentacoes'?'active':''}" onclick="finTab='movimentacoes';route('financas')">Movimentações</button>
-    <button class="tab ${finTab==='previsao'?'active':''}" onclick="finTab='previsao';route('financas')">Previsão de Caixa</button>
-  </div>
-  ${finTab==='movimentacoes'? `
-  <div class="card"><div class="tbl-wrap"><table>
-    <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${lista.length? lista.map(f=>`<tr>
-      <td>${fmtDate(f.data)}</td><td><b>${f.descricao}</b></td><td><span class="badge b-gray">${f.categoria}</span></td>
-      <td>${f.tipo==='receita'?'<span class="badge b-green">Receita</span>':'<span class="badge b-red">Despesa</span>'}</td>
-      <td style="text-align:right;font-weight:700;color:${f.tipo==='receita'?'var(--green-d)':'var(--red)'}">${f.tipo==='receita'?'+':'−'} ${BRL(f.valor)}</td>
-      <td><button class="icon-btn" onclick="del('fin','${f.id}','este lançamento')">🗑️</button></td></tr>`).join("") : `<tr><td colspan="6"><div class="empty"><div class="e-ic">💰</div>Sem lançamentos</div></td></tr>`}</tbody></table></div></div>`
-  : `
-  <div class="card">
-    <div class="sec-title">🔮 Previsão de Caixa — próximos 30 dias</div>
-    <p class="muted" style="margin-bottom:14px;font-size:13px">Baseado nas mensalidades dos alunos ativos e nas despesas recorrentes médias.</p>
-    <div class="grid g3" style="margin-bottom:16px">
-      <div class="card" style="background:#f0fdf4"><div class="lbl muted">Entradas previstas</div><div style="font-size:22px;font-weight:800;color:var(--green-d)">${BRL(prevRec)}</div></div>
-      <div class="card" style="background:#fef2f2"><div class="lbl muted">Saídas estimadas</div><div style="font-size:22px;font-weight:800;color:var(--red)">${BRL(desp||prevRec*0.3)}</div></div>
-      <div class="card" style="background:#eff6ff"><div class="lbl muted">Saldo projetado</div><div style="font-size:22px;font-weight:800;color:var(--blue)">${BRL(prevRec-(desp||prevRec*0.3))}</div></div>
-    </div>
-    <div class="bar-chart">${[1,2,3,4].map(s=>{const ent=prevRec; const sai=(desp||prevRec*0.3); const mx=Math.max(ent,sai); return `<div class="bar-col"><div style="display:flex;gap:3px;align-items:flex-end;height:100%"><div class="bar" style="height:${ent/mx*100}%"></div><div class="bar exp" style="height:${sai/mx*100}%"></div></div><span class="bar-lbl">sem ${s}</span></div>`;}).join("")}</div>
-    <div class="legend"><span><i class="dot" style="background:var(--green)"></i>Entradas</span><span><i class="dot" style="background:var(--red)"></i>Saídas</span></div>
-  </div>`}`;
-};
-function openFinModal(){
-  openModal("Novo Lançamento", `
-    <div class="field"><label>Tipo</label><select id="h_tp" onchange="document.getElementById('h_cat').style.display=this.value==='receita'?'none':'block'"><option value="receita">Receita</option><option value="despesa">Despesa</option></select></div>
-    <div class="field"><label>Descrição</label><input id="h_desc"></div>
-    <div class="field-row">
-      <div class="field"><label>Valor (R$)</label><input id="h_val" type="number"></div>
-      <div class="field"><label>Data</label><input id="h_dt" type="date" value="${todayISO()}"></div>
-    </div>
-    <div class="field"><label>Categoria</label><select id="h_cat">${["Mensalidade","Aula extra","Software","Material","Infraestrutura","Marketing","Outros"].map(o=>`<option>${o}</option>`).join("")}</select></div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveFin()">Salvar</button>`);
-}
-function saveFin(){
-  const data={tipo:h_tp.value,descricao:h_desc.value.trim(),valor:+h_val.value||0,data:h_dt.value,categoria:h_cat.value};
-  if(!data.descricao||!data.valor){toast("Preencha descrição e valor");return;}
-  DB.fin.push({id:uid(),...data}); save(); closeModal(); route("financas"); toast("Lançamento salvo");
-}
-
-/* ---- CONTRATOS ---- */
-PAGES.contratos = ()=>{
-  return `
-  <div class="page-head"><div><h1>Contratos Digitais</h1><p>Gere e gerencie contratos de prestação de serviço.</p></div>
-    <button class="btn btn-primary" onclick="openContratoModal()">＋ Novo Contrato</button></div>
-  ${DB.contratos.length? DB.contratos.map(c=>{const a=DB.alunos.find(x=>x.id===c.alunoId); return `
-  <div class="card" style="margin-bottom:14px">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-      <div style="display:flex;gap:12px;align-items:center"><span class="avatar" style="background:${a?colorFor(a.nome):'#ccc'}">${a?initials(a.nome):'?'}</span>
-        <div><b style="font-size:15px">${a?a.nome:'—'}</b><br><small class="muted">Início ${fmtDate(c.dataInicio)} · ${c.vigencia} · ${BRL(c.valor)}/mês</small></div></div>
-      <div style="display:flex;gap:8px;align-items:center"><span class="badge ${c.status==='ativo'?'b-green':'b-gray'}">${c.status}</span>
-        <button class="btn btn-sm btn-ghost" onclick="verContrato('${c.id}')">👁️ Ver</button>
-        <button class="icon-btn" onclick="del('contratos','${c.id}','este contrato')">🗑️</button></div>
-    </div>
-  </div>`;}).join("") : `<div class="card"><div class="empty"><div class="e-ic">📄</div>Nenhum contrato ainda</div></div>`}`;
-};
-function openContratoModal(){
-  if(!DB.alunos.length){toast("Cadastre um aluno primeiro");route("alunos");return;}
-  openModal("Novo Contrato", `
-    <div class="field"><label>Aluno</label><select id="c_al">${DB.alunos.map(o=>`<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
-    <div class="field-row">
-      <div class="field"><label>Data de início</label><input id="c_dt" type="date" value="${todayISO()}"></div>
-      <div class="field"><label>Valor mensal (R$)</label><input id="c_val" type="number" value="280"></div>
-    </div>
-    <div class="field"><label>Vigência</label><select id="c_vig">${["3 meses","6 meses","12 meses","Indeterminado"].map(o=>`<option>${o}</option>`).join("")}</select></div>
-    <div class="field"><label>Termos / cláusulas</label><textarea id="c_term">Aula de 60 minutos. Pagamento até o dia 5 de cada mês. Cancelamento com aviso prévio de 30 dias.</textarea></div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveContrato()">Gerar Contrato</button>`);
-}
-function saveContrato(){
-  DB.contratos.push({id:uid(),alunoId:c_al.value,dataInicio:c_dt.value,valor:+c_val.value||0,vigencia:c_vig.value,status:"ativo",termos:c_term.value});
-  save(); closeModal(); route("contratos"); toast("Contrato gerado");
-}
-function verContrato(id){
-  const c=DB.contratos.find(x=>x.id===id); const a=DB.alunos.find(x=>x.id===c.alunoId);
-  openModal("Contrato Digital", `
-    <div class="contract-doc">
-      <h2>Contrato de Prestação de Serviços</h2><div class="sub">Ensino de Idiomas — Prof Empreendedor</div>
-      <p><b>CONTRATANTE:</b> ${a?a.nome:'—'}, ${a?a.email:''}, ${a?a.telefone:''}.</p>
-      <p><b>OBJETO:</b> Aulas particulares de ${a?a.idioma:'idioma'} (${a?a.nivel:''}), com duração de 60 minutos por encontro.</p>
-      <p><b>VALOR:</b> ${BRL(c.valor)} mensais, com vencimento todo dia 5, vigente por ${c.vigencia} a partir de ${fmtDate(c.dataInicio)}.</p>
-      <p><b>CLÁUSULAS:</b> ${c.termos}</p>
-      <p style="margin-top:24px">_________________________________<br><small class="muted">${DB.config.nomeProf} — Professor(a)</small></p>
-      <p>_________________________________<br><small class="muted">${a?a.nome:'Aluno(a)'}</small></p>
-    </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Fechar</button><button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / PDF</button>`);
-}
-
-/* ---- MENSAGENS ---- */
-PAGES.mensagens = ()=>{
-  return `
-  <div class="page-head"><div><h1>Mensagens e Lembretes</h1><p>Comunique-se com seus alunos e automatize lembretes.</p></div>
-    <button class="btn btn-primary" onclick="openMsgModal()">＋ Nova Mensagem</button></div>
-  <div class="card">
-    ${DB.msgs.length? DB.msgs.slice().reverse().map(m=>`
-      <div class="list-item">
-        <div class="li-ic" style="background:${m.enviado?'#d1fae5':'#fef3c7'};color:${m.enviado?'#065f46':'#92400e'}">${m.enviado?'✅':'⏰'}</div>
-        <div class="li-body"><b>${m.destinatario}</b><small>${m.texto}</small><small class="muted">${fmtDate(m.data)} às ${m.hora}</small></div>
-        <div style="display:flex;gap:6px">${!m.enviado?`<button class="btn btn-sm btn-primary" onclick="enviarMsg('${m.id}')">Enviar</button>`:`<span class="badge b-green">Enviado</span>`}<button class="icon-btn" onclick="del('msgs','${m.id}','esta mensagem')">🗑️</button></div>
-      </div>`).join("") : `<div class="empty"><div class="e-ic">💬</div>Nenhuma mensagem</div>`}
-  </div>`;
-};
-function openMsgModal(){
-  openModal("Nova Mensagem / Lembrete", `
-    <div class="field"><label>Destinatário</label><select id="m_dest"><option>Todos os alunos</option>${DB.alunos.map(o=>`<option>${o.nome}</option>`).join("")}</select></div>
-    <div class="field"><label>Mensagem</label><textarea id="m_txt" placeholder="Escreva seu lembrete..."></textarea></div>
-    <div class="field-row">
-      <div class="field"><label>Data</label><input id="m_dt" type="date" value="${todayISO()}"></div>
-      <div class="field"><label>Hora</label><input id="m_hr" type="time" value="09:00"></div>
-    </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveMsg()">Agendar</button>`);
-}
-function saveMsg(){
-  if(!m_txt.value.trim()){toast("Escreva uma mensagem");return;}
-  DB.msgs.push({id:uid(),destinatario:m_dest.value,texto:m_txt.value.trim(),data:m_dt.value,hora:m_hr.value,enviado:false});
-  save(); closeModal(); route("mensagens"); toast("Lembrete agendado");
-}
-function enviarMsg(id){ DB.msgs.find(m=>m.id===id).enviado=true; save(); route("mensagens"); toast("Mensagem enviada"); }
-
-/* ---- TAREFAS ---- */
-PAGES.tarefas = ()=>{
-  return `
-  <div class="page-head"><div><h1>Tarefas de Casa</h1><p>Acompanhe as atividades entregues pelos alunos.</p></div>
-    <button class="btn btn-primary" onclick="openTarefaModal()">＋ Nova Tarefa</button></div>
-  <div class="card">
-    ${DB.tarefas.length? DB.tarefas.map(tf=>{const a=DB.alunos.find(x=>x.id===tf.alunoId); return `
-      <div class="list-item">
-        <div class="li-ic" style="background:${tf.status==='entregue'?'#d1fae5':'#fef3c7'};color:${tf.status==='entregue'?'#065f46':'#92400e'}">${tf.status==='entregue'?'✅':'📝'}</div>
-        <div class="li-body"><b>${tf.descricao}</b><small>${a?a.nome+' · '+a.idioma:'—'} · entrega ${fmtDate(tf.dataEntrega)}</small></div>
-        <div style="display:flex;gap:6px;align-items:center">
-          ${tf.status!=='entregue'?`<button class="btn btn-sm btn-ghost" onclick="markEntregue('${tf.id}')">Marcar entregue</button>`:`<span class="badge b-green">Entregue</span>`}
-          <button class="icon-btn" onclick="del('tarefas','${tf.id}','esta tarefa')">🗑️</button></div>
-      </div>`;}).join("") : `<div class="empty"><div class="e-ic">📝</div>Nenhuma tarefa</div>`}
-  </div>`;
-};
-function openTarefaModal(){
-  if(!DB.alunos.length){toast("Cadastre um aluno primeiro");route("alunos");return;}
-  openModal("Nova Tarefa", `
-    <div class="field"><label>Aluno</label><select id="t_al">${DB.alunos.map(o=>`<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
-    <div class="field"><label>Descrição da tarefa</label><textarea id="t_desc"></textarea></div>
-    <div class="field"><label>Data de entrega</label><input id="t_dt" type="date" value="${todayISO()}"></div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveTarefa()">Salvar</button>`);
-}
-function saveTarefa(){
-  if(!t_desc.value.trim()){toast("Descreva a tarefa");return;}
-  DB.tarefas.push({id:uid(),alunoId:t_al.value,descricao:t_desc.value.trim(),dataEntrega:t_dt.value,status:"pendente"});
-  save(); closeModal(); route("tarefas"); toast("Tarefa criada");
-}
-function markEntregue(id){ DB.tarefas.find(t=>t.id===id).status="entregue"; save(); route("tarefas"); toast("Marcada como entregue"); }
-
-/* ---- RELATÓRIOS ---- */
-PAGES.relatorios = ()=>{
-  const ym=todayISO().slice(0,7);
-  const porIdioma={}; DB.alunos.forEach(a=>porIdioma[a.idioma]=(porIdioma[a.idioma]||0)+1);
-  const maxId=Math.max(...Object.values(porIdioma),1);
-  const rec=DB.fin.filter(f=>f.tipo==="receita"&&f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
-  const aulasCon=DB.aulas.filter(a=>a.status==="concluida").length;
-  const taxa=DB.aulas.length? Math.round(DB.aulas.filter(a=>a.status==="concluida").length/DB.aulas.length*100):0;
-  return `
-  <div class="page-head"><div><h1>Relatórios</h1><p>Métricas do seu negócio de idiomas.</p></div>
-    <button class="btn btn-ghost" onclick="resetDemo()">↺ Restaurar demo</button></div>
-  <div class="grid g3" style="margin-bottom:16px">
-    ${statCard("🎓","Total de alunos",DB.alunos.length,"","#d1fae5","#065f46",`${DB.alunos.filter(a=>a.status==='ativo').length} ativos`,"")}
-    ${statCard("✅","Aulas concluídas",aulasCon,"","#dbeafe","#1e40af",`taxa ${taxa}%`,"")}
-    ${statCard("💰","Receita do mês",BRL(rec),"up","#d1fae5","#065f46","acumulado","")}
-  </div>
-  <div class="grid g2">
-    <div class="card"><div class="sec-title">🌍 Alunos por idioma</div>
-      ${Object.entries(porIdioma).map(([k,v])=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${k}</span><b>${v}</b></div><div style="height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden"><div style="height:100%;width:${v/maxId*100}%;background:linear-gradient(90deg,var(--green),var(--green-d));border-radius:99px"></div></div></div>`).join("")||'<div class="empty">Sem dados</div>'}
-    </div>
-    <div class="card"><div class="sec-title">📊 Distribuição de níveis</div>
-      ${(()=>{const n={};DB.alunos.forEach(a=>n[a.nivel]=(n[a.nivel]||0)+1);const mx=Math.max(...Object.values(n),1);return Object.entries(n).map(([k,v])=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${k}</span><b>${v}</b></div><div style="height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden"><div style="height:100%;width:${v/mx*100}%;background:linear-gradient(90deg,var(--blue),#60a5fa);border-radius:99px"></div></div></div>`).join("")||'<div class="empty">Sem dados</div>';})()}
-    </div>
-  </div>`;
-};
-
-/* ---- CONFIG ---- */
-PAGES.config = ()=>{
-  return `
-  <div class="page-head"><div><h1>Configurações</h1><p>Personalize sua plataforma.</p></div></div>
-  <div class="card" style="max-width:560px">
-    <div class="field"><label>Seu nome (aparece no dashboard e contratos)</label><input id="cfg_nome" value="${DB.config.nomeProf}"></div>
-    <div class="field"><label>Moeda</label><select id="cfg_moeda">${["BRL","USD","EUR"].map(o=>`<option ${DB.config.moeda===o?'selected':''}>${o}</option>`).join("")}</select></div>
-    <button class="btn btn-primary" onclick="saveConfig()">Salvar configurações</button>
-    <hr style="margin:22px 0;border:none;border-top:1px solid var(--line)">
-    <div class="sec-title" style="color:var(--red)">⚠️ Zona de perigo</div>
-    <button class="btn btn-danger" onclick="resetDemo()">Restaurar dados de demonstração</button>
-  </div>`;
-};
-function saveConfig(){ DB.config.nomeProf=cfg_nome.value||"Professor(a)"; DB.config.moeda=cfg_moeda.value; save(); toast("Configurações salvas"); route("dashboard"); }
-
-/* ---- AJUDA ---- */
-PAGES.ajuda = ()=>{
-  const feats=[
-    {ic:"👥",t:"Gestão completa de alunos",d:"Cadastre alunos com idioma, nível, contato, mensalidade e acompanhe status (ativo/inadimplente)."},
-    {ic:"",t:"Agenda inteligente",d:"Calendário visual com todas as aulas. Agende, reponha e marque conclusão em poucos cliques."},
-    {ic:"💰",t:"Controle financeiro",d:"Registre receitas e despesas, veja saldo do mês e mantenha seu caixa organizado."},
-    {ic:"🔮",t:"Previsão de caixa",d:"Projete entradas e saídas dos próximos 30 dias com base nas mensalidades ativas."},
-    {ic:"📄",t:"Contratos digitais",d:"Gere contratos de prestação de serviço prontos para imprimir ou salvar em PDF."},
-    {ic:"💬",t:"Mensagens e lembretes",d:"Envie comunicados e agende lembretes de pagamento para seus alunos."},
-    {ic:"📊",t:"Dashboard com métricas",d:"Visão geral do negócio: alunos, aulas do dia, receita, saldo e inadimplência."},
-    {ic:"📝",t:"Tarefas de casa",d:"Atribua e acompanhe as atividades entregues por cada aluno."},
-    {ic:"📈",t:"Relatórios",d:"Métricas por idioma, nível, aulas concluídas e receita acumulada."},
-    {ic:"💬",t:"Suporte por chat",d:"Equipe pronta para ajudar você a aproveitar 100% da plataforma."},
-    {ic:"🔄",t:"Atualizações gratuitas",d:"Novas funcionalidades incluídas automaticamente, sem custo adicional."},
-    {ic:"🔓",t:"Sem fidelidade",d:"Cancele quando quiser. Sem multa, sem burocracia."},
-  ];
-  return `
-  <div class="page-head"><div><h1>Central de Ajuda</h1><p>Tudo o que sua plataforma oferece — e como começar.</p></div></div>
-  <div class="grid g2" style="margin-bottom:18px">
-    <div class="price-card">
-      <div style="opacity:.85;font-size:13px">Plano Completo</div>
-      <div class="pr"><small>R$</small> 99 <small>/mês</small></div>
-      <div style="opacity:.85;font-size:13px;margin-top:4px">Sem fidelidade · Acesso completo</div>
-      <ul>${feats.map(f=>`<li>${f.t}</li>`).join("")}</ul>
-      <button class="btn" style="background:#fff;color:#065f46;width:100%;justify-content:center;font-weight:700" onclick="toast('Começando seu teste grátis 🎉');route('dashboard')">Começar Teste Grátis →</button>
-      <div style="font-size:11px;opacity:.75;margin-top:10px">Cobrança inicia após o período de teste.</div>
-    </div>
-    <div class="card">
-      <div class="sec-title">🚀 Como começar em 3 passos</div>
-      <div style="display:grid;gap:14px">
-        ${[{n:1,t:"Cadastre seus alunos",d:"Vá em Alunos → Novo Aluno e preencha idioma, nível e mensalidade."},{n:2,t:"Monte sua agenda",d:"Em Agenda → Nova Aula, escolha o aluno, data e horário."},{n:3,t:"Acompanhe o financeiro",d:"Registre recebimentos em Finanças e consulte a previsão de caixa."}].map(s=>`<div style="display:flex;gap:12px"><div style="width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex-shrink:0">${s.n}</div><div><b>${s.t}</b><br><small class="muted">${s.d}</small></div></div>`).join("")}
+  <!-- MODAL -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modalTitle">Título</h3>
+        <button class="x" onclick="closeModal()" aria-label="Fechar">✕</button>
       </div>
-      <div style="margin-top:18px;padding:14px;background:#f0fdf4;border-radius:11px;font-size:13px;color:#065f46">💡 <b>Dica:</b> todos os dados ficam salvos automaticamente no seu navegador (localStorage). Nada é enviado para servidores externos nesta demonstração.</div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-foot" id="modalFoot"></div>
     </div>
   </div>
-  <div class="sec-title" style="margin-top:6px">✨ Todos os recursos</div>
-  <div class="help-grid">${feats.map(f=>`<div class="feat"><div class="f-ic">${f.ic}</div><h4>${f.t}</h4><p>${f.d}</p></div>`).join("")}</div>`;
-};
 
-/* ============ INIT ============ */
-renderNav();
-route("dashboard");
-</script>
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script>
+    /* ============================================================
+       STATE / STORAGE
+    ============================================================ */
+    const LS_KEY = "profEmpreendedor_v2";
+    const COLORS = ["#10b981","#2563eb","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4","#f97316"];
+    const colorFor = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0) % COLORS.length];
+    const initials = n => n.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+    const BRL = v => "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+    const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    const todayISO = () => new Date().toISOString().slice(0,10);
+    const fmtDate = d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}/${y}`; };
+    const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const DOW = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+    function seed() {
+      const t = todayISO();
+      const d = new Date();
+      const mk = (off,h,al,dur=60,tipo="Aula",status="agendada") => {
+        const x = new Date(d);
+        x.setDate(x.getDate()+off);
+        return { id: uid(), alunoId: al, data: x.toISOString().slice(0,10), hora: h, duracao: dur, tipo, status };
+      };
+      const alunos = [
+        { id:"a1", nome:"Maria Silva", idioma:"Inglês", nivel:"Intermediário", telefone:"(11) 98888-1111", email:"maria@email.com", mensalidade:280, diaSemana:"Seg/Qua", horario:"18:00", status:"ativo" },
+        { id:"a2", nome:"João Pereira", idioma:"Espanhol", nivel:"Iniciante", telefone:"(11) 97777-2222", email:"joao@email.com", mensalidade:250, diaSemana:"Ter/Qui", horario:"19:00", status:"ativo" },
+        { id:"a3", nome:"Ana Costa", idioma:"Inglês", nivel:"Avançado", telefone:"(21) 96666-3333", email:"ana@email.com", mensalidade:320, diaSemana:"Qua/Sex", horario:"17:00", status:"ativo" },
+        { id:"a4", nome:"Pedro Lima", idioma:"Francês", nivel:"Iniciante", telefone:"(11) 95555-4444", email:"pedro@email.com", mensalidade:260, diaSemana:"Seg", horario:"20:00", status:"ativo" },
+        { id:"a5", nome:"Carla Souza", idioma:"Inglês", nivel:"Intermediário", telefone:"(31) 94444-5555", email:"carla@email.com", mensalidade:280, diaSemana:"Ter", horario:"18:30", status:"inadimplente" },
+        { id:"a6", nome:"Lucas Rocha", idioma:"Alemão", nivel:"Iniciante", telefone:"(11) 93333-6666", email:"lucas@email.com", mensalidade:300, diaSemana:"Qui", horario:"19:30", status:"ativo" },
+      ];
+      const aulas = [
+        mk(0,"18:00","a1"), mk(0,"19:00","a2"), mk(1,"17:00","a3"),
+        mk(1,"20:00","a4"), mk(2,"18:30","a5"), mk(3,"19:30","a6"),
+        mk(-1,"18:00","a1",60,"Aula","concluida"),
+        mk(-2,"19:00","a2",60,"Aula","concluida")
+      ];
+      const ym = t.slice(0,7);
+      const fin = [
+        { id:uid(), tipo:"receita", descricao:"Mensalidade — Maria Silva", valor:280, data:t, categoria:"Mensalidade", alunoId:"a1" },
+        { id:uid(), tipo:"receita", descricao:"Mensalidade — João Pereira", valor:250, data:t, categoria:"Mensalidade", alunoId:"a2" },
+        { id:uid(), tipo:"receita", descricao:"Mensalidade — Ana Costa", valor:320, data:t, categoria:"Mensalidade", alunoId:"a3" },
+        { id:uid(), tipo:"despesa", descricao:"Plataforma de videochamada", valor:79, data:t, categoria:"Software" },
+        { id:uid(), tipo:"despesa", descricao:"Material didático", valor:120, data:t, categoria:"Material" },
+        { id:uid(), tipo:"receita", descricao:"Mensalidade — Pedro Lima", valor:260, data:`${ym}-05`, categoria:"Mensalidade", alunoId:"a4" },
+        { id:uid(), tipo:"despesa", descricao:"Internet", valor:99, data:`${ym}-10`, categoria:"Infraestrutura" },
+      ];
+      const contratos = [
+        { id:uid(), alunoId:"a1", dataInicio:`${ym}-01`, valor:280, vigencia:"12 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Pagamento até o dia 5." },
+        { id:uid(), alunoId:"a3", dataInicio:`${ym}-03`, valor:320, vigencia:"6 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Material incluso." },
+      ];
+      const msgs = [
+        { id:uid(), destinatario:"Todos os alunos", texto:"Lembrete: pagamento da mensalidade vence dia 5.", data:t, hora:"09:00", enviado:true },
+        { id:uid(), destinatario:"Carla Souza", texto:"Oi Carla! Sua mensalidade está pendente. Podemos regularizar?", data:t, hora:"10:30", enviado:false },
+      ];
+      const tarefas = [
+        { id:uid(), alunoId:"a1", descricao:"Exercícios Unit 5 — Past Tense", dataEntrega:t, status:"pendente" },
+        { id:uid(), alunoId:"a2", descricao:"Vocabulário: comidas e restaurantes", dataEntrega:t, status:"pendente" },
+        { id:uid(), alunoId:"a3", descricao:"Redação: My last vacation", dataEntrega:t, status:"entregue" },
+      ];
+      return { alunos, aulas, fin, contratos, msgs, tarefas, config:{ nomeProf:"Professor(a)", moeda:"BRL" } };
+    }
+
+    let DB = JSON.parse(localStorage.getItem(LS_KEY)) || seed();
+    function save() { localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
+    function resetDemo() {
+      if (confirm("Restaurar dados de demonstração? Isso apaga suas alterações.")) {
+        DB = seed(); save(); route(current); toast("Dados restaurados");
+      }
+    }
+
+    /* ============================================================
+       NAVEGAÇÃO
+    ============================================================ */
+    const NAV = [
+      { id:"dashboard", ic:"📊", label:"Dashboard" },
+      { id:"alunos", ic:"👥", label:"Alunos" },
+      { id:"agenda", ic:"📅", label:"Agenda" },
+      { id:"financas", ic:"💰", label:"Finanças" },
+      { id:"contratos", ic:"📄", label:"Contratos" },
+      { id:"mensagens", ic:"💬", label:"Mensagens" },
+      { sep:true },
+      { id:"tarefas", ic:"📝", label:"Tarefas de Casa" },
+      { id:"relatorios", ic:"📈", label:"Relatórios" },
+      { id:"config", ic:"⚙️", label:"Configurações" },
+      { id:"ajuda", ic:"❓", label:"Ajuda" },
+    ];
+    let current = "dashboard";
+
+    function renderNav() {
+      document.getElementById("sidebar").innerHTML = NAV.map(n =>
+        n.sep
+          ? `<div class="nav-sep"></div>`
+          : `<button class="nav-item ${n.id===current?'active':''}" onclick="route('${n.id}')" aria-current="${n.id===current?'page':''}">
+              <span class="ic">${n.ic}</span>${n.label}
+             </button>`
+      ).join("") +
+      `<div class="side-foot">
+        <b>Plano Completo</b><br>R$ 99/mês · sem fidelidade
+        <button class="btn" onclick="route('ajuda')">Ver recursos</button>
+       </div>`;
+    }
+
+    function route(id) {
+      current = id; renderNav();
+      document.getElementById("sidebar").classList.remove("open");
+      const fn = PAGES[id] || PAGES.dashboard;
+      document.getElementById("main").innerHTML = fn();
+      if (fn.after) fn.after();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    /* ============================================================
+       TEMA CLARO / ESCURO
+    ============================================================ */
+    let darkMode = localStorage.getItem("darkMode") === "true";
+    function applyTheme() {
+      if (darkMode) document.documentElement.classList.add("dark");
+      else document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkMode", darkMode);
+    }
+    function toggleTheme() {
+      darkMode = !darkMode;
+      applyTheme();
+    }
+    applyTheme();
+
+    /* ============================================================
+       HELPERS
+    ============================================================ */
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function openModal(title, body, foot) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalBody").innerHTML = body;
+      document.getElementById("modalFoot").innerHTML = foot || "";
+      document.getElementById("overlay").classList.add("open");
+      // Foco no primeiro input
+      setTimeout(() => {
+        const firstInput = document.querySelector("#modalBody input, #modalBody select, #modalBody textarea");
+        if (firstInput) firstInput.focus();
+      }, 100);
+    }
+    function closeModal() {
+      document.getElementById("overlay").classList.remove("open");
+    }
+    document.getElementById("overlay").addEventListener("click", e => {
+      if (e.target.id === "overlay") closeModal();
+    });
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeModal();
+    });
+
+    function alunoNome(id) {
+      const a = DB.alunos.find(x => x.id === id);
+      return a ? a.nome : "—";
+    }
+    function del(type, id, label) {
+      if (confirm(`Excluir ${label}?`)) {
+        DB[type] = DB[type].filter(x => x.id !== id);
+        save(); route(current); toast("Excluído");
+      }
+    }
+
+    /* ============================================================
+       PÁGINAS
+    ============================================================ */
+    const PAGES = {};
+
+    /* ----- DASHBOARD ----- */
+    PAGES.dashboard = () => {
+      const ativos = DB.alunos.filter(a => a.status === "ativo").length;
+      const inad = DB.alunos.filter(a => a.status === "inadimplente").length;
+      const t = todayISO();
+      const aulasHoje = DB.aulas.filter(a => a.data === t).length;
+      const recMes = DB.fin.filter(f => f.tipo==="receita" && f.data.startsWith(t.slice(0,7))).reduce((s,f)=>s+f.valor,0);
+      const despMes = DB.fin.filter(f => f.tipo==="despesa" && f.data.startsWith(t.slice(0,7))).reduce((s,f)=>s+f.valor,0);
+      const saldo = recMes - despMes;
+      const prox = DB.aulas.filter(a => a.data>=t && a.status!=="cancelada")
+                          .sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora))
+                          .slice(0,5);
+
+      return `
+        <div class="page-head">
+          <div><h1>Olá, ${DB.config.nomeProf} 👋</h1><p>Aqui está o resumo do seu negócio de idiomas hoje.</p></div>
+          <button class="btn btn-primary" onclick="openAlunoModal()">＋ Novo Aluno</button>
+        </div>
+        <div class="grid g4" style="margin-bottom:20px">
+          ${statCard("👥","Alunos ativos",ativos,"", "#d1fae5","#065f46", `${inad} inadimplente(s)`,"down")}
+          ${statCard("📅","Aulas hoje",aulasHoje,"", "#dbeafe","#1e40af", "agenda do dia","")}
+          ${statCard("💰","Receita do mês",BRL(recMes),"up", "#d1fae5","#065f46", `despesas ${BRL(despMes)}`,"")}
+          ${statCard("📊","Saldo do mês",BRL(saldo), saldo>=0?"up":"down", saldo>=0?"#d1fae5":"#fee2e2", saldo>=0?"#065f46":"#991b1b", "previsão de caixa","")}
+        </div>
+        <div class="grid g2" style="margin-bottom:20px">
+          <div class="card">
+            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📈 Receita vs Despesas (últimos registros)</div>
+            ${barChart()}
+            <div class="legend" style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:12px;">
+              <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Receitas</span>
+              <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Despesas</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🗓️ Próximas aulas</div>
+            ${prox.length ? prox.map(a => {
+              const al = DB.alunos.find(x => x.id === a.alunoId);
+              return `
+                <div class="list-item">
+                  <div class="li-ic" style="background:${al?colorFor(al.nome):'#ccc'}22;color:${al?colorFor(al.nome):'#666'}">${al?initials(al.nome):'?'}</div>
+                  <div class="li-body"><b>${al?al.nome:'—'}</b><small>${al?al.idioma+' · '+al.nivel:''}</small></div>
+                  <div class="li-right">${fmtDate(a.data)}<br><small style="font-weight:500;color:var(--muted)">${a.hora}</small></div>
+                </div>
+              `;
+            }).join("") : `<div class="empty"><div class="e-ic">📭</div>Nenhuma aula agendada</div>`}
+          </div>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">⚠️ Atenção — Inadimplência</div>
+            ${inad ? DB.alunos.filter(a=>a.status==="inadimplente").map(a => `
+              <div class="list-item">
+                <div class="li-ic" style="background:#fee2e2;color:#991b1b">!</div>
+                <div class="li-body"><b>${a.nome}</b><small>${a.idioma} · mensalidade ${BRL(a.mensalidade)}</small></div>
+                <button class="btn btn-sm btn-ghost" onclick="openAlunoModal('${a.id}')">Regularizar</button>
+              </div>
+            `).join("") : `<div class="empty"><div class="e-ic">✅</div>Todos os alunos em dia!</div>`}
+          </div>
+          <div class="card">
+            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🚀 Recursos da plataforma</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+              ${["Gestão de alunos","Agenda inteligente","Controle financeiro","Previsão de caixa","Contratos digitais","Mensagens e lembretes","Dashboard com métricas","Relatórios"].map(f =>
+                `<div style="display:flex;gap:7px;align-items:center"><span style="color:var(--green-d)">✓</span>${f}</div>`
+              ).join("")}
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:16px;justify-content:center" onclick="route('ajuda')">Conhecer todos os recursos →</button>
+          </div>
+        </div>
+      `;
+    };
+
+    function statCard(ic, lbl, val, delta, bg, fg, sub, dcls) {
+      return `<div class="card stat">
+        <div class="top"><span class="lbl">${lbl}</span><span class="ic" style="background:${bg};color:${fg}">${ic}</span></div>
+        <span class="val">${val}</span>
+        <span class="delta ${dcls}">${sub||""}</span>
+      </div>`;
+    }
+
+    function barChart() {
+      const ym = todayISO().slice(0,7);
+      const rec = {}, desp = {};
+      DB.fin.filter(f => f.data.startsWith(ym)).forEach(f => {
+        const day = +f.data.slice(8);
+        if (f.tipo === "receita") rec[day] = (rec[day]||0) + f.valor;
+        else desp[day] = (desp[day]||0) + f.valor;
+      });
+      const days = [...new Set([...Object.keys(rec), ...Object.keys(desp)])].map(Number).sort((a,b)=>a-b).slice(-7);
+      if (!days.length) return `<div class="empty" style="padding:20px"><div class="e-ic">📈</div>Sem movimentação este mês</div>`;
+      const max = Math.max(...days.map(d => Math.max(rec[d]||0, desp[d]||0)), 1);
+      return `<div style="display:flex;align-items:flex-end;gap:10px;height:160px;padding:10px 4px 0;border-bottom:1px solid var(--border)">
+        ${days.map(d => `
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+            <div style="display:flex;gap:3px;align-items:flex-end;height:100%">
+              <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--green-d));height:${(rec[d]||0)/max*100}%;transition:0.3s;" title="Receita ${BRL(rec[d]||0)}"></div>
+              <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#f87171,var(--red));height:${(desp[d]||0)/max*100}%;transition:0.3s;" title="Despesa ${BRL(desp[d]||0)}"></div>
+            </div>
+            <span style="font-size:11px;color:var(--muted)">dia ${d}</span>
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    /* ----- ALUNOS ----- */
+    let alunoSearch = "", alunoFilter = "todos";
+    PAGES.alunos = () => {
+      let list = DB.alunos.slice();
+      if (alunoFilter !== "todos") list = list.filter(a => a.status === alunoFilter);
+      if (alunoSearch) list = list.filter(a => (a.nome+a.idioma+a.email).toLowerCase().includes(alunoSearch.toLowerCase()));
+      const totalMen = DB.alunos.filter(a => a.status === "ativo").reduce((s,a) => s+a.mensalidade, 0);
+      return `
+        <div class="page-head">
+          <div><h1>Gestão de Alunos</h1><p>${DB.alunos.length} alunos cadastrados · receita potencial ${BRL(totalMen)}/mês</p></div>
+          <button class="btn btn-primary" onclick="openAlunoModal()">＋ Novo Aluno</button>
+        </div>
+        <div class="toolbar">
+          <div class="search"><input placeholder="Buscar por nome, idioma ou email..." value="${alunoSearch}" oninput="alunoSearch=this.value;route('alunos')" aria-label="Buscar aluno"></div>
+          <select class="sel" onchange="alunoFilter=this.value;route('alunos')" aria-label="Filtrar por status">
+            <option value="todos" ${alunoFilter==='todos'?'selected':''}>Todos</option>
+            <option value="ativo" ${alunoFilter==='ativo'?'selected':''}>Ativos</option>
+            <option value="inadimplente" ${alunoFilter==='inadimplente'?'selected':''}>Inadimplentes</option>
+            <option value="inativo" ${alunoFilter==='inativo'?'selected':''}>Inativos</option>
+          </select>
+        </div>
+        <div class="card"><div class="tbl-wrap"><table>
+          <thead><tr><th>Aluno</th><th>Idioma / Nível</th><th>Contato</th><th>Dia / Horário</th><th>Mensalidade</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+          ${list.length ? list.map(a => `
+            <tr>
+              <td><div style="display:flex;gap:10px;align-items:center"><span class="avatar" style="background:${colorFor(a.nome)}">${initials(a.nome)}</span><div><b>${a.nome}</b><br><small class="muted">${a.email}</small></div></div></td>
+              <td>${a.idioma}<br><small class="muted">${a.nivel}</small></td>
+              <td>${a.telefone}</td>
+              <td>${a.diaSemana}<br><small class="muted">${a.horario}</small></td>
+              <td><b>${BRL(a.mensalidade)}</b></td>
+              <td>${statusBadge(a.status)}</td>
+              <td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-ghost" onclick="openAlunoModal('${a.id}')" aria-label="Editar">✏️</button><button class="btn btn-sm btn-danger" onclick="del('alunos','${a.id}','${a.nome}')" aria-label="Excluir">🗑️</button></div></td>
+            </tr>
+          `).join("") : `<tr><td colspan="7"><div class="empty"><div class="e-ic">👥</div>Nenhum aluno encontrado</div></td></tr>`}
+          </tbody>
+        </table></div></div>
+      `;
+    };
+    function statusBadge(s) {
+      const map = {
+        ativo: '<span class="badge b-green">Ativo</span>',
+        inadimplente: '<span class="badge b-red">Inadimplente</span>',
+        inativo: '<span class="badge b-gray">Inativo</span>'
+      };
+      return map[s] || s;
+    }
+
+    function openAlunoModal(id) {
+      const a = id ? DB.alunos.find(x => x.id === id) : { nome:"", idioma:"Inglês", nivel:"Iniciante", telefone:"", email:"", mensalidade:250, diaSemana:"", horario:"", status:"ativo" };
+      openModal(id ? "Editar Aluno" : "Novo Aluno", `
+        <div class="field"><label for="f_nome">Nome completo</label><input id="f_nome" value="${a.nome}"></div>
+        <div class="field-row">
+          <div class="field"><label for="f_idioma">Idioma</label><select id="f_idioma">${["Inglês","Espanhol","Francês","Alemão","Italiano","Português","Japonês","Mandarim"].map(o => `<option ${a.idioma===o?'selected':''}>${o}</option>`).join("")}</select></div>
+          <div class="field"><label for="f_nivel">Nível</label><select id="f_nivel">${["Iniciante","Básico","Intermediário","Avançado","Fluente"].map(o => `<option ${a.nivel===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="f_tel">Telefone</label><input id="f_tel" value="${a.telefone}"></div>
+          <div class="field"><label for="f_email">Email</label><input id="f_email" value="${a.email}"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="f_dia">Dias de aula</label><input id="f_dia" value="${a.diaSemana}" placeholder="Seg/Qua"></div>
+          <div class="field"><label for="f_hor">Horário</label><input id="f_hor" value="${a.horario}" placeholder="18:00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="f_val">Mensalidade (R$)</label><input id="f_val" type="number" value="${a.mensalidade}"></div>
+          <div class="field"><label for="f_st">Status</label><select id="f_st">${["ativo","inadimplente","inativo"].map(o => `<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        </div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveAluno('${id||''}')">Salvar</button>`
+      );
+    }
+    function saveAluno(id) {
+      const data = {
+        nome: f_nome.value.trim(),
+        idioma: f_idioma.value,
+        nivel: f_nivel.value,
+        telefone: f_tel.value,
+        email: f_email.value,
+        diaSemana: f_dia.value,
+        horario: f_hor.value,
+        mensalidade: +f_val.value || 0,
+        status: f_st.value
+      };
+      if (!data.nome) { toast("Informe o nome"); return; }
+      if (id) Object.assign(DB.alunos.find(x => x.id === id), data);
+      else DB.alunos.push({ id: uid(), ...data });
+      save(); closeModal(); route("alunos"); toast("Aluno salvo");
+    }
+
+    /* ----- AGENDA ----- */
+    let calYear, calMonth;
+    PAGES.agenda = () => {
+      if (calYear == null) { const d = new Date(); calYear = d.getFullYear(); calMonth = d.getMonth(); }
+      return `
+        <div class="page-head">
+          <div><h1>Agenda Inteligente</h1><p>Organize todas as suas aulas e horários num calendário visual.</p></div>
+          <button class="btn btn-primary" onclick="openAulaModal()">＋ Nova Aula</button>
+        </div>
+        <div class="card">
+          <div class="cal-head">
+            <div class="cal-nav">
+              <button onclick="mvMonth(-1)" aria-label="Mês anterior">‹</button>
+              <span class="mname">${MONTHS[calMonth]} ${calYear}</span>
+              <button onclick="mvMonth(1)" aria-label="Próximo mês">›</button>
+            </div>
+            <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="goToday()">Hoje</button></div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="legend" style="margin-top:14px;display:flex;gap:16px;font-size:12px;color:var(--muted)">
+            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--blue);margin-right:6px;"></span>Agendada</span>
+            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Concluída</span>
+            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Cancelada</span>
+          </div>
+        </div>
+      `;
+    };
+    PAGES.agenda.after = renderCalendar;
+
+    function mvMonth(d) {
+      calMonth += d;
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      route("agenda");
+    }
+    function goToday() {
+      const d = new Date();
+      calYear = d.getFullYear(); calMonth = d.getMonth();
+      route("agenda");
+    }
+    function renderCalendar() {
+      const g = document.getElementById("calGrid");
+      if (!g) return;
+      const first = new Date(calYear, calMonth, 1).getDay();
+      const days = new Date(calYear, calMonth+1, 0).getDate();
+      const prevDays = new Date(calYear, calMonth, 0).getDate();
+      const t = todayISO();
+      let html = DOW.map(d => `<div class="cal-dow">${d}</div>`).join("");
+      for (let i = 0; i < first; i++) {
+        html += `<div class="cal-cell other"><div class="dnum">${prevDays-first+1+i}</div></div>`;
+      }
+      for (let d = 1; d <= days; d++) {
+        const iso = `${calYear}-${String(calMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+        const evs = DB.aulas.filter(a => a.data === iso).sort((a,b) => a.hora.localeCompare(b.hora));
+        html += `<div class="cal-cell ${iso===t?'today':''}" onclick="openAulaModal(null,'${iso}')">
+          <div class="dnum">${d}</div>
+          ${evs.slice(0,3).map(a => {
+            const al = alunoNome(a.alunoId);
+            const cls = a.status === "concluida" ? "done" : a.status === "cancelada" ? "cancel" : "";
+            return `<div class="ev ${cls}" title="${a.hora} ${al}" onclick="event.stopPropagation();openAulaModal('${a.id}')">${a.hora} ${al}</div>`;
+          }).join("")}
+          ${evs.length > 3 ? `<div class="ev" style="background:var(--badge-bg);color:var(--badge-text);border-left-color:var(--muted)">+${evs.length-3} mais</div>` : ""}
+        </div>`;
+      }
+      const total = first + days;
+      const trail = (7 - total % 7) % 7;
+      for (let i = 1; i <= trail; i++) {
+        html += `<div class="cal-cell other"><div class="dnum">${i}</div></div>`;
+      }
+      g.innerHTML = html;
+    }
+
+    function openAulaModal(id, presetDate) {
+      if (!DB.alunos.length) { toast("Cadastre um aluno primeiro"); route("alunos"); return; }
+      const a = id ? DB.aulas.find(x => x.id === id) : { alunoId: DB.alunos[0].id, data: presetDate||todayISO(), hora:"18:00", duracao:60, tipo:"Aula", status:"agendada" };
+      openModal(id ? "Editar Aula" : "Nova Aula", `
+        <div class="field"><label for="g_al">Aluno</label><select id="g_al">${DB.alunos.map(o => `<option value="${o.id}" ${a.alunoId===o.id?'selected':''}>${o.nome} — ${o.idioma}</option>`).join("")}</select></div>
+        <div class="field-row">
+          <div class="field"><label for="g_dt">Data</label><input id="g_dt" type="date" value="${a.data}"></div>
+          <div class="field"><label for="g_hr">Hora</label><input id="g_hr" type="time" value="${a.hora}"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="g_dur">Duração (min)</label><input id="g_dur" type="number" value="${a.duracao}"></div>
+          <div class="field"><label for="g_tp">Tipo</label><select id="g_tp">${["Aula","Reposição","Avaliação","Experimental"].map(o => `<option ${a.tipo===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        </div>
+        <div class="field"><label for="g_st">Status</label><select id="g_st">${["agendada","concluida","cancelada"].map(o => `<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>${id?`<button class="btn btn-danger" onclick="del('aulas','${id}','esta aula')">Excluir</button>`:""}<button class="btn btn-primary" onclick="saveAula('${id||''}')">Salvar</button>`
+      );
+    }
+    function saveAula(id) {
+      const data = { alunoId: g_al.value, data: g_dt.value, hora: g_hr.value, duracao: +g_dur.value||60, tipo: g_tp.value, status: g_st.value };
+      if (id) Object.assign(DB.aulas.find(x => x.id === id), data);
+      else DB.aulas.push({ id: uid(), ...data });
+      save(); closeModal(); route("agenda"); toast("Aula salva");
+    }
+
+    /* ----- FINANÇAS ----- */
+    let finTab = "movimentacoes";
+    PAGES.financas = () => {
+      const ym = todayISO().slice(0,7);
+      const rec = DB.fin.filter(f => f.tipo==="receita" && f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
+      const desp = DB.fin.filter(f => f.tipo==="despesa" && f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
+      const saldo = rec - desp;
+      const prevRec = DB.alunos.filter(a => a.status === "ativo").reduce((s,a)=>s+a.mensalidade,0);
+      const lista = DB.fin.slice().sort((a,b) => b.data.localeCompare(a.data));
+      return `
+        <div class="page-head">
+          <div><h1>Controle Financeiro</h1><p>Receitas, despesas e previsão de caixa do mês.</p></div>
+          <button class="btn btn-primary" onclick="openFinModal()">＋ Lançamento</button>
+        </div>
+        <div class="grid g4" style="margin-bottom:20px">
+          ${statCard("⬆️","Receitas",BRL(rec),"up","#d1fae5","#065f46","este mês","")}
+          ${statCard("⬇️","Despesas",BRL(desp),"","#fee2e2","#991b1b","este mês","")}
+          ${statCard("💵","Saldo",BRL(saldo), saldo>=0?"up":"down", saldo>=0?"#d1fae5":"#fee2e2", saldo>=0?"#065f46":"#991b1b","receitas − despesas","")}
+          ${statCard("🔮","Previsão de caixa",BRL(prevRec),"up","#dbeafe","#1e40af","mensalidades ativas","")}
+        </div>
+        <div class="tabs">
+          <button class="tab ${finTab==='movimentacoes'?'active':''}" onclick="finTab='movimentacoes';route('financas')">Movimentações</button>
+          <button class="tab ${finTab==='previsao'?'active':''}" onclick="finTab='previsao';route('financas')">Previsão de Caixa</button>
+        </div>
+        ${finTab === 'movimentacoes' ? `
+        <div class="card"><div class="tbl-wrap"><table>
+          <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+          <tbody>${lista.length ? lista.map(f => `
+            <tr>
+              <td>${fmtDate(f.data)}</td><td><b>${f.descricao}</b></td><td><span class="badge b-gray">${f.categoria}</span></td>
+              <td>${f.tipo==='receita'?'<span class="badge b-green">Receita</span>':'<span class="badge b-red">Despesa</span>'}</td>
+              <td style="text-align:right;font-weight:700;color:${f.tipo==='receita'?'var(--green-d)':'var(--red)'}">${f.tipo==='receita'?'+':'−'} ${BRL(f.valor)}</td>
+              <td><button class="btn btn-sm btn-danger" onclick="del('fin','${f.id}','este lançamento')" aria-label="Excluir">🗑️</button></td>
+            </tr>
+          `).join("") : `<tr><td colspan="6"><div class="empty"><div class="e-ic">💰</div>Sem lançamentos</div></td></tr>`}</tbody>
+        </table></div></div>`
+        : `
+        <div class="card">
+          <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🔮 Previsão de Caixa — próximos 30 dias</div>
+          <p class="muted" style="margin-bottom:14px;font-size:13px">Baseado nas mensalidades dos alunos ativos e nas despesas recorrentes médias.</p>
+          <div class="grid g3" style="margin-bottom:16px">
+            <div class="card" style="background:#f0fdf4"><div class="lbl muted">Entradas previstas</div><div style="font-size:22px;font-weight:800;color:var(--green-d)">${BRL(prevRec)}</div></div>
+            <div class="card" style="background:#fef2f2"><div class="lbl muted">Saídas estimadas</div><div style="font-size:22px;font-weight:800;color:var(--red)">${BRL(desp||prevRec*0.3)}</div></div>
+            <div class="card" style="background:#eff6ff"><div class="lbl muted">Saldo projetado</div><div style="font-size:22px;font-weight:800;color:var(--blue)">${BRL(prevRec-(desp||prevRec*0.3))}</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:10px;height:140px;padding:10px 4px 0;border-bottom:1px solid var(--border)">
+            ${[1,2,3,4].map(s => {
+              const ent = prevRec;
+              const sai = desp || prevRec*0.3;
+              const mx = Math.max(ent, sai);
+              return `
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+                  <div style="display:flex;gap:3px;align-items:flex-end;height:100%">
+                    <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--green-d));height:${ent/mx*100}%;transition:0.3s;"></div>
+                    <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#f87171,var(--red));height:${sai/mx*100}%;transition:0.3s;"></div>
+                  </div>
+                  <span style="font-size:11px;color:var(--muted)">sem ${s}</span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <div class="legend" style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:12px;">
+            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Entradas</span>
+            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Saídas</span>
+          </div>
+        </div>`
+      }`;
+    };
+
+    function openFinModal() {
+      openModal("Novo Lançamento", `
+        <div class="field"><label for="h_tp">Tipo</label><select id="h_tp" onchange="document.getElementById('h_cat').style.display=this.value==='receita'?'none':'block'"><option value="receita">Receita</option><option value="despesa">Despesa</option></select></div>
+        <div class="field"><label for="h_desc">Descrição</label><input id="h_desc"></div>
+        <div class="field-row">
+          <div class="field"><label for="h_val">Valor (R$)</label><input id="h_val" type="number"></div>
+          <div class="field"><label for="h_dt">Data</label><input id="h_dt" type="date" value="${todayISO()}"></div>
+        </div>
+        <div class="field" id="h_cat"><label for="h_cat">Categoria</label><select id="h_cat">${["Mensalidade","Aula extra","Software","Material","Infraestrutura","Marketing","Outros"].map(o => `<option>${o}</option>`).join("")}</select></div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveFin()">Salvar</button>`
+      );
+    }
+    function saveFin() {
+      const data = { tipo: h_tp.value, descricao: h_desc.value.trim(), valor: +h_val.value||0, data: h_dt.value, categoria: h_cat.value };
+      if (!data.descricao || !data.valor) { toast("Preencha descrição e valor"); return; }
+      DB.fin.push({ id: uid(), ...data });
+      save(); closeModal(); route("financas"); toast("Lançamento salvo");
+    }
+
+    /* ----- CONTRATOS ----- */
+    PAGES.contratos = () => {
+      return `
+        <div class="page-head">
+          <div><h1>Contratos Digitais</h1><p>Gere e gerencie contratos de prestação de serviço.</p></div>
+          <button class="btn btn-primary" onclick="openContratoModal()">＋ Novo Contrato</button>
+        </div>
+        ${DB.contratos.length ? DB.contratos.map(c => {
+          const a = DB.alunos.find(x => x.id === c.alunoId);
+          return `
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <span class="avatar" style="background:${a?colorFor(a.nome):'#ccc'}">${a?initials(a.nome):'?'}</span>
+                  <div><b style="font-size:15px">${a?a.nome:'—'}</b><br><small class="muted">Início ${fmtDate(c.dataInicio)} · ${c.vigencia} · ${BRL(c.valor)}/mês</small></div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <span class="badge ${c.status==='ativo'?'b-green':'b-gray'}">${c.status}</span>
+                  <button class="btn btn-sm btn-ghost" onclick="verContrato('${c.id}')">👁️ Ver</button>
+                  <button class="btn btn-sm btn-danger" onclick="del('contratos','${c.id}','este contrato')" aria-label="Excluir">🗑️</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("") : `<div class="card"><div class="empty"><div class="e-ic">📄</div>Nenhum contrato ainda</div></div>`}
+      `;
+    };
+
+    function openContratoModal() {
+      if (!DB.alunos.length) { toast("Cadastre um aluno primeiro"); route("alunos"); return; }
+      openModal("Novo Contrato", `
+        <div class="field"><label for="c_al">Aluno</label><select id="c_al">${DB.alunos.map(o => `<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
+        <div class="field-row">
+          <div class="field"><label for="c_dt">Data de início</label><input id="c_dt" type="date" value="${todayISO()}"></div>
+          <div class="field"><label for="c_val">Valor mensal (R$)</label><input id="c_val" type="number" value="280"></div>
+        </div>
+        <div class="field"><label for="c_vig">Vigência</label><select id="c_vig">${["3 meses","6 meses","12 meses","Indeterminado"].map(o => `<option>${o}</option>`).join("")}</select></div>
+        <div class="field"><label for="c_term">Termos / cláusulas</label><textarea id="c_term">Aula de 60 minutos. Pagamento até o dia 5 de cada mês. Cancelamento com aviso prévio de 30 dias.</textarea></div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveContrato()">Gerar Contrato</button>`
+      );
+    }
+    function saveContrato() {
+      DB.contratos.push({ id: uid(), alunoId: c_al.value, dataInicio: c_dt.value, valor: +c_val.value||0, vigencia: c_vig.value, status:"ativo", termos: c_term.value });
+      save(); closeModal(); route("contratos"); toast("Contrato gerado");
+    }
+    function verContrato(id) {
+      const c = DB.contratos.find(x => x.id === id);
+      const a = DB.alunos.find(x => x.id === c.alunoId);
+      openModal("Contrato Digital", `
+        <div class="contract-doc">
+          <h2>Contrato de Prestação de Serviços</h2><div class="sub">Ensino de Idiomas — Prof Empreendedor</div>
+          <p><b>CONTRATANTE:</b> ${a?a.nome:'—'}, ${a?a.email:''}, ${a?a.telefone:''}.</p>
+          <p><b>OBJETO:</b> Aulas particulares de ${a?a.idioma:'idioma'} (${a?a.nivel:''}), com duração de 60 minutos por encontro.</p>
+          <p><b>VALOR:</b> ${BRL(c.valor)} mensais, com vencimento todo dia 5, vigente por ${c.vigencia} a partir de ${fmtDate(c.dataInicio)}.</p>
+          <p><b>CLÁUSULAS:</b> ${c.termos}</p>
+          <p style="margin-top:24px">_________________________________<br><small class="muted">${DB.config.nomeProf} — Professor(a)</small></p>
+          <p>_________________________________<br><small class="muted">${a?a.nome:'Aluno(a)'}</small></p>
+        </div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Fechar</button><button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / PDF</button>`
+      );
+    }
+
+    /* ----- MENSAGENS ----- */
+    PAGES.mensagens = () => {
+      return `
+        <div class="page-head">
+          <div><h1>Mensagens e Lembretes</h1><p>Comunique-se com seus alunos e automatize lembretes.</p></div>
+          <button class="btn btn-primary" onclick="openMsgModal()">＋ Nova Mensagem</button>
+        </div>
+        <div class="card">
+          ${DB.msgs.length ? DB.msgs.slice().reverse().map(m => `
+            <div class="list-item">
+              <div class="li-ic" style="background:${m.enviado?'#d1fae5':'#fef3c7'};color:${m.enviado?'#065f46':'#92400e'}">${m.enviado?'✅':'⏰'}</div>
+              <div class="li-body"><b>${m.destinatario}</b><small>${m.texto}</small><small class="muted">${fmtDate(m.data)} às ${m.hora}</small></div>
+              <div style="display:flex;gap:6px">
+                ${!m.enviado ? `<button class="btn btn-sm btn-primary" onclick="enviarMsg('${m.id}')">Enviar</button>` : `<span class="badge b-green">Enviado</span>`}
+                <button class="btn btn-sm btn-danger" onclick="del('msgs','${m.id}','esta mensagem')" aria-label="Excluir">🗑️</button>
+              </div>
+            </div>
+          `).join("") : `<div class="empty"><div class="e-ic">💬</div>Nenhuma mensagem</div>`}
+        </div>
+      `;
+    };
+    function openMsgModal() {
+      openModal("Nova Mensagem / Lembrete", `
+        <div class="field"><label for="m_dest">Destinatário</label><select id="m_dest"><option>Todos os alunos</option>${DB.alunos.map(o => `<option>${o.nome}</option>`).join("")}</select></div>
+        <div class="field"><label for="m_txt">Mensagem</label><textarea id="m_txt" placeholder="Escreva seu lembrete..."></textarea></div>
+        <div class="field-row">
+          <div class="field"><label for="m_dt">Data</label><input id="m_dt" type="date" value="${todayISO()}"></div>
+          <div class="field"><label for="m_hr">Hora</label><input id="m_hr" type="time" value="09:00"></div>
+        </div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveMsg()">Agendar</button>`
+      );
+    }
+    function saveMsg() {
+      if (!m_txt.value.trim()) { toast("Escreva uma mensagem"); return; }
+      DB.msgs.push({ id: uid(), destinatario: m_dest.value, texto: m_txt.value.trim(), data: m_dt.value, hora: m_hr.value, enviado: false });
+      save(); closeModal(); route("mensagens"); toast("Lembrete agendado");
+    }
+    function enviarMsg(id) {
+      DB.msgs.find(m => m.id === id).enviado = true;
+      save(); route("mensagens"); toast("Mensagem enviada");
+    }
+
+    /* ----- TAREFAS ----- */
+    PAGES.tarefas = () => {
+      return `
+        <div class="page-head">
+          <div><h1>Tarefas de Casa</h1><p>Acompanhe as atividades entregues pelos alunos.</p></div>
+          <button class="btn btn-primary" onclick="openTarefaModal()">＋ Nova Tarefa</button>
+        </div>
+        <div class="card">
+          ${DB.tarefas.length ? DB.tarefas.map(tf => {
+            const a = DB.alunos.find(x => x.id === tf.alunoId);
+            return `
+              <div class="list-item">
+                <div class="li-ic" style="background:${tf.status==='entregue'?'#d1fae5':'#fef3c7'};color:${tf.status==='entregue'?'#065f46':'#92400e'}">${tf.status==='entregue'?'✅':'📝'}</div>
+                <div class="li-body"><b>${tf.descricao}</b><small>${a?a.nome+' · '+a.idioma:'—'} · entrega ${fmtDate(tf.dataEntrega)}</small></div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  ${tf.status !== 'entregue' ? `<button class="btn btn-sm btn-ghost" onclick="markEntregue('${tf.id}')">Marcar entregue</button>` : `<span class="badge b-green">Entregue</span>`}
+                  <button class="btn btn-sm btn-danger" onclick="del('tarefas','${tf.id}','esta tarefa')" aria-label="Excluir">🗑️</button>
+                </div>
+              </div>
+            `;
+          }).join("") : `<div class="empty"><div class="e-ic">📝</div>Nenhuma tarefa</div>`}
+        </div>
+      `;
+    };
+    function openTarefaModal() {
+      if (!DB.alunos.length) { toast("Cadastre um aluno primeiro"); route("alunos"); return; }
+      openModal("Nova Tarefa", `
+        <div class="field"><label for="t_al">Aluno</label><select id="t_al">${DB.alunos.map(o => `<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
+        <div class="field"><label for="t_desc">Descrição da tarefa</label><textarea id="t_desc"></textarea></div>
+        <div class="field"><label for="t_dt">Data de entrega</label><input id="t_dt" type="date" value="${todayISO()}"></div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveTarefa()">Salvar</button>`
+      );
+    }
+    function saveTarefa() {
+      if (!t_desc.value.trim()) { toast("Descreva a tarefa"); return; }
+      DB.tarefas.push({ id: uid(), alunoId: t_al.value, descricao: t_desc.value.trim(), dataEntrega: t_dt.value, status: "pendente" });
+      save(); closeModal(); route("tarefas"); toast("Tarefa criada");
+    }
+    function markEntregue(id) {
+      DB.tarefas.find(t => t.id === id).status = "entregue";
+      save(); route("tarefas"); toast("Marcada como entregue");
+    }
+
+    /* ----- RELATÓRIOS ----- */
+    PAGES.relatorios = () => {
+      const ym = todayISO().slice(0,7);
+      const porIdioma = {};
+      DB.alunos.forEach(a => porIdioma[a.idioma] = (porIdioma[a.idioma]||0) + 1);
+      const maxId = Math.max(...Object.values(porIdioma), 1);
+      const rec = DB.fin.filter(f => f.tipo==="receita" && f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
+      const aulasCon = DB.aulas.filter(a => a.status === "concluida").length;
+      const taxa = DB.aulas.length ? Math.round(DB.aulas.filter(a=>a.status==="concluida").length/DB.aulas.length*100) : 0;
+      return `
+        <div class="page-head">
+          <div><h1>Relatórios</h1><p>Métricas do seu negócio de idiomas.</p></div>
+          <button class="btn btn-ghost" onclick="resetDemo()">↺ Restaurar demo</button>
+        </div>
+        <div class="grid g3" style="margin-bottom:20px">
+          ${statCard("🎓","Total de alunos",DB.alunos.length,"","#d1fae5","#065f46",`${DB.alunos.filter(a=>a.status==='ativo').length} ativos`,"")}
+          ${statCard("✅","Aulas concluídas",aulasCon,"","#dbeafe","#1e40af",`taxa ${taxa}%`,"")}
+          ${statCard("💰","Receita do mês",BRL(rec),"up","#d1fae5","#065f46","acumulado","")}
+        </div>
+        <div class="grid g2">
+          <div class="card"><div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🌍 Alunos por idioma</div>
+            ${Object.entries(porIdioma).map(([k,v]) => `
+              <div style="margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${k}</span><b>${v}</b></div>
+                <div style="height:8px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:${v/maxId*100}%;background:linear-gradient(90deg,var(--green),var(--green-d));border-radius:99px"></div></div>
+              </div>
+            `).join("") || '<div class="empty">Sem dados</div>'}
+          </div>
+          <div class="card"><div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📊 Distribuição de níveis</div>
+            ${(() => {
+              const n = {};
+              DB.alunos.forEach(a => n[a.nivel] = (n[a.nivel]||0) + 1);
+              const mx = Math.max(...Object.values(n), 1);
+              return Object.entries(n).map(([k,v]) => `
+                <div style="margin-bottom:12px">
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${k}</span><b>${v}</b></div>
+                  <div style="height:8px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:${v/mx*100}%;background:linear-gradient(90deg,var(--blue),#60a5fa);border-radius:99px"></div></div>
+                </div>
+              `).join("") || '<div class="empty">Sem dados</div>';
+            })()}
+          </div>
+        </div>
+      `;
+    };
+
+    /* ----- CONFIG ----- */
+    PAGES.config = () => {
+      return `
+        <div class="page-head"><div><h1>Configurações</h1><p>Personalize sua plataforma.</p></div></div>
+        <div class="card" style="max-width:560px">
+          <div class="field"><label for="cfg_nome">Seu nome (aparece no dashboard e contratos)</label><input id="cfg_nome" value="${DB.config.nomeProf}"></div>
+          <div class="field"><label for="cfg_moeda">Moeda</label><select id="cfg_moeda">${["BRL","USD","EUR"].map(o => `<option ${DB.config.moeda===o?'selected':''}>${o}</option>`).join("")}</select></div>
+          <button class="btn btn-primary" onclick="saveConfig()">Salvar configurações</button>
+          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+          <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--red)">⚠️ Zona de perigo</div>
+          <button class="btn btn-danger" onclick="resetDemo()">Restaurar dados de demonstração</button>
+        </div>
+      `;
+    };
+    function saveConfig() {
+      DB.config.nomeProf = cfg_nome.value || "Professor(a)";
+      DB.config.moeda = cfg_moeda.value;
+      save(); toast("Configurações salvas"); route("dashboard");
+    }
+
+    /* ----- AJUDA ----- */
+    PAGES.ajuda = () => {
+      const feats = [
+        { ic:"👥", t:"Gestão completa de alunos", d:"Cadastre alunos com idioma, nível, contato, mensalidade e acompanhe status (ativo/inadimplente)." },
+        { ic:"📅", t:"Agenda inteligente", d:"Calendário visual com todas as aulas. Agende, reponha e marque conclusão em poucos cliques." },
+        { ic:"💰", t:"Controle financeiro", d:"Registre receitas e despesas, veja saldo do mês e mantenha seu caixa organizado." },
+        { ic:"🔮", t:"Previsão de caixa", d:"Projete entradas e saídas dos próximos 30 dias com base nas mensalidades ativas." },
+        { ic:"📄", t:"Contratos digitais", d:"Gere contratos de prestação de serviço prontos para imprimir ou salvar em PDF." },
+        { ic:"💬", t:"Mensagens e lembretes", d:"Envie comunicados e agende lembretes de pagamento para seus alunos." },
+        { ic:"📊", t:"Dashboard com métricas", d:"Visão geral do negócio: alunos, aulas do dia, receita, saldo e inadimplência." },
+        { ic:"📝", t:"Tarefas de casa", d:"Atribua e acompanhe as atividades entregues por cada aluno." },
+        { ic:"📈", t:"Relatórios", d:"Métricas por idioma, nível, aulas concluídas e receita acumulada." },
+        { ic:"💬", t:"Suporte por chat", d:"Equipe pronta para ajudar você a aproveitar 100% da plataforma." },
+        { ic:"🔄", t:"Atualizações gratuitas", d:"Novas funcionalidades incluídas automaticamente, sem custo adicional." },
+        { ic:"🔓", t:"Sem fidelidade", d:"Cancele quando quiser. Sem multa, sem burocracia." }
+      ];
+      return `
+        <div class="page-head"><div><h1>Central de Ajuda</h1><p>Tudo o que sua plataforma oferece — e como começar.</p></div></div>
+        <div class="grid g2" style="margin-bottom:20px">
+          <div class="price-card">
+            <div style="opacity:0.85;font-size:13px">Plano Completo</div>
+            <div class="pr"><small>R$</small> 99 <small>/mês</small></div>
+            <div style="opacity:0.85;font-size:13px;margin-top:4px">Sem fidelidade · Acesso completo</div>
+            <ul>${feats.map(f => `<li>${f.t}</li>`).join("")}</ul>
+            <button class="btn" style="background:#fff;color:#065f46;width:100%;justify-content:center;font-weight:700" onclick="toast('Começando seu teste grátis 🎉');route('dashboard')">Começar Teste Grátis →</button>
+            <div style="font-size:11px;opacity:0.75;margin-top:10px">Cobrança inicia após o período de teste.</div>
+          </div>
+          <div class="card">
+            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🚀 Como começar em 3 passos</div>
+            <div style="display:grid;gap:14px">
+              ${[
+                { n:1, t:"Cadastre seus alunos", d:"Vá em Alunos → Novo Aluno e preencha idioma, nível e mensalidade." },
+                { n:2, t:"Monte sua agenda", d:"Em Agenda → Nova Aula, escolha o aluno, data e horário." },
+                { n:3, t:"Acompanhe o financeiro", d:"Registre recebimentos em Finanças e consulte a previsão de caixa." }
+              ].map(s => `
+                <div style="display:flex;gap:12px">
+                  <div style="width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex-shrink:0">${s.n}</div>
+                  <div><b>${s.t}</b><br><small class="muted">${s.d}</small></div>
+                </div>
+              `).join("")}
+            </div>
+            <div style="margin-top:18px;padding:14px;background:#f0fdf4;border-radius:12px;font-size:13px;color:#065f46">
+              💡 <b>Dica:</b> todos os dados ficam salvos automaticamente no seu navegador (localStorage). Nada é enviado para servidores externos nesta demonstração.
+            </div>
+          </div>
+        </div>
+        <div class="sec-title" style="font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;">✨ Todos os recursos</div>
+        <div class="help-grid">${feats.map(f => `
+          <div class="feat"><div class="f-ic">${f.ic}</div><h4>${f.t}</h4><p>${f.d}</p></div>
+        `).join("")}</div>
+      `;
+    };
+
+    /* ============================================================
+       INICIALIZAÇÃO
+    ============================================================ */
+    renderNav();
+    route("dashboard");
+  </script>
 </body>
 </html>
