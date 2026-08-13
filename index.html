@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prof Empreendedor — Plataforma para Professores de Idiomas</title>
+  <!-- ===== SUPABASE CDN ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     /* ===== RESET & VARIÁVEIS ===== */
     * {
@@ -904,21 +906,42 @@
   <!-- TOAST -->
   <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
+  <!-- ============================================================ -->
+  <!-- ===== SCRIPT PRINCIPAL ===== -->
   <script>
-    /* ============================================================
-       STATE / STORAGE
-    ============================================================ */
-    const LS_KEY = "profEmpreendedor_v2";
-    const COLORS = ["#10b981","#2563eb","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4","#f97316"];
-    const colorFor = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0) % COLORS.length];
-    const initials = n => n.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
-    const BRL = v => "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
-    const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-    const todayISO = () => new Date().toISOString().slice(0,10);
-    const fmtDate = d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}/${y}`; };
-    const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-    const DOW = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+    /* ================================================================
+       CONFIGURAÇÃO
+       ================================================================ */
+    // Altere para true quando quiser usar o Supabase (banco de dados real)
+    const USE_SUPABASE = false;
 
+    // Credenciais do Supabase (válidas mesmo se USE_SUPABASE = false)
+    const SUPABASE_URL = 'https://rvgcniaowzmsudzliozf.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_N_xCS0lbbTvG7qWTpAw0ag_vlg1lbHb'; // substitua se necessário
+
+    // Inicializa o cliente Supabase (disponível globalmente)
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Teste de conexão (assíncrono, não bloqueia)
+    (async function testSupabase() {
+      try {
+        const { data, error } = await supabaseClient.from('alunos').select('id').limit(1);
+        if (error) {
+          console.warn('⚠️ Supabase conectado, mas tabela "alunos" não encontrada ou erro de permissão.', error.message);
+        } else {
+          console.log('✅ Conexão com Supabase estabelecida e tabela "alunos" acessível.');
+        }
+      } catch (e) {
+        console.warn('⚠️ Não foi possível conectar ao Supabase. Verifique sua chave e URL.', e.message);
+      }
+    })();
+
+    /* ================================================================
+       STATE / STORAGE (unificado)
+       ================================================================ */
+    const LS_KEY = "profEmpreendedor_v2";
+
+    // Função que gera os dados iniciais (demo)
     function seed() {
       const t = todayISO();
       const d = new Date();
@@ -967,17 +990,165 @@
       return { alunos, aulas, fin, contratos, msgs, tarefas, config:{ nomeProf:"Professor(a)", moeda:"BRL" } };
     }
 
-    let DB = JSON.parse(localStorage.getItem(LS_KEY)) || seed();
-    function save() { localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
-    function resetDemo() {
-      if (confirm("Restaurar dados de demonstração? Isso apaga suas alterações.")) {
-        DB = seed(); save(); route(current); toast("Dados restaurados");
+    // Carrega os dados de acordo com a flag USE_SUPABASE
+    async function loadData() {
+      if (USE_SUPABASE) {
+        // --- MODO SUPABASE ---
+        try {
+          // Busca todas as tabelas
+          const [alunosRes, aulasRes, finRes, contratosRes, msgsRes, tarefasRes, configRes] = await Promise.all([
+            supabaseClient.from('alunos').select('*'),
+            supabaseClient.from('aulas').select('*'),
+            supabaseClient.from('financas').select('*'),
+            supabaseClient.from('contratos').select('*'),
+            supabaseClient.from('mensagens').select('*'),
+            supabaseClient.from('tarefas').select('*'),
+            supabaseClient.from('config').select('*').single(),
+          ]);
+
+          if (alunosRes.error) throw alunosRes.error;
+          if (aulasRes.error) throw aulasRes.error;
+          if (finRes.error) throw finRes.error;
+          if (contratosRes.error) throw contratosRes.error;
+          if (msgsRes.error) throw msgsRes.error;
+          if (tarefasRes.error) throw tarefasRes.error;
+
+          const config = configRes.data || { nomeProf: "Professor(a)", moeda: "BRL" };
+
+          return {
+            alunos: alunosRes.data || [],
+            aulas: aulasRes.data || [],
+            fin: finRes.data || [],
+            contratos: contratosRes.data || [],
+            msgs: msgsRes.data || [],
+            tarefas: tarefasRes.data || [],
+            config: config,
+          };
+        } catch (err) {
+          console.error('Erro ao carregar dados do Supabase:', err);
+          toast('Erro ao carregar dados do banco. Usando fallback local.');
+          // Fallback para localStorage
+          return loadFromLocalStorage();
+        }
+      } else {
+        // --- MODO LOCALSTORAGE (demo) ---
+        return loadFromLocalStorage();
       }
     }
 
-    /* ============================================================
+    function loadFromLocalStorage() {
+      let data = JSON.parse(localStorage.getItem(LS_KEY));
+      if (!data) {
+        data = seed();
+        localStorage.setItem(LS_KEY, JSON.stringify(data));
+      }
+      return data;
+    }
+
+    // Salva os dados de acordo com a flag USE_SUPABASE
+    async function saveData(data) {
+      if (USE_SUPABASE) {
+        // --- MODO SUPABASE (upsert em cada tabela) ---
+        try {
+          // Para simplificar, vamos substituir todos os registros de cada tabela (clear + insert)
+          // Ou poderíamos fazer upsert baseado no campo 'id'. Vou fazer um replace simples.
+          // ATENÇÃO: Isso apaga todos os dados existentes no Supabase e insere os novos.
+          // Em produção, você deve usar upsert ou operações individuais.
+          const tables = [
+            { name: 'alunos', rows: data.alunos },
+            { name: 'aulas', rows: data.aulas },
+            { name: 'financas', rows: data.fin },
+            { name: 'contratos', rows: data.contratos },
+            { name: 'mensagens', rows: data.msgs },
+            { name: 'tarefas', rows: data.tarefas },
+            { name: 'config', rows: [data.config] },
+          ];
+
+          for (const table of tables) {
+            // Primeiro deleta tudo (cuidado em produção!)
+            const { error: delError } = await supabaseClient.from(table.name).delete().neq('id', '00000000-0000-0000-0000-000000000000');
+            if (delError && delError.code !== 'PGRST116') throw delError; // ignora "no rows"
+
+            // Insere os novos dados
+            if (table.rows.length) {
+              const { error: insError } = await supabaseClient.from(table.name).insert(table.rows);
+              if (insError) throw insError;
+            }
+          }
+          console.log('✅ Dados salvos no Supabase com sucesso.');
+          toast('Dados salvos no banco de dados.');
+        } catch (err) {
+          console.error('Erro ao salvar no Supabase:', err);
+          toast('Erro ao salvar no banco. Dados mantidos localmente.');
+          // Fallback: salvar no localStorage mesmo assim?
+          localStorage.setItem(LS_KEY, JSON.stringify(data));
+        }
+      } else {
+        // --- MODO LOCALSTORAGE ---
+        localStorage.setItem(LS_KEY, JSON.stringify(data));
+        console.log('💾 Dados salvos no localStorage.');
+      }
+    }
+
+    // Variável global que conterá os dados (será preenchida após load)
+    let DB = null;
+
+    // Função para inicializar/carregar os dados (chamada no início)
+    async function initDB() {
+      DB = await loadData();
+      // Se não houver dados (ex: Supabase vazio), usar seed como fallback
+      if (!DB || !DB.alunos || DB.alunos.length === 0) {
+        console.warn('⚠️ Dados vazios ou inexistentes. Carregando seed.');
+        DB = seed();
+        if (!USE_SUPABASE) {
+          localStorage.setItem(LS_KEY, JSON.stringify(DB));
+        } else {
+          // Tenta salvar os dados de seed no Supabase
+          await saveData(DB);
+        }
+      }
+      // Aplica a configuração de tema
+      applyTheme();
+      // Renderiza navegação e rota inicial
+      renderNav();
+      route('dashboard');
+    }
+
+    // Função de salvar (wrapper) que chama saveData com o DB atual
+    function save() {
+      saveData(DB);
+    }
+
+    // Função para restaurar dados de demo (apenas no modo localStorage)
+    function resetDemo() {
+      if (USE_SUPABASE) {
+        toast('Modo Supabase ativo. Para restaurar demo, desative USE_SUPABASE e recarregue.');
+        return;
+      }
+      if (confirm("Restaurar dados de demonstração? Isso apaga suas alterações.")) {
+        DB = seed();
+        save();
+        route(current);
+        toast("Dados restaurados");
+      }
+    }
+
+    /* ================================================================
+       DEMais FUNÇÕES AUXILIARES (mantidas)
+       ================================================================ */
+    const COLORS = ["#10b981","#2563eb","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4","#f97316"];
+    const colorFor = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0) % COLORS.length];
+    const initials = n => n.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+    const BRL = v => "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+    const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    const todayISO = () => new Date().toISOString().slice(0,10);
+    const fmtDate = d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}/${y}`; };
+    const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const DOW = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+    /* ================================================================
        NAVEGAÇÃO
-    ============================================================ */
+       ================================================================ */
     const NAV = [
       { id:"dashboard", ic:"📊", label:"Dashboard" },
       { id:"alunos", ic:"👥", label:"Alunos" },
@@ -1020,9 +1191,9 @@
       document.getElementById("sidebar").classList.toggle("open");
     }
 
-    /* ============================================================
+    /* ================================================================
        TEMA CLARO / ESCURO
-    ============================================================ */
+       ================================================================ */
     let darkMode = localStorage.getItem("darkMode") === "true";
     function applyTheme() {
       if (darkMode) document.documentElement.classList.add("dark");
@@ -1033,11 +1204,10 @@
       darkMode = !darkMode;
       applyTheme();
     }
-    applyTheme();
 
-    /* ============================================================
-       HELPERS
-    ============================================================ */
+    /* ================================================================
+       HELPERS (toast, modal, etc.)
+       ================================================================ */
     function toast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -1051,7 +1221,6 @@
       document.getElementById("modalBody").innerHTML = body;
       document.getElementById("modalFoot").innerHTML = foot || "";
       document.getElementById("overlay").classList.add("open");
-      // Foco no primeiro input
       setTimeout(() => {
         const firstInput = document.querySelector("#modalBody input, #modalBody select, #modalBody textarea");
         if (firstInput) firstInput.focus();
@@ -1078,12 +1247,12 @@
       }
     }
 
-    /* ============================================================
-       PÁGINAS
-    ============================================================ */
+    /* ================================================================
+       PÁGINAS (tudo igual, mas usando DB global)
+       ================================================================ */
     const PAGES = {};
 
-    /* ----- DASHBOARD ----- */
+    // ----- DASHBOARD -----
     PAGES.dashboard = () => {
       const ativos = DB.alunos.filter(a => a.status === "ativo").length;
       const inad = DB.alunos.filter(a => a.status === "inadimplente").length;
@@ -1186,7 +1355,7 @@
       </div>`;
     }
 
-    /* ----- ALUNOS ----- */
+    // ----- ALUNOS -----
     let alunoSearch = "", alunoFilter = "todos";
     PAGES.alunos = () => {
       let list = DB.alunos.slice();
@@ -1276,7 +1445,7 @@
       save(); closeModal(); route("alunos"); toast("Aluno salvo");
     }
 
-    /* ----- AGENDA ----- */
+    // ----- AGENDA -----
     let calYear, calMonth;
     PAGES.agenda = () => {
       if (calYear == null) { const d = new Date(); calYear = d.getFullYear(); calMonth = d.getMonth(); }
@@ -1373,7 +1542,7 @@
       save(); closeModal(); route("agenda"); toast("Aula salva");
     }
 
-    /* ----- FINANÇAS ----- */
+    // ----- FINANÇAS -----
     let finTab = "movimentacoes";
     PAGES.financas = () => {
       const ym = todayISO().slice(0,7);
@@ -1462,7 +1631,7 @@
       save(); closeModal(); route("financas"); toast("Lançamento salvo");
     }
 
-    /* ----- CONTRATOS ----- */
+    // ----- CONTRATOS -----
     PAGES.contratos = () => {
       return `
         <div class="page-head">
@@ -1526,7 +1695,7 @@
       );
     }
 
-    /* ----- MENSAGENS ----- */
+    // ----- MENSAGENS -----
     PAGES.mensagens = () => {
       return `
         <div class="page-head">
@@ -1569,7 +1738,7 @@
       save(); route("mensagens"); toast("Mensagem enviada");
     }
 
-    /* ----- TAREFAS ----- */
+    // ----- TAREFAS -----
     PAGES.tarefas = () => {
       return `
         <div class="page-head">
@@ -1613,7 +1782,7 @@
       save(); route("tarefas"); toast("Marcada como entregue");
     }
 
-    /* ----- RELATÓRIOS ----- */
+    // ----- RELATÓRIOS -----
     PAGES.relatorios = () => {
       const ym = todayISO().slice(0,7);
       const porIdioma = {};
@@ -1658,7 +1827,7 @@
       `;
     };
 
-    /* ----- CONFIG ----- */
+    // ----- CONFIG -----
     PAGES.config = () => {
       return `
         <div class="page-head"><div><h1>Configurações</h1><p>Personalize sua plataforma.</p></div></div>
@@ -1678,7 +1847,7 @@
       save(); toast("Configurações salvas"); route("dashboard");
     }
 
-    /* ----- AJUDA ----- */
+    // ----- AJUDA -----
     PAGES.ajuda = () => {
       const feats = [
         { ic:"👥", t:"Gestão completa de alunos", d:"Cadastre alunos com idioma, nível, contato, mensalidade e acompanhe status (ativo/inadimplente)." },
@@ -1731,11 +1900,13 @@
       `;
     };
 
-    /* ============================================================
+    /* ================================================================
        INICIALIZAÇÃO
-    ============================================================ */
-    renderNav();
-    route("dashboard");
+       ================================================================ */
+    // Chama a função assíncrona para carregar os dados e iniciar a aplicação
+    (async function init() {
+      await initDB();
+    })();
   </script>
 </body>
 </html>
