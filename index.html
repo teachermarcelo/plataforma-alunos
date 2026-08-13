@@ -26,8 +26,8 @@
       --amber: #f59e0b;
       --sidebar-bg: linear-gradient(145deg,#0f172a,#1e293b);
       --sidebar-text: #ecfdf5;
-      --topbar-bg: linear-gradient(90deg,#0f172a,#1e293b);
-      --topbar-text: #ffffff;
+      --topbar-bg: #ffffff;
+      --topbar-text: #0f172a;
       --input-bg: #fff;
       --input-border: #e2e8f0;
       --hover-bg: #f8fafc;
@@ -53,8 +53,9 @@
       --card-hover: #2d3748;
       --toggle-bg: #475569;
       --toggle-dot: #0f172a;
+      --topbar-bg: #1e293b;
+      --topbar-text: #f1f5f9;
       --sidebar-bg: linear-gradient(145deg,#0b1120,#1a2634);
-      --topbar-bg: linear-gradient(90deg,#0b1120,#1a2634);
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -72,17 +73,18 @@
 
     /* ===== TOPBAR ===== */
     .topbar {
-      height: 64px;
+      height: 68px;
       background: var(--topbar-bg);
       color: var(--topbar-text);
       display: flex;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 24px;
       position: sticky;
       top: 0;
       z-index: 60;
-      gap: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      border-bottom: 1px solid var(--border);
     }
     .brand {
       display: flex;
@@ -102,29 +104,55 @@
       color: #fff;
     }
     .brand small {
-      color: #94a3b8;
+      color: var(--muted);
       font-weight: 500;
-      font-size: 13px;
-      border-left: 1px solid #334155;
-      padding-left: 12px;
+      font-size: 12px;
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
       margin-left: 4px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 99px;
+      padding: 2px 10px;
+      border: none;
     }
     .topbar .spacer { flex: 1; }
     .topbar .actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
     }
-    .btn-test {
+    .topbar .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: default;
+    }
+    .topbar .profile .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
       background: var(--green);
       color: #fff;
-      padding: 8px 18px;
-      border-radius: 99px;
-      font-weight: 600;
-      font-size: 13px;
-      transition: 0.2s;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 15px;
     }
-    .btn-test:hover { background: var(--green-d); transform: scale(1.02); }
+    .topbar .profile .info {
+      line-height: 1.3;
+    }
+    .topbar .profile .info .name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .topbar .profile .info .rating {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .topbar .profile .info .rating span {
+      color: var(--amber);
+    }
     .theme-toggle {
       background: var(--toggle-bg);
       border-radius: 99px;
@@ -149,7 +177,7 @@
     .menu-toggle {
       display: none;
       background: none;
-      color: #fff;
+      color: var(--text);
       font-size: 24px;
       cursor: pointer;
       padding: 4px 8px;
@@ -158,7 +186,7 @@
     /* ===== LAYOUT ===== */
     .layout {
       display: flex;
-      min-height: calc(100vh - 64px);
+      min-height: calc(100vh - 68px);
     }
     .sidebar {
       width: 240px;
@@ -167,11 +195,11 @@
       padding: 18px 12px;
       flex-shrink: 0;
       position: sticky;
-      top: 64px;
-      height: calc(100vh - 64px);
+      top: 68px;
+      height: calc(100vh - 68px);
       overflow-y: auto;
       transition: transform 0.3s ease, background 0.25s;
-      box-shadow: 2px 0 12px rgba(0,0,0,0.06);
+      box-shadow: 2px 0 12px rgba(0,0,0,0.04);
     }
     .sidebar .nav-item {
       display: flex;
@@ -179,7 +207,7 @@
       gap: 12px;
       padding: 10px 14px;
       border-radius: 10px;
-      color: #cbd5e1;
+      color: #94a3b8;
       font-weight: 500;
       font-size: 13.5px;
       margin-bottom: 2px;
@@ -196,37 +224,32 @@
       font-size: 17px;
     }
     .sidebar .nav-item:hover {
-      background: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.08);
       color: #fff;
     }
     .sidebar .nav-item.active {
-      background: #fff;
-      color: #065f46;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .dark .sidebar .nav-item.active {
-      background: #1e293b;
-      color: #10b981;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: inset 3px 0 0 var(--green);
     }
     .sidebar .nav-sep {
       height: 1px;
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
       margin: 12px 6px;
     }
     .side-foot {
       margin-top: 18px;
-      background: rgba(0,0,0,0.20);
+      background: rgba(255,255,255,0.06);
       border-radius: 12px;
       padding: 14px;
       font-size: 12.5px;
-      color: #a7f3d0;
+      color: #94a3b8;
     }
     .side-foot b { color: #fff; }
     .side-foot .btn {
-      background: #fff;
-      color: #065f46;
+      background: var(--green);
+      color: #fff;
       width: 100%;
       padding: 8px;
       border-radius: 99px;
@@ -234,8 +257,10 @@
       font-size: 13px;
       margin-top: 8px;
       transition: 0.2s;
+      border: none;
+      cursor: pointer;
     }
-    .side-foot .btn:hover { transform: scale(1.02); }
+    .side-foot .btn:hover { background: var(--green-d); }
 
     /* ===== MAIN ===== */
     .main {
@@ -283,38 +308,39 @@
     .g2 { grid-template-columns: repeat(2, 1fr); }
 
     /* ===== STAT CARD ===== */
-    .stat {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      transition: 0.2s;
     }
-    .stat .top {
+    .stat-card:hover { box-shadow: var(--shadow-lg); }
+    .stat-card .top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
     }
-    .stat .ic {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      font-size: 20px;
-    }
-    .stat .lbl {
+    .stat-card .lbl {
       color: var(--muted);
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.3px;
     }
-    .stat .val {
+    .stat-card .val {
       font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
-    .stat .delta {
+    .stat-card .delta {
       font-size: 12.5px;
       font-weight: 600;
+      margin-top: 4px;
+    }
+    .stat-card .ic {
+      font-size: 24px;
+      opacity: 0.7;
     }
     .up { color: var(--green-d); }
     .down { color: var(--red); }
@@ -342,12 +368,6 @@
       border-color: var(--green);
     }
     .btn-primary:hover { background: var(--green-d); }
-    .btn-blue {
-      background: var(--blue);
-      color: #fff;
-      border-color: var(--blue);
-    }
-    .btn-blue:hover { background: var(--blue-d); }
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border);
@@ -361,6 +381,12 @@
     }
     .btn-danger:hover { background: #fecaca; }
     .btn-sm { padding: 5px 14px; font-size: 12px; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-outline:hover { background: var(--hover-bg); }
 
     /* ===== TABLES ===== */
     .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -392,7 +418,7 @@
       display: inline-block;
       padding: 3px 12px;
       border-radius: 99px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
     }
     .b-green { background: #d1fae5; color: #065f46; }
@@ -400,10 +426,12 @@
     .b-amber { background: #fef3c7; color: #92400e; }
     .b-red { background: #fee2e2; color: #991b1b; }
     .b-gray { background: var(--badge-bg); color: var(--badge-text); }
+    .b-purple { background: #e9d5ff; color: #6b21a8; }
     .dark .b-green { background: #065f46; color: #d1fae5; }
     .dark .b-blue { background: #1e40af; color: #dbeafe; }
     .dark .b-amber { background: #92400e; color: #fef3c7; }
     .dark .b-red { background: #991b1b; color: #fee2e2; }
+    .dark .b-purple { background: #4c1d95; color: #e9d5ff; }
 
     /* ===== AVATAR ===== */
     .avatar {
@@ -479,7 +507,7 @@
       background: var(--card);
       border-radius: 18px;
       width: 100%;
-      max-width: 540px;
+      max-width: 560px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: var(--shadow-lg);
@@ -604,7 +632,7 @@
     }
     .cal-cell {
       background: var(--card);
-      min-height: 90px;
+      min-height: 80px;
       padding: 6px 8px;
       cursor: pointer;
       transition: 0.12s;
@@ -626,30 +654,23 @@
       place-items: center;
       margin-bottom: 4px;
     }
-    .ev {
-      font-size: 10.5px;
-      background: #dbeafe;
-      color: #1e40af;
-      border-radius: 6px;
-      padding: 2px 6px;
-      margin-bottom: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      border-left: 3px solid var(--blue);
+    .ev-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin: 1px;
     }
-    .ev.done { background: #d1fae5; color: #065f46; border-left-color: var(--green); }
-    .ev.cancel { background: #fee2e2; color: #991b1b; border-left-color: var(--red); text-decoration: line-through; }
-    .dark .ev { background: #1e3a5f; color: #93c5fd; border-left-color: #3b82f6; }
-    .dark .ev.done { background: #064e3b; color: #6ee7b7; border-left-color: #10b981; }
-    .dark .ev.cancel { background: #7f1d1d; color: #fca5a5; border-left-color: #ef4444; }
+    .ev-dot.blue { background: var(--blue); }
+    .ev-dot.green { background: var(--green); }
+    .ev-dot.red { background: var(--red); }
 
     /* ===== LIST ITEMS ===== */
     .list-item {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 14px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
       border-radius: 12px;
       margin-bottom: 10px;
@@ -658,20 +679,23 @@
     }
     .list-item:hover { background: var(--hover-bg); }
     .list-item .li-ic {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 18px;
+      font-size: 16px;
       flex-shrink: 0;
+      color: #fff;
+      font-weight: 600;
     }
     .list-item .li-body { flex: 1; min-width: 0; }
     .list-item .li-body b { font-size: 14px; display: block; }
     .list-item .li-body small { color: var(--muted); font-size: 12px; display: block; }
-    .li-right { text-align: right; font-weight: 700; font-size: 13px; white-space: nowrap; }
+    .li-right { text-align: right; white-space: nowrap; }
+    .li-right .status { font-size: 11px; font-weight: 600; }
 
-    /* ===== EMPTY STATE ===== */
+    /* ===== EMPTY ===== */
     .empty {
       text-align: center;
       padding: 40px 20px;
@@ -698,121 +722,38 @@
     }
     .toast.show { transform: translateY(0); }
 
-    /* ===== HELP / FEATURES ===== */
-    .help-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 16px;
-    }
-    .feat {
-      padding: 20px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--card);
-      transition: 0.2s;
-    }
-    .feat:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
-    .feat .f-ic {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: #d1fae5;
-      color: #065f46;
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-      margin-bottom: 12px;
-    }
-    .dark .feat .f-ic { background: #064e3b; color: #6ee7b7; }
-    .feat h4 { font-size: 15px; margin-bottom: 6px; }
-    .feat p { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
-
-    /* ===== PRICE CARD ===== */
-    .price-card {
-      background: linear-gradient(135deg,#065f46,#059669);
-      color: #fff;
-      border-radius: 18px;
-      padding: 32px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(5,150,105,0.25);
-    }
-    .price-card .pr {
-      font-size: 48px;
-      font-weight: 800;
-    }
-    .price-card .pr small {
-      font-size: 20px;
-      font-weight: 600;
-      opacity: 0.85;
-    }
-    .price-card ul {
-      list-style: none;
-      text-align: left;
-      margin: 20px 0;
-      display: grid;
-      gap: 10px;
-    }
-    .price-card li {
-      display: flex;
-      gap: 10px;
-      font-size: 14px;
-      align-items: flex-start;
-    }
-    .price-card li::before {
-      content: "✓";
-      background: rgba(255,255,255,0.20);
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 12px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    /* ===== TABS ===== */
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .tab {
-      padding: 8px 18px;
-      border-radius: 99px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      font-weight: 600;
-      font-size: 13px;
-      color: var(--muted);
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .tab.active {
-      background: var(--blue);
-      color: #fff;
-      border-color: var(--blue);
-    }
-    .tab:hover:not(.active) { background: var(--hover-bg); }
-
     /* ===== CONTRACT DOC ===== */
     .contract-doc {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 28px;
+      background: #fff;
+      color: #0f172a;
+      border-radius: 12px;
+      padding: 32px;
       line-height: 1.7;
       font-size: 13.5px;
+      max-width: 700px;
+      margin: 0 auto;
     }
     .contract-doc h2 { text-align: center; margin-bottom: 4px; }
     .contract-doc .sub {
       text-align: center;
-      color: var(--muted);
+      color: #64748b;
       margin-bottom: 18px;
       font-size: 12px;
     }
     .contract-doc p { margin-bottom: 12px; }
+    .contract-doc .signature {
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .contract-doc .signature div {
+      border-top: 1px solid #0f172a;
+      padding-top: 8px;
+      min-width: 200px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
@@ -824,26 +765,25 @@
       .sidebar {
         position: fixed;
         left: 0;
-        top: 64px;
+        top: 68px;
         z-index: 40;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-        height: calc(100vh - 64px);
+        height: calc(100vh - 68px);
         width: 260px;
       }
       .sidebar.open { transform: translateX(0); }
       .main { padding: 16px; }
       .g4, .g3, .g2 { grid-template-columns: 1fr; }
       .field-row { grid-template-columns: 1fr; }
-      .cal-cell { min-height: 70px; }
-      .ev { font-size: 9px; padding: 1px 4px; }
+      .cal-cell { min-height: 60px; }
       .modal { max-width: 100%; margin: 12px; }
       .topbar .brand small { display: none; }
-      .topbar .actions .btn-test { font-size: 12px; padding: 6px 14px; }
+      .topbar .profile .info { display: none; }
     }
     @media (max-width: 480px) {
-      .stat .val { font-size: 22px; }
+      .stat-card .val { font-size: 22px; }
       .page-head h1 { font-size: 20px; }
       .toolbar .search { min-width: 140px; }
     }
@@ -854,30 +794,36 @@
   <header class="topbar">
     <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
     <div class="brand">
-      <span class="logo">🚀</span> Prof Empreendedor <small>Plataforma</small>
+      <span class="logo">🚀</span> Prof Empreendedor <small>BETA</small>
     </div>
     <div class="spacer"></div>
     <div class="actions">
+      <div class="profile">
+        <div class="avatar" id="topbarAvatar">P</div>
+        <div class="info">
+          <div class="name" id="topbarName">Professor</div>
+          <div class="rating"><span>★</span> 4,9</div>
+        </div>
+      </div>
       <div class="theme-toggle" role="button" tabindex="0" aria-label="Alternar tema" onclick="toggleTheme()">
         <span class="dot"></span>
       </div>
-      <button class="btn-test" onclick="toast('Você já está no modo demonstração completo 🙂')">Teste Grátis</button>
     </div>
   </header>
 
   <div class="layout">
     <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegação principal"></aside>
+    <aside class="sidebar" id="sidebar" role="navigation"></aside>
     <!-- MAIN -->
-    <main class="main" id="main" role="main"></main>
+    <main class="main" id="main"></main>
   </div>
 
   <!-- MODAL -->
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="overlay" id="overlay">
     <div class="modal">
       <div class="modal-head">
         <h3 id="modalTitle">Título</h3>
-        <button class="x" onclick="closeModal()" aria-label="Fechar">✕</button>
+        <button class="x" onclick="closeModal()">✕</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
       <div class="modal-foot" id="modalFoot"></div>
@@ -885,35 +831,24 @@
   </div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+  <div class="toast" id="toast"></div>
 
-  <!-- ============================================================ -->
-  <!-- ===== SCRIPT PRINCIPAL ===== -->
   <script>
     /* ================================================================
        CONFIGURAÇÃO
        ================================================================ */
-    const USE_SUPABASE = false; // Altere para true quando quiser usar o Supabase
+    const USE_SUPABASE = false; // Altere para true para usar Supabase
 
-    // Credenciais do Supabase
     const SUPABASE_URL = 'https://rvgcniaowzmsudzliozf.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_N_xCS0lbbTvG7qWTpAw0ag_vlg1lbHb';
-
-    // Inicializa o cliente Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Teste de conexão (não bloqueia)
     (async function testSupabase() {
       try {
-        const { data, error } = await supabaseClient.from('alunos').select('id').limit(1);
-        if (error) {
-          console.warn('⚠️ Supabase: tabela "alunos" não acessível. Verifique permissões.', error.message);
-        } else {
-          console.log('✅ Conexão com Supabase estabelecida.');
-        }
-      } catch (e) {
-        console.warn('⚠️ Erro ao conectar ao Supabase:', e.message);
-      }
+        const { error } = await supabaseClient.from('alunos').select('id').limit(1);
+        if (error) console.warn('⚠️ Supabase: erro ao acessar alunos', error.message);
+        else console.log('✅ Supabase conectado.');
+      } catch (e) { console.warn('⚠️ Erro Supabase:', e.message); }
     })();
 
     /* ================================================================
@@ -926,11 +861,10 @@
     };
 
     /* ================================================================
-       STATE / STORAGE (unificado)
+       STATE / STORAGE
        ================================================================ */
     const LS_KEY = "profEmpreendedor_v2";
 
-    // Dados de exemplo (seed)
     function seed() {
       const t = todayISO();
       const d = new Date();
@@ -976,8 +910,8 @@
         { id: uid('financas'), tipo:"despesa", descricao:"Internet", valor:99, data:`${ym}-10`, categoria:"Infraestrutura" },
       ];
       const contratos = [
-        { id: uid('contratos'), alunoId:alunos[0].id, dataInicio:`${ym}-01`, valor:280, vigencia:"12 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Pagamento até o dia 5." },
-        { id: uid('contratos'), alunoId:alunos[2].id, dataInicio:`${ym}-03`, valor:320, vigencia:"6 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Material incluso." },
+        { id: uid('contratos'), alunoId:alunos[0].id, dataInicio:`${ym}-01`, valor:280, aulasSemana:2, vigencia:"12 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Pagamento até o dia 5." },
+        { id: uid('contratos'), alunoId:alunos[2].id, dataInicio:`${ym}-03`, valor:320, aulasSemana:2, vigencia:"6 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Material incluso." },
       ];
       const msgs = [
         { id: uid('mensagens'), destinatario:"Todos os alunos", texto:"Lembrete: pagamento da mensalidade vence dia 5.", data:t, hora:"09:00", enviado:true },
@@ -999,7 +933,6 @@
       };
     }
 
-    // Carrega dados (Supabase ou localStorage)
     async function loadData() {
       if (USE_SUPABASE) {
         try {
@@ -1018,7 +951,6 @@
           if (contratosRes.error) throw contratosRes.error;
           if (msgsRes.error) throw msgsRes.error;
           if (tarefasRes.error) throw tarefasRes.error;
-
           const config = configRes.data || { id:'config_001', nomeProf:"Professor(a)", moeda:"BRL" };
           return {
             alunos: alunosRes.data || [],
@@ -1027,11 +959,11 @@
             contratos: contratosRes.data || [],
             msgs: msgsRes.data || [],
             tarefas: tarefasRes.data || [],
-            config: config,
+            config,
           };
         } catch (err) {
-          console.error('Erro ao carregar do Supabase:', err);
-          toast('Erro ao carregar do banco. Usando fallback local.');
+          console.error('Erro Supabase:', err);
+          toast('Erro no banco. Usando fallback local.');
           return loadFromLocalStorage();
         }
       } else {
@@ -1048,11 +980,9 @@
       return data;
     }
 
-    // Salva dados (upsert no Supabase ou localStorage)
     async function saveData(data) {
       if (USE_SUPABASE) {
         try {
-          // Usa upsert para cada tabela (insere ou atualiza baseado no id)
           const tables = [
             { name: 'alunos', rows: data.alunos },
             { name: 'aulas', rows: data.aulas },
@@ -1069,57 +999,49 @@
             }
           }
           console.log('✅ Dados salvos no Supabase.');
-          toast('Dados salvos no banco de dados.');
+          toast('Dados salvos no banco.');
         } catch (err) {
-          console.error('Erro ao salvar no Supabase:', err);
+          console.error('Erro ao salvar:', err);
           toast('Erro ao salvar no banco. Dados mantidos localmente.');
           localStorage.setItem(LS_KEY, JSON.stringify(data));
         }
       } else {
         localStorage.setItem(LS_KEY, JSON.stringify(data));
-        console.log('💾 Dados salvos no localStorage.');
       }
     }
 
-    // Variável global e funções de inicialização
     let DB = null;
 
     async function initDB() {
       DB = await loadData();
-      // Se não houver dados, carrega seed
       if (!DB || !DB.alunos || DB.alunos.length === 0) {
         console.warn('⚠️ Dados vazios. Carregando seed.');
         DB = seed();
-        if (!USE_SUPABASE) {
-          localStorage.setItem(LS_KEY, JSON.stringify(DB));
-        } else {
-          await saveData(DB);
-        }
+        if (!USE_SUPABASE) localStorage.setItem(LS_KEY, JSON.stringify(DB));
+        else await saveData(DB);
       }
       applyTheme();
       renderNav();
       route('dashboard');
     }
 
-    function save() {
-      saveData(DB);
-    }
+    function save() { saveData(DB); }
 
     function resetDemo() {
       if (USE_SUPABASE) {
-        toast('Modo Supabase ativo. Para restaurar demo, desative USE_SUPABASE e recarregue.');
+        toast('Modo Supabase ativo. Desative para restaurar demo.');
         return;
       }
-      if (confirm("Restaurar dados de demonstração? Isso apaga suas alterações.")) {
+      if (confirm('Restaurar dados de demonstração?')) {
         DB = seed();
         save();
         route(current);
-        toast("Dados restaurados");
+        toast('Dados restaurados');
       }
     }
 
     /* ================================================================
-       DEMais FUNÇÕES AUXILIARES
+       AUXILIARES
        ================================================================ */
     const COLORS = ["#10b981","#2563eb","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4","#f97316"];
     const colorFor = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0) % COLORS.length];
@@ -1130,68 +1052,6 @@
     const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
     const DOW = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
 
-    /* ================================================================
-       NAVEGAÇÃO
-       ================================================================ */
-    const NAV = [
-      { id:"dashboard", ic:"📊", label:"Dashboard" },
-      { id:"alunos", ic:"👥", label:"Alunos" },
-      { id:"agenda", ic:"📅", label:"Agenda" },
-      { id:"financas", ic:"💰", label:"Finanças" },
-      { id:"contratos", ic:"📄", label:"Contratos" },
-      { id:"mensagens", ic:"💬", label:"Mensagens" },
-      { sep:true },
-      { id:"tarefas", ic:"📝", label:"Tarefas de Casa" },
-      { id:"relatorios", ic:"📈", label:"Relatórios" },
-      { id:"config", ic:"⚙️", label:"Configurações" },
-      { id:"ajuda", ic:"❓", label:"Ajuda" },
-    ];
-    let current = "dashboard";
-
-    function renderNav() {
-      document.getElementById("sidebar").innerHTML = NAV.map(n =>
-        n.sep
-          ? `<div class="nav-sep"></div>`
-          : `<button class="nav-item ${n.id===current?'active':''}" onclick="route('${n.id}')" aria-current="${n.id===current?'page':''}">
-              <span class="ic">${n.ic}</span>${n.label}
-             </button>`
-      ).join("") +
-      `<div class="side-foot">
-        <b>Plano Completo</b><br>R$ 99/mês · sem fidelidade
-        <button class="btn" onclick="route('ajuda')">Ver recursos</button>
-       </div>`;
-    }
-
-    function route(id) {
-      current = id; renderNav();
-      document.getElementById("sidebar").classList.remove("open");
-      const fn = PAGES[id] || PAGES.dashboard;
-      document.getElementById("main").innerHTML = fn();
-      if (fn.after) fn.after();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("open");
-    }
-
-    /* ================================================================
-       TEMA CLARO / ESCURO
-       ================================================================ */
-    let darkMode = localStorage.getItem("darkMode") === "true";
-    function applyTheme() {
-      if (darkMode) document.documentElement.classList.add("dark");
-      else document.documentElement.classList.remove("dark");
-      localStorage.setItem("darkMode", darkMode);
-    }
-    function toggleTheme() {
-      darkMode = !darkMode;
-      applyTheme();
-    }
-
-    /* ================================================================
-       HELPERS
-       ================================================================ */
     function toast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -1227,91 +1087,166 @@
     function del(type, id, label) {
       if (confirm(`Excluir ${label}?`)) {
         DB[type] = DB[type].filter(x => x.id !== id);
-        save(); route(current); toast("Excluído");
+        save();
+        route(current);
+        toast("Excluído");
       }
     }
 
     /* ================================================================
-       PÁGINAS (mesmas funções, usando DB global)
+       NAVEGAÇÃO
+       ================================================================ */
+    const NAV = [
+      { id:"dashboard", ic:"📊", label:"Dashboard" },
+      { id:"agenda", ic:"📅", label:"Agenda" },
+      { id:"alunos", ic:"👥", label:"Alunos" },
+      { id:"financas", ic:"💰", label:"Finanças" },
+      { id:"contratos", ic:"📄", label:"Contratos" },
+      { id:"mensagens", ic:"💬", label:"Mensagens" },
+      { sep:true },
+      { id:"tarefas", ic:"📝", label:"Tarefas" },
+      { id:"relatorios", ic:"📈", label:"Relatórios" },
+      { id:"config", ic:"⚙️", label:"Configurações" },
+      { id:"compartilhar", ic:"🔗", label:"Compartilhar" },
+      { id:"ajuda", ic:"❓", label:"Ajuda" },
+    ];
+    let current = "dashboard";
+
+    function renderNav() {
+      document.getElementById("sidebar").innerHTML = NAV.map(n =>
+        n.sep ? `<div class="nav-sep"></div>` :
+        `<button class="nav-item ${n.id===current?'active':''}" onclick="route('${n.id}')">
+          <span class="ic">${n.ic}</span>${n.label}
+        </button>`
+      ).join("") +
+      `<div class="side-foot">
+        <b>Plano Pro</b><br>R$ 99/mês • sem fidelidade
+        <button class="btn" onclick="route('compartilhar')">Compartilhar</button>
+      </div>`;
+    }
+
+    function route(id) {
+      current = id;
+      renderNav();
+      document.getElementById("sidebar").classList.remove("open");
+      const fn = PAGES[id] || PAGES.dashboard;
+      document.getElementById("main").innerHTML = fn();
+      if (fn.after) fn.after();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Atualiza topbar
+      const nome = DB.config.nomeProf || "Professor";
+      document.getElementById("topbarName").textContent = nome;
+      document.getElementById("topbarAvatar").textContent = initials(nome);
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    /* ================================================================
+       TEMA
+       ================================================================ */
+    let darkMode = localStorage.getItem("darkMode") === "true";
+    function applyTheme() {
+      if (darkMode) document.documentElement.classList.add("dark");
+      else document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkMode", darkMode);
+    }
+    function toggleTheme() {
+      darkMode = !darkMode;
+      applyTheme();
+    }
+
+    /* ================================================================
+       PÁGINAS
        ================================================================ */
     const PAGES = {};
 
-    // ----- DASHBOARD (idêntico ao anterior, apenas referências a DB) -----
+    /* ----- DASHBOARD (estilo imagem) ----- */
     PAGES.dashboard = () => {
       const ativos = DB.alunos.filter(a => a.status === "ativo").length;
       const inad = DB.alunos.filter(a => a.status === "inadimplente").length;
       const t = todayISO();
-      const aulasHoje = DB.aulas.filter(a => a.data === t).length;
+      const aulasHoje = DB.aulas.filter(a => a.data === t && a.status !== "cancelada").length;
+      const aulasMes = DB.aulas.filter(a => a.data.startsWith(t.slice(0,7)) && a.status !== "cancelada").length;
       const recMes = DB.fin.filter(f => f.tipo==="receita" && f.data.startsWith(t.slice(0,7))).reduce((s,f)=>s+f.valor,0);
       const despMes = DB.fin.filter(f => f.tipo==="despesa" && f.data.startsWith(t.slice(0,7))).reduce((s,f)=>s+f.valor,0);
       const saldo = recMes - despMes;
+      const recPrev = DB.alunos.filter(a=>a.status==="ativo").reduce((s,a)=>s+a.mensalidade,0);
       const prox = DB.aulas.filter(a => a.data>=t && a.status!=="cancelada")
                           .sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora))
                           .slice(0,5);
 
+      const months = ["Jun","Jul","Ago","Set","Out","Nov"];
+      const monthNav = months.map(m => `<button class="btn btn-sm btn-outline" onclick="toast('Filtrando por ${m}')">${m}</button>`).join("");
+
       return `
         <div class="page-head">
-          <div><h1>Olá, ${DB.config.nomeProf} 👋</h1><p>Aqui está o resumo do seu negócio de idiomas hoje.</p></div>
-          <button class="btn btn-primary" onclick="openAlunoModal()">＋ Novo Aluno</button>
+          <div><h1>Bom dia, ${DB.config.nomeProf}! 🎉</h1><p>Aqui está o resumo do seu negócio hoje.</p></div>
+          <button class="btn btn-primary" onclick="openAlunoModal()">+ Novo Aluno</button>
         </div>
         <div class="grid g4" style="margin-bottom:20px">
-          ${statCard("👥","Alunos ativos",ativos,"", "#d1fae5","#065f46", `${inad} inadimplente(s)`,"down")}
-          ${statCard("📅","Aulas hoje",aulasHoje,"", "#dbeafe","#1e40af", "agenda do dia","")}
-          ${statCard("💰","Receita do mês",BRL(recMes),"up", "#d1fae5","#065f46", `despesas ${BRL(despMes)}`,"")}
-          ${statCard("📊","Saldo do mês",BRL(saldo), saldo>=0?"up":"down", saldo>=0?"#d1fae5":"#fee2e2", saldo>=0?"#065f46":"#991b1b", "previsão de caixa","")}
+          ${statCard("👥","Alunos ativos",ativos,`+2 este mês`,"up", "#d1fae5","#065f46")}
+          ${statCard("📅","Aulas hoje",aulasHoje,`${aulasMes} no mês`,"", "#dbeafe","#1e40af")}
+          ${statCard("💰","Receita mínima",BRL(recPrev),`+12% vs mês anterior`,"up", "#d1fae5","#065f46")}
+          ${statCard("📊","Inadimplentes",inad,`${inad} aluno(s)`,"down", "#fee2e2","#991b1b")}
         </div>
         <div class="grid g2" style="margin-bottom:20px">
           <div class="card">
-            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📈 Receita vs Despesas (últimos registros)</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <span style="font-size:15px;font-weight:700;">📈 Receita vs Despesa</span>
+              <div style="display:flex;gap:6px;">${monthNav}</div>
+            </div>
             ${barChart()}
-            <div class="legend" style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:12px;">
-              <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Receitas</span>
-              <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Despesas</span>
+            <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:12px;">
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Receita</span>
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Despesa</span>
             </div>
           </div>
           <div class="card">
-            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🗓️ Próximas aulas</div>
+            <div style="font-size:15px;font-weight:700;margin-bottom:14px;">🗓️ Próximas aulas</div>
             ${prox.length ? prox.map(a => {
               const al = DB.alunos.find(x => x.id === a.alunoId);
+              const statusMap = { confirmada:"b-green", concluida:"b-blue", cancelada:"b-red", agendada:"b-amber" };
               return `
-                <div class="list-item">
-                  <div class="li-ic" style="background:${al?colorFor(al.nome):'#ccc'}22;color:${al?colorFor(al.nome):'#666'}">${al?initials(al.nome):'?'}</div>
-                  <div class="li-body"><b>${al?al.nome:'—'}</b><small>${al?al.idioma+' · '+al.nivel:''}</small></div>
-                  <div class="li-right">${fmtDate(a.data)}<br><small style="font-weight:500;color:var(--muted)">${a.hora}</small></div>
+                <div class="list-item" onclick="openAulaModal('${a.id}')" style="cursor:pointer;">
+                  <div class="li-ic" style="background:${al?colorFor(al.nome):'#ccc'}">${al?initials(al.nome):'?'}</div>
+                  <div class="li-body"><b>${al?al.nome:'—'}</b><small>${a.hora} • Online</small></div>
+                  <div class="li-right"><span class="badge ${statusMap[a.status]||'b-gray'}">${a.status}</span></div>
                 </div>
               `;
-            }).join("") : `<div class="empty"><div class="e-ic">📭</div>Nenhuma aula agendada</div>`}
+            }).join("") : `<div class="empty">📭 Nenhuma aula agendada</div>`}
           </div>
         </div>
         <div class="grid g2">
           <div class="card">
-            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">⚠️ Atenção — Inadimplência</div>
+            <div style="font-size:15px;font-weight:700;margin-bottom:14px;">⚠️ Inadimplentes</div>
             ${inad ? DB.alunos.filter(a=>a.status==="inadimplente").map(a => `
               <div class="list-item">
                 <div class="li-ic" style="background:#fee2e2;color:#991b1b">!</div>
                 <div class="li-body"><b>${a.nome}</b><small>${a.idioma} · mensalidade ${BRL(a.mensalidade)}</small></div>
                 <button class="btn btn-sm btn-ghost" onclick="openAlunoModal('${a.id}')">Regularizar</button>
               </div>
-            `).join("") : `<div class="empty"><div class="e-ic">✅</div>Todos os alunos em dia!</div>`}
+            `).join("") : `<div class="empty">✅ Todos os alunos em dia!</div>`}
           </div>
           <div class="card">
-            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🚀 Recursos da plataforma</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
-              ${["Gestão de alunos","Agenda inteligente","Controle financeiro","Previsão de caixa","Contratos digitais","Mensagens e lembretes","Dashboard com métricas","Relatórios"].map(f =>
-                `<div style="display:flex;gap:7px;align-items:center"><span style="color:var(--green-d)">✓</span>${f}</div>`
-              ).join("")}
+            <div style="font-size:15px;font-weight:700;margin-bottom:14px;">🔗 Links rápidos</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <button class="btn btn-ghost" onclick="route('agenda')">📅 Agenda</button>
+              <button class="btn btn-ghost" onclick="route('alunos')">👥 Alunos</button>
+              <button class="btn btn-ghost" onclick="route('contratos')">📄 Contratos</button>
+              <button class="btn btn-ghost" onclick="route('relatorios')">📈 Relatórios</button>
             </div>
-            <button class="btn btn-primary" style="width:100%;margin-top:16px;justify-content:center" onclick="route('ajuda')">Conhecer todos os recursos →</button>
           </div>
         </div>
       `;
     };
 
-    function statCard(ic, lbl, val, delta, bg, fg, sub, dcls) {
-      return `<div class="card stat">
-        <div class="top"><span class="lbl">${lbl}</span><span class="ic" style="background:${bg};color:${fg}">${ic}</span></div>
-        <span class="val">${val}</span>
-        <span class="delta ${dcls}">${sub||""}</span>
+    function statCard(ic, lbl, val, sub, cls, bg, fg) {
+      return `<div class="stat-card">
+        <div class="top"><span class="lbl">${lbl}</span><span class="ic">${ic}</span></div>
+        <div class="val">${val}</div>
+        <div class="delta ${cls}">${sub||""}</div>
       </div>`;
     }
 
@@ -1324,138 +1259,44 @@
         else desp[day] = (desp[day]||0) + f.valor;
       });
       const days = [...new Set([...Object.keys(rec), ...Object.keys(desp)])].map(Number).sort((a,b)=>a-b).slice(-7);
-      if (!days.length) return `<div class="empty" style="padding:20px"><div class="e-ic">📈</div>Sem movimentação este mês</div>`;
+      if (!days.length) return `<div class="empty" style="padding:10px">Sem dados</div>`;
       const max = Math.max(...days.map(d => Math.max(rec[d]||0, desp[d]||0)), 1);
-      return `<div style="display:flex;align-items:flex-end;gap:10px;height:160px;padding:10px 4px 0;border-bottom:1px solid var(--border)">
+      return `<div style="display:flex;align-items:flex-end;gap:8px;height:140px;padding:6px 0;">
         ${days.map(d => `
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
-            <div style="display:flex;gap:3px;align-items:flex-end;height:100%">
-              <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--green-d));height:${(rec[d]||0)/max*100}%;transition:0.3s;" title="Receita ${BRL(rec[d]||0)}"></div>
-              <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#f87171,var(--red));height:${(desp[d]||0)/max*100}%;transition:0.3s;" title="Despesa ${BRL(desp[d]||0)}"></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+            <div style="display:flex;gap:2px;align-items:flex-end;height:100%">
+              <div style="width:16px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--green),var(--green-d));height:${(rec[d]||0)/max*100}%;"></div>
+              <div style="width:16px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#f87171,var(--red));height:${(desp[d]||0)/max*100}%;"></div>
             </div>
-            <span style="font-size:11px;color:var(--muted)">dia ${d}</span>
+            <span style="font-size:10px;color:var(--muted)">${d}</span>
           </div>
         `).join("")}
       </div>`;
     }
 
-    // ----- ALUNOS (com ID personalizado) -----
-    let alunoSearch = "", alunoFilter = "todos";
-    PAGES.alunos = () => {
-      let list = DB.alunos.slice();
-      if (alunoFilter !== "todos") list = list.filter(a => a.status === alunoFilter);
-      if (alunoSearch) list = list.filter(a => (a.nome+a.idioma+a.email).toLowerCase().includes(alunoSearch.toLowerCase()));
-      const totalMen = DB.alunos.filter(a => a.status === "ativo").reduce((s,a) => s+a.mensalidade, 0);
-      return `
-        <div class="page-head">
-          <div><h1>Gestão de Alunos</h1><p>${DB.alunos.length} alunos cadastrados · receita potencial ${BRL(totalMen)}/mês</p></div>
-          <button class="btn btn-primary" onclick="openAlunoModal()">＋ Novo Aluno</button>
-        </div>
-        <div class="toolbar">
-          <div class="search"><input placeholder="Buscar por nome, idioma ou email..." value="${alunoSearch}" oninput="alunoSearch=this.value;route('alunos')" aria-label="Buscar aluno"></div>
-          <select class="sel" onchange="alunoFilter=this.value;route('alunos')" aria-label="Filtrar por status">
-            <option value="todos" ${alunoFilter==='todos'?'selected':''}>Todos</option>
-            <option value="ativo" ${alunoFilter==='ativo'?'selected':''}>Ativos</option>
-            <option value="inadimplente" ${alunoFilter==='inadimplente'?'selected':''}>Inadimplentes</option>
-            <option value="inativo" ${alunoFilter==='inativo'?'selected':''}>Inativos</option>
-          </select>
-        </div>
-        <div class="card"><div class="tbl-wrap"><table>
-          <thead><tr><th>Aluno</th><th>Idioma / Nível</th><th>Contato</th><th>Dia / Horário</th><th>Mensalidade</th><th>Status</th><th></th></tr></thead>
-          <tbody>
-          ${list.length ? list.map(a => `
-            <tr>
-              <td><div style="display:flex;gap:10px;align-items:center"><span class="avatar" style="background:${colorFor(a.nome)}">${initials(a.nome)}</span><div><b>${a.nome}</b><br><small class="muted">${a.email}</small></div></div></td>
-              <td>${a.idioma}<br><small class="muted">${a.nivel}</small></td>
-              <td>${a.telefone}</td>
-              <td>${a.diaSemana}<br><small class="muted">${a.horario}</small></td>
-              <td><b>${BRL(a.mensalidade)}</b></td>
-              <td>${statusBadge(a.status)}</td>
-              <td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-ghost" onclick="openAlunoModal('${a.id}')" aria-label="Editar">✏️</button><button class="btn btn-sm btn-danger" onclick="del('alunos','${a.id}','${a.nome}')" aria-label="Excluir">🗑️</button></div></td>
-            </tr>
-          `).join("") : `<tr><td colspan="7"><div class="empty"><div class="e-ic">👥</div>Nenhum aluno encontrado</div></td></tr>`}
-          </tbody>
-        </table></div></div>
-      `;
-    };
-    function statusBadge(s) {
-      const map = {
-        ativo: '<span class="badge b-green">Ativo</span>',
-        inadimplente: '<span class="badge b-red">Inadimplente</span>',
-        inativo: '<span class="badge b-gray">Inativo</span>'
-      };
-      return map[s] || s;
-    }
-
-    function openAlunoModal(id) {
-      const a = id ? DB.alunos.find(x => x.id === id) : { nome:"", idioma:"Inglês", nivel:"Iniciante", telefone:"", email:"", mensalidade:250, diaSemana:"", horario:"", status:"ativo" };
-      openModal(id ? "Editar Aluno" : "Novo Aluno", `
-        <div class="field"><label for="f_nome">Nome completo</label><input id="f_nome" value="${a.nome}"></div>
-        <div class="field-row">
-          <div class="field"><label for="f_idioma">Idioma</label><select id="f_idioma">${["Inglês","Espanhol","Francês","Alemão","Italiano","Português","Japonês","Mandarim"].map(o => `<option ${a.idioma===o?'selected':''}>${o}</option>`).join("")}</select></div>
-          <div class="field"><label for="f_nivel">Nível</label><select id="f_nivel">${["Iniciante","Básico","Intermediário","Avançado","Fluente"].map(o => `<option ${a.nivel===o?'selected':''}>${o}</option>`).join("")}</select></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label for="f_tel">Telefone</label><input id="f_tel" value="${a.telefone}"></div>
-          <div class="field"><label for="f_email">Email</label><input id="f_email" value="${a.email}"></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label for="f_dia">Dias de aula</label><input id="f_dia" value="${a.diaSemana}" placeholder="Seg/Qua"></div>
-          <div class="field"><label for="f_hor">Horário</label><input id="f_hor" value="${a.horario}" placeholder="18:00"></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label for="f_val">Mensalidade (R$)</label><input id="f_val" type="number" value="${a.mensalidade}"></div>
-          <div class="field"><label for="f_st">Status</label><select id="f_st">${["ativo","inadimplente","inativo"].map(o => `<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
-        </div>
-      `,
-      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveAluno('${id||''}')">Salvar</button>`
-      );
-    }
-    function saveAluno(id) {
-      const data = {
-        nome: f_nome.value.trim(),
-        idioma: f_idioma.value,
-        nivel: f_nivel.value,
-        telefone: f_tel.value,
-        email: f_email.value,
-        diaSemana: f_dia.value,
-        horario: f_hor.value,
-        mensalidade: +f_val.value || 0,
-        status: f_st.value
-      };
-      if (!data.nome) { toast("Informe o nome"); return; }
-      if (id) {
-        Object.assign(DB.alunos.find(x => x.id === id), data);
-      } else {
-        data.id = uid('alunos');
-        DB.alunos.push(data);
-      }
-      save(); closeModal(); route("alunos"); toast("Aluno salvo");
-    }
-
-    // ----- AGENDA (com ID personalizado) -----
+    /* ----- AGENDA (sem "todos os eventos") ----- */
     let calYear, calMonth;
     PAGES.agenda = () => {
       if (calYear == null) { const d = new Date(); calYear = d.getFullYear(); calMonth = d.getMonth(); }
       return `
         <div class="page-head">
-          <div><h1>Agenda Inteligente</h1><p>Organize todas as suas aulas e horários num calendário visual.</p></div>
-          <button class="btn btn-primary" onclick="openAulaModal()">＋ Nova Aula</button>
+          <div><h1>Agenda</h1><p>Organize suas aulas no calendário.</p></div>
+          <button class="btn btn-primary" onclick="openAulaModal()">+ Nova Aula</button>
         </div>
         <div class="card">
           <div class="cal-head">
             <div class="cal-nav">
-              <button onclick="mvMonth(-1)" aria-label="Mês anterior">‹</button>
+              <button onclick="mvMonth(-1)">‹</button>
               <span class="mname">${MONTHS[calMonth]} ${calYear}</span>
-              <button onclick="mvMonth(1)" aria-label="Próximo mês">›</button>
+              <button onclick="mvMonth(1)">›</button>
             </div>
-            <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="goToday()">Hoje</button></div>
+            <button class="btn btn-ghost btn-sm" onclick="goToday()">Hoje</button>
           </div>
           <div class="cal-grid" id="calGrid"></div>
-          <div class="legend" style="margin-top:14px;display:flex;gap:16px;font-size:12px;color:var(--muted)">
-            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--blue);margin-right:6px;"></span>Agendada</span>
-            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Concluída</span>
-            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Cancelada</span>
+          <div style="margin-top:12px;display:flex;gap:16px;font-size:12px;color:var(--muted);">
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--blue);margin-right:4px;"></span>Agendada</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--green);margin-right:4px;"></span>Confirmada/Concluída</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);margin-right:4px;"></span>Cancelada</span>
           </div>
         </div>
       `;
@@ -1486,15 +1327,14 @@
       }
       for (let d = 1; d <= days; d++) {
         const iso = `${calYear}-${String(calMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-        const evs = DB.aulas.filter(a => a.data === iso).sort((a,b) => a.hora.localeCompare(b.hora));
+        const evs = DB.aulas.filter(a => a.data === iso);
+        const statusColor = (s) => s==="cancelada"?"red":(s==="concluida"||s==="confirmada"?"green":"blue");
         html += `<div class="cal-cell ${iso===t?'today':''}" onclick="openAulaModal(null,'${iso}')">
           <div class="dnum">${d}</div>
-          ${evs.slice(0,3).map(a => {
-            const al = alunoNome(a.alunoId);
-            const cls = a.status === "concluida" ? "done" : a.status === "cancelada" ? "cancel" : "";
-            return `<div class="ev ${cls}" title="${a.hora} ${al}" onclick="event.stopPropagation();openAulaModal('${a.id}')">${a.hora} ${al}</div>`;
-          }).join("")}
-          ${evs.length > 3 ? `<div class="ev" style="background:var(--badge-bg);color:var(--badge-text);border-left-color:var(--muted)">+${evs.length-3} mais</div>` : ""}
+          <div style="display:flex;flex-wrap:wrap;gap:1px;">
+            ${evs.slice(0,4).map(a => `<span class="ev-dot ${statusColor(a.status)}" title="${a.hora} ${alunoNome(a.alunoId)}"></span>`).join("")}
+            ${evs.length > 4 ? `<span style="font-size:9px;color:var(--muted)">+${evs.length-4}</span>` : ""}
+          </div>
         </div>`;
       }
       const total = first + days;
@@ -1509,162 +1349,195 @@
       if (!DB.alunos.length) { toast("Cadastre um aluno primeiro"); route("alunos"); return; }
       const a = id ? DB.aulas.find(x => x.id === id) : { alunoId: DB.alunos[0].id, data: presetDate||todayISO(), hora:"18:00", duracao:60, tipo:"Aula", status:"agendada" };
       openModal(id ? "Editar Aula" : "Nova Aula", `
-        <div class="field"><label for="g_al">Aluno</label><select id="g_al">${DB.alunos.map(o => `<option value="${o.id}" ${a.alunoId===o.id?'selected':''}>${o.nome} — ${o.idioma}</option>`).join("")}</select></div>
+        <div class="field"><label>Aluno</label><select id="g_al">${DB.alunos.map(o => `<option value="${o.id}" ${a.alunoId===o.id?'selected':''}>${o.nome}</option>`).join("")}</select></div>
         <div class="field-row">
-          <div class="field"><label for="g_dt">Data</label><input id="g_dt" type="date" value="${a.data}"></div>
-          <div class="field"><label for="g_hr">Hora</label><input id="g_hr" type="time" value="${a.hora}"></div>
+          <div class="field"><label>Data</label><input id="g_dt" type="date" value="${a.data}"></div>
+          <div class="field"><label>Hora</label><input id="g_hr" type="time" value="${a.hora}"></div>
         </div>
         <div class="field-row">
-          <div class="field"><label for="g_dur">Duração (min)</label><input id="g_dur" type="number" value="${a.duracao}"></div>
-          <div class="field"><label for="g_tp">Tipo</label><select id="g_tp">${["Aula","Reposição","Avaliação","Experimental"].map(o => `<option ${a.tipo===o?'selected':''}>${o}</option>`).join("")}</select></div>
+          <div class="field"><label>Duração (min)</label><input id="g_dur" type="number" value="${a.duracao}"></div>
+          <div class="field"><label>Tipo</label><select id="g_tp">${["Aula","Reposição","Avaliação","Experimental"].map(o => `<option ${a.tipo===o?'selected':''}>${o}</option>`).join("")}</select></div>
         </div>
-        <div class="field"><label for="g_st">Status</label><select id="g_st">${["agendada","concluida","cancelada"].map(o => `<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        <div class="field"><label>Status</label><select id="g_st">${["agendada","confirmada","concluida","cancelada"].map(o => `<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
       `,
       `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>${id?`<button class="btn btn-danger" onclick="del('aulas','${id}','esta aula')">Excluir</button>`:""}<button class="btn btn-primary" onclick="saveAula('${id||''}')">Salvar</button>`
       );
     }
     function saveAula(id) {
       const data = { alunoId: g_al.value, data: g_dt.value, hora: g_hr.value, duracao: +g_dur.value||60, tipo: g_tp.value, status: g_st.value };
-      if (id) {
-        Object.assign(DB.aulas.find(x => x.id === id), data);
-      } else {
-        data.id = uid('aulas');
-        DB.aulas.push(data);
-      }
+      if (id) Object.assign(DB.aulas.find(x => x.id === id), data);
+      else { data.id = uid('aulas'); DB.aulas.push(data); }
       save(); closeModal(); route("agenda"); toast("Aula salva");
     }
 
-    // ----- FINANÇAS (com ID personalizado) -----
-    let finTab = "movimentacoes";
+    /* ----- ALUNOS (sem alterações) ----- */
+    let alunoSearch = "", alunoFilter = "todos";
+    PAGES.alunos = () => {
+      let list = DB.alunos.slice();
+      if (alunoFilter !== "todos") list = list.filter(a => a.status === alunoFilter);
+      if (alunoSearch) list = list.filter(a => (a.nome+a.idioma+a.email).toLowerCase().includes(alunoSearch.toLowerCase()));
+      const totalMen = DB.alunos.filter(a => a.status === "ativo").reduce((s,a) => s+a.mensalidade, 0);
+      return `
+        <div class="page-head">
+          <div><h1>Alunos</h1><p>${DB.alunos.length} alunos · receita potencial ${BRL(totalMen)}/mês</p></div>
+          <button class="btn btn-primary" onclick="openAlunoModal()">+ Novo Aluno</button>
+        </div>
+        <div class="toolbar">
+          <div class="search"><input placeholder="Buscar..." value="${alunoSearch}" oninput="alunoSearch=this.value;route('alunos')"></div>
+          <select class="sel" onchange="alunoFilter=this.value;route('alunos')">
+            <option value="todos" ${alunoFilter==='todos'?'selected':''}>Todos</option>
+            <option value="ativo" ${alunoFilter==='ativo'?'selected':''}>Ativos</option>
+            <option value="inadimplente" ${alunoFilter==='inadimplente'?'selected':''}>Inadimplentes</option>
+            <option value="inativo" ${alunoFilter==='inativo'?'selected':''}>Inativos</option>
+          </select>
+        </div>
+        <div class="card"><div class="tbl-wrap"><table>
+          <thead><tr><th>Aluno</th><th>Idioma / Nível</th><th>Contato</th><th>Dia / Horário</th><th>Mensalidade</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+          ${list.length ? list.map(a => `
+            <tr>
+              <td><div style="display:flex;gap:10px;align-items:center"><span class="avatar" style="background:${colorFor(a.nome)}">${initials(a.nome)}</span><div><b>${a.nome}</b><br><small class="muted">${a.email}</small></div></div></td>
+              <td>${a.idioma}<br><small class="muted">${a.nivel}</small></td>
+              <td>${a.telefone}</td>
+              <td>${a.diaSemana}<br><small class="muted">${a.horario}</small></td>
+              <td><b>${BRL(a.mensalidade)}</b></td>
+              <td>${statusBadge(a.status)}</td>
+              <td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-ghost" onclick="openAlunoModal('${a.id}')">✏️</button><button class="btn btn-sm btn-danger" onclick="del('alunos','${a.id}','${a.nome}')">🗑️</button></div></td>
+            </tr>
+          `).join("") : `<tr><td colspan="7"><div class="empty">Nenhum aluno</div></td></tr>`}
+          </tbody>
+        </table></div></div>
+      `;
+    };
+    function statusBadge(s) {
+      const map = { ativo:'<span class="badge b-green">Ativo</span>', inadimplente:'<span class="badge b-red">Inadimplente</span>', inativo:'<span class="badge b-gray">Inativo</span>' };
+      return map[s] || s;
+    }
+
+    function openAlunoModal(id) {
+      const a = id ? DB.alunos.find(x => x.id === id) : { nome:"", idioma:"Inglês", nivel:"Iniciante", telefone:"", email:"", mensalidade:250, diaSemana:"", horario:"", status:"ativo" };
+      openModal(id ? "Editar Aluno" : "Novo Aluno", `
+        <div class="field"><label>Nome</label><input id="f_nome" value="${a.nome}"></div>
+        <div class="field-row">
+          <div class="field"><label>Idioma</label><select id="f_idioma">${["Inglês","Espanhol","Francês","Alemão","Italiano","Português","Japonês","Mandarim"].map(o => `<option ${a.idioma===o?'selected':''}>${o}</option>`).join("")}</select></div>
+          <div class="field"><label>Nível</label><select id="f_nivel">${["Iniciante","Básico","Intermediário","Avançado","Fluente"].map(o => `<option ${a.nivel===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Telefone</label><input id="f_tel" value="${a.telefone}"></div>
+          <div class="field"><label>Email</label><input id="f_email" value="${a.email}"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Dias</label><input id="f_dia" value="${a.diaSemana}" placeholder="Seg/Qua"></div>
+          <div class="field"><label>Horário</label><input id="f_hor" value="${a.horario}" placeholder="18:00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Mensalidade (R$)</label><input id="f_val" type="number" value="${a.mensalidade}"></div>
+          <div class="field"><label>Status</label><select id="f_st">${["ativo","inadimplente","inativo"].map(o => `<option value="${o}" ${a.status===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        </div>
+      `,
+      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveAluno('${id||''}')">Salvar</button>`
+      );
+    }
+    function saveAluno(id) {
+      const data = {
+        nome: f_nome.value.trim(),
+        idioma: f_idioma.value,
+        nivel: f_nivel.value,
+        telefone: f_tel.value,
+        email: f_email.value,
+        diaSemana: f_dia.value,
+        horario: f_hor.value,
+        mensalidade: +f_val.value||0,
+        status: f_st.value
+      };
+      if (!data.nome) { toast("Informe o nome"); return; }
+      if (id) Object.assign(DB.alunos.find(x => x.id === id), data);
+      else { data.id = uid('alunos'); DB.alunos.push(data); }
+      save(); closeModal(); route("alunos"); toast("Aluno salvo");
+    }
+
+    /* ----- FINANÇAS (somente leitura) ----- */
     PAGES.financas = () => {
       const ym = todayISO().slice(0,7);
       const rec = DB.fin.filter(f => f.tipo==="receita" && f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
       const desp = DB.fin.filter(f => f.tipo==="despesa" && f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
       const saldo = rec - desp;
-      const prevRec = DB.alunos.filter(a => a.status === "ativo").reduce((s,a)=>s+a.mensalidade,0);
       const lista = DB.fin.slice().sort((a,b) => b.data.localeCompare(a.data));
       return `
-        <div class="page-head">
-          <div><h1>Controle Financeiro</h1><p>Receitas, despesas e previsão de caixa do mês.</p></div>
-          <button class="btn btn-primary" onclick="openFinModal()">＋ Lançamento</button>
+        <div class="page-head"><div><h1>Finanças</h1><p>Controle de receitas e despesas.</p></div></div>
+        <div class="grid g3" style="margin-bottom:20px">
+          ${statCard("⬆️","Receitas",BRL(rec),"","up","#d1fae5","#065f46")}
+          ${statCard("⬇️","Despesas",BRL(desp),"","down","#fee2e2","#991b1b")}
+          ${statCard("💵","Saldo",BRL(saldo), saldo>=0?"Positivo":"Negativo", saldo>=0?"up":"down", saldo>=0?"#d1fae5":"#fee2e2", saldo>=0?"#065f46":"#991b1b")}
         </div>
-        <div class="grid g4" style="margin-bottom:20px">
-          ${statCard("⬆️","Receitas",BRL(rec),"up","#d1fae5","#065f46","este mês","")}
-          ${statCard("⬇️","Despesas",BRL(desp),"","#fee2e2","#991b1b","este mês","")}
-          ${statCard("💵","Saldo",BRL(saldo), saldo>=0?"up":"down", saldo>=0?"#d1fae5":"#fee2e2", saldo>=0?"#065f46":"#991b1b","receitas − despesas","")}
-          ${statCard("🔮","Previsão de caixa",BRL(prevRec),"up","#dbeafe","#1e40af","mensalidades ativas","")}
-        </div>
-        <div class="tabs">
-          <button class="tab ${finTab==='movimentacoes'?'active':''}" onclick="finTab='movimentacoes';route('financas')">Movimentações</button>
-          <button class="tab ${finTab==='previsao'?'active':''}" onclick="finTab='previsao';route('financas')">Previsão de Caixa</button>
-        </div>
-        ${finTab === 'movimentacoes' ? `
         <div class="card"><div class="tbl-wrap"><table>
-          <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+          <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th style="text-align:right">Valor</th></tr></thead>
           <tbody>${lista.length ? lista.map(f => `
             <tr>
               <td>${fmtDate(f.data)}</td><td><b>${f.descricao}</b></td><td><span class="badge b-gray">${f.categoria}</span></td>
               <td>${f.tipo==='receita'?'<span class="badge b-green">Receita</span>':'<span class="badge b-red">Despesa</span>'}</td>
               <td style="text-align:right;font-weight:700;color:${f.tipo==='receita'?'var(--green-d)':'var(--red)'}">${f.tipo==='receita'?'+':'−'} ${BRL(f.valor)}</td>
-              <td><button class="btn btn-sm btn-danger" onclick="del('fin','${f.id}','este lançamento')" aria-label="Excluir">🗑️</button></td>
             </tr>
-          `).join("") : `<tr><td colspan="6"><div class="empty"><div class="e-ic">💰</div>Sem lançamentos</div></td></tr>`}</tbody>
-        </table></div></div>`
-        : `
-        <div class="card">
-          <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🔮 Previsão de Caixa — próximos 30 dias</div>
-          <p class="muted" style="margin-bottom:14px;font-size:13px">Baseado nas mensalidades dos alunos ativos e nas despesas recorrentes médias.</p>
-          <div class="grid g3" style="margin-bottom:16px">
-            <div class="card" style="background:#f0fdf4"><div class="lbl muted">Entradas previstas</div><div style="font-size:22px;font-weight:800;color:var(--green-d)">${BRL(prevRec)}</div></div>
-            <div class="card" style="background:#fef2f2"><div class="lbl muted">Saídas estimadas</div><div style="font-size:22px;font-weight:800;color:var(--red)">${BRL(desp||prevRec*0.3)}</div></div>
-            <div class="card" style="background:#eff6ff"><div class="lbl muted">Saldo projetado</div><div style="font-size:22px;font-weight:800;color:var(--blue)">${BRL(prevRec-(desp||prevRec*0.3))}</div></div>
-          </div>
-          <div style="display:flex;align-items:flex-end;gap:10px;height:140px;padding:10px 4px 0;border-bottom:1px solid var(--border)">
-            ${[1,2,3,4].map(s => {
-              const ent = prevRec;
-              const sai = desp || prevRec*0.3;
-              const mx = Math.max(ent, sai);
-              return `
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
-                  <div style="display:flex;gap:3px;align-items:flex-end;height:100%">
-                    <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--green-d));height:${ent/mx*100}%;transition:0.3s;"></div>
-                    <div style="width:20px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#f87171,var(--red));height:${sai/mx*100}%;transition:0.3s;"></div>
-                  </div>
-                  <span style="font-size:11px;color:var(--muted)">sem ${s}</span>
-                </div>
-              `;
-            }).join("")}
-          </div>
-          <div class="legend" style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:12px;">
-            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:6px;"></span>Entradas</span>
-            <span><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--red);margin-right:6px;"></span>Saídas</span>
-          </div>
-        </div>`
-      }`;
+          `).join("") : `<tr><td colspan="5"><div class="empty">Sem lançamentos</div></td></tr>`}</tbody>
+        </table></div></div>
+      `;
     };
 
-    function openFinModal() {
-      openModal("Novo Lançamento", `
-        <div class="field"><label for="h_tp">Tipo</label><select id="h_tp" onchange="document.getElementById('h_cat').style.display=this.value==='receita'?'none':'block'"><option value="receita">Receita</option><option value="despesa">Despesa</option></select></div>
-        <div class="field"><label for="h_desc">Descrição</label><input id="h_desc"></div>
-        <div class="field-row">
-          <div class="field"><label for="h_val">Valor (R$)</label><input id="h_val" type="number"></div>
-          <div class="field"><label for="h_dt">Data</label><input id="h_dt" type="date" value="${todayISO()}"></div>
-        </div>
-        <div class="field" id="h_cat"><label for="h_cat">Categoria</label><select id="h_cat">${["Mensalidade","Aula extra","Software","Material","Infraestrutura","Marketing","Outros"].map(o => `<option>${o}</option>`).join("")}</select></div>
-      `,
-      `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveFin()">Salvar</button>`
-      );
-    }
-    function saveFin() {
-      const data = { tipo: h_tp.value, descricao: h_desc.value.trim(), valor: +h_val.value||0, data: h_dt.value, categoria: h_cat.value };
-      if (!data.descricao || !data.valor) { toast("Preencha descrição e valor"); return; }
-      data.id = uid('financas');
-      DB.fin.push(data);
-      save(); closeModal(); route("financas"); toast("Lançamento salvo");
-    }
-
-    // ----- CONTRATOS (com ID personalizado) -----
+    /* ----- CONTRATOS (com cálculo e PDF) ----- */
     PAGES.contratos = () => {
       return `
         <div class="page-head">
-          <div><h1>Contratos Digitais</h1><p>Gere e gerencie contratos de prestação de serviço.</p></div>
-          <button class="btn btn-primary" onclick="openContratoModal()">＋ Novo Contrato</button>
+          <div><h1>Contratos</h1><p>Gerencie contratos com seus alunos.</p></div>
+          <button class="btn btn-primary" onclick="openContratoModal()">+ Novo Contrato</button>
         </div>
         ${DB.contratos.length ? DB.contratos.map(c => {
           const a = DB.alunos.find(x => x.id === c.alunoId);
           return `
             <div class="card" style="margin-bottom:14px">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-                <div style="display:flex;gap:12px;align-items:center">
-                  <span class="avatar" style="background:${a?colorFor(a.nome):'#ccc'}">${a?initials(a.nome):'?'}</span>
-                  <div><b style="font-size:15px">${a?a.nome:'—'}</b><br><small class="muted">Início ${fmtDate(c.dataInicio)} · ${c.vigencia} · ${BRL(c.valor)}/mês</small></div>
-                </div>
+                <div><b style="font-size:15px">${a?a.nome:'—'}</b><br><small class="muted">Início ${fmtDate(c.dataInicio)} · ${c.vigencia} · ${c.aulasSemana||2} aula(s)/semana · ${BRL(c.valor)}/mês</small></div>
                 <div style="display:flex;gap:8px;align-items:center">
                   <span class="badge ${c.status==='ativo'?'b-green':'b-gray'}">${c.status}</span>
                   <button class="btn btn-sm btn-ghost" onclick="verContrato('${c.id}')">👁️ Ver</button>
-                  <button class="btn btn-sm btn-danger" onclick="del('contratos','${c.id}','este contrato')" aria-label="Excluir">🗑️</button>
+                  <button class="btn btn-sm btn-danger" onclick="del('contratos','${c.id}','este contrato')">🗑️</button>
                 </div>
               </div>
             </div>
           `;
-        }).join("") : `<div class="card"><div class="empty"><div class="e-ic">📄</div>Nenhum contrato ainda</div></div>`}
+        }).join("") : `<div class="card"><div class="empty">Nenhum contrato</div></div>`}
       `;
     };
 
     function openContratoModal() {
       if (!DB.alunos.length) { toast("Cadastre um aluno primeiro"); route("alunos"); return; }
       openModal("Novo Contrato", `
-        <div class="field"><label for="c_al">Aluno</label><select id="c_al">${DB.alunos.map(o => `<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
+        <div class="field"><label>Aluno</label><select id="c_al">${DB.alunos.map(o => `<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
         <div class="field-row">
-          <div class="field"><label for="c_dt">Data de início</label><input id="c_dt" type="date" value="${todayISO()}"></div>
-          <div class="field"><label for="c_val">Valor mensal (R$)</label><input id="c_val" type="number" value="280"></div>
+          <div class="field"><label>Data de início</label><input id="c_dt" type="date" value="${todayISO()}"></div>
+          <div class="field"><label>Aulas por semana</label><select id="c_aulas" onchange="calcContrato()">
+            ${[1,2,3,4,5].map(n => `<option value="${n}" ${n===2?'selected':''}>${n}</option>`).join("")}
+          </select></div>
         </div>
-        <div class="field"><label for="c_vig">Vigência</label><select id="c_vig">${["3 meses","6 meses","12 meses","Indeterminado"].map(o => `<option>${o}</option>`).join("")}</select></div>
-        <div class="field"><label for="c_term">Termos / cláusulas</label><textarea id="c_term">Aula de 60 minutos. Pagamento até o dia 5 de cada mês. Cancelamento com aviso prévio de 30 dias.</textarea></div>
+        <div class="field-row">
+          <div class="field"><label>Valor mensal (R$)</label><input id="c_val" type="number" value="280" readonly></div>
+          <div class="field"><label>Vigência</label><select id="c_vig">${["3 meses","6 meses","12 meses","Indeterminado"].map(o => `<option>${o}</option>`).join("")}</select></div>
+        </div>
+        <div class="field"><label>Termos adicionais</label><textarea id="c_term">Aulas de 60 minutos. Pagamento até dia 5. Reajuste anual. Férias e feriados: pagamento mantido, com compensação em aulas extras.</textarea></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;">💡 Valor base: R$ 70/aula × aulas/semana × 4 semanas.</div>
       `,
       `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveContrato()">Gerar Contrato</button>`
       );
+      setTimeout(() => {
+        const sel = document.getElementById('c_aulas');
+        if (sel) sel.onchange = calcContrato;
+        calcContrato();
+      }, 100);
+    }
+    function calcContrato() {
+      const aulas = +document.getElementById('c_aulas').value || 1;
+      const base = 70;
+      const total = aulas * base * 4;
+      document.getElementById('c_val').value = total;
     }
     function saveContrato() {
       const data = {
@@ -1672,6 +1545,7 @@
         alunoId: c_al.value,
         dataInicio: c_dt.value,
         valor: +c_val.value||0,
+        aulasSemana: +c_aulas.value||1,
         vigencia: c_vig.value,
         status:"ativo",
         termos: c_term.value
@@ -1682,27 +1556,32 @@
     function verContrato(id) {
       const c = DB.contratos.find(x => x.id === id);
       const a = DB.alunos.find(x => x.id === c.alunoId);
-      openModal("Contrato Digital", `
+      openModal("Contrato", `
         <div class="contract-doc">
-          <h2>Contrato de Prestação de Serviços</h2><div class="sub">Ensino de Idiomas — Prof Empreendedor</div>
-          <p><b>CONTRATANTE:</b> ${a?a.nome:'—'}, ${a?a.email:''}, ${a?a.telefone:''}.</p>
-          <p><b>OBJETO:</b> Aulas particulares de ${a?a.idioma:'idioma'} (${a?a.nivel:''}), com duração de 60 minutos por encontro.</p>
+          <h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2>
+          <div class="sub">Ensino de Idiomas — Prof Empreendedor</div>
+          <p><b>CONTRATANTE:</b> ${a?a.nome:'—'}, ${a?a.email:''}, ${a?a.telefone:''}</p>
+          <p><b>OBJETO:</b> Aulas particulares de ${a?a.idioma:'idioma'} (nível ${a?a.nivel:''}), com duração de 60 minutos, na frequência de ${c.aulasSemana||2} aula(s) por semana.</p>
           <p><b>VALOR:</b> ${BRL(c.valor)} mensais, com vencimento todo dia 5, vigente por ${c.vigencia} a partir de ${fmtDate(c.dataInicio)}.</p>
           <p><b>CLÁUSULAS:</b> ${c.termos}</p>
-          <p style="margin-top:24px">_________________________________<br><small class="muted">${DB.config.nomeProf} — Professor(a)</small></p>
-          <p>_________________________________<br><small class="muted">${a?a.nome:'Aluno(a)'}</small></p>
+          <p><b>Pagamento em férias e feriados:</b> O valor da mensalidade é mantido integralmente durante férias e feriados, com compensação das aulas não realizadas em datas acordadas, sem prejuízo do calendário letivo.</p>
+          <div class="signature">
+            <div>${DB.config.nomeProf} — Professor(a)</div>
+            <div>${a?a.nome:'Aluno(a)'}</div>
+          </div>
+          <p style="text-align:center;font-size:11px;color:#64748b;margin-top:24px;">Documento gerado em ${todayISO()} • Prof Empreendedor</p>
         </div>
       `,
       `<button class="btn btn-ghost" onclick="closeModal()">Fechar</button><button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / PDF</button>`
       );
     }
 
-    // ----- MENSAGENS (com ID personalizado) -----
+    /* ----- MENSAGENS (igual) ----- */
     PAGES.mensagens = () => {
       return `
         <div class="page-head">
-          <div><h1>Mensagens e Lembretes</h1><p>Comunique-se com seus alunos e automatize lembretes.</p></div>
-          <button class="btn btn-primary" onclick="openMsgModal()">＋ Nova Mensagem</button>
+          <div><h1>Mensagens</h1><p>Comunique-se com seus alunos.</p></div>
+          <button class="btn btn-primary" onclick="openMsgModal()">+ Nova Mensagem</button>
         </div>
         <div class="card">
           ${DB.msgs.length ? DB.msgs.slice().reverse().map(m => `
@@ -1711,20 +1590,20 @@
               <div class="li-body"><b>${m.destinatario}</b><small>${m.texto}</small><small class="muted">${fmtDate(m.data)} às ${m.hora}</small></div>
               <div style="display:flex;gap:6px">
                 ${!m.enviado ? `<button class="btn btn-sm btn-primary" onclick="enviarMsg('${m.id}')">Enviar</button>` : `<span class="badge b-green">Enviado</span>`}
-                <button class="btn btn-sm btn-danger" onclick="del('msgs','${m.id}','esta mensagem')" aria-label="Excluir">🗑️</button>
+                <button class="btn btn-sm btn-danger" onclick="del('msgs','${m.id}','esta mensagem')">🗑️</button>
               </div>
             </div>
-          `).join("") : `<div class="empty"><div class="e-ic">💬</div>Nenhuma mensagem</div>`}
+          `).join("") : `<div class="empty">Nenhuma mensagem</div>`}
         </div>
       `;
     };
     function openMsgModal() {
-      openModal("Nova Mensagem / Lembrete", `
-        <div class="field"><label for="m_dest">Destinatário</label><select id="m_dest"><option>Todos os alunos</option>${DB.alunos.map(o => `<option>${o.nome}</option>`).join("")}</select></div>
-        <div class="field"><label for="m_txt">Mensagem</label><textarea id="m_txt" placeholder="Escreva seu lembrete..."></textarea></div>
+      openModal("Nova Mensagem", `
+        <div class="field"><label>Destinatário</label><select id="m_dest"><option>Todos os alunos</option>${DB.alunos.map(o => `<option>${o.nome}</option>`).join("")}</select></div>
+        <div class="field"><label>Mensagem</label><textarea id="m_txt"></textarea></div>
         <div class="field-row">
-          <div class="field"><label for="m_dt">Data</label><input id="m_dt" type="date" value="${todayISO()}"></div>
-          <div class="field"><label for="m_hr">Hora</label><input id="m_hr" type="time" value="09:00"></div>
+          <div class="field"><label>Data</label><input id="m_dt" type="date" value="${todayISO()}"></div>
+          <div class="field"><label>Hora</label><input id="m_hr" type="time" value="09:00"></div>
         </div>
       `,
       `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveMsg()">Agendar</button>`
@@ -1732,64 +1611,68 @@
     }
     function saveMsg() {
       if (!m_txt.value.trim()) { toast("Escreva uma mensagem"); return; }
-      DB.msgs.push({
-        id: uid('mensagens'),
-        destinatario: m_dest.value,
-        texto: m_txt.value.trim(),
-        data: m_dt.value,
-        hora: m_hr.value,
-        enviado: false
-      });
-      save(); closeModal(); route("mensagens"); toast("Lembrete agendado");
+      DB.msgs.push({ id: uid('mensagens'), destinatario: m_dest.value, texto: m_txt.value.trim(), data: m_dt.value, hora: m_hr.value, enviado: false });
+      save(); closeModal(); route("mensagens"); toast("Mensagem agendada");
     }
     function enviarMsg(id) {
       DB.msgs.find(m => m.id === id).enviado = true;
       save(); route("mensagens"); toast("Mensagem enviada");
     }
 
-    // ----- TAREFAS (com ID personalizado) -----
+    /* ----- TAREFAS (com filtros) ----- */
+    let tarefaFilter = "todos";
     PAGES.tarefas = () => {
+      let list = DB.tarefas.slice();
+      if (tarefaFilter !== "todos") list = list.filter(t => t.status === tarefaFilter);
       return `
         <div class="page-head">
-          <div><h1>Tarefas de Casa</h1><p>Acompanhe as atividades entregues pelos alunos.</p></div>
-          <button class="btn btn-primary" onclick="openTarefaModal()">＋ Nova Tarefa</button>
+          <div><h1>Tarefas</h1><p>Acompanhe as atividades dos alunos.</p></div>
+          <button class="btn btn-primary" onclick="openTarefaModal()">+ Nova Tarefa</button>
+        </div>
+        <div class="toolbar">
+          <select class="sel" onchange="tarefaFilter=this.value;route('tarefas')">
+            <option value="todos" ${tarefaFilter==='todos'?'selected':''}>Todos</option>
+            <option value="pendente" ${tarefaFilter==='pendente'?'selected':''}>Pendente</option>
+            <option value="em andamento" ${tarefaFilter==='em andamento'?'selected':''}>Em andamento</option>
+            <option value="entregue" ${tarefaFilter==='entregue'?'selected':''}>Entregue</option>
+            <option value="atrasado" ${tarefaFilter==='atrasado'?'selected':''}>Atrasado</option>
+          </select>
         </div>
         <div class="card">
-          ${DB.tarefas.length ? DB.tarefas.map(tf => {
+          ${list.length ? list.map(tf => {
             const a = DB.alunos.find(x => x.id === tf.alunoId);
+            const statusMap = { pendente:'b-amber', 'em andamento':'b-blue', entregue:'b-green', atrasado:'b-red' };
             return `
               <div class="list-item">
-                <div class="li-ic" style="background:${tf.status==='entregue'?'#d1fae5':'#fef3c7'};color:${tf.status==='entregue'?'#065f46':'#92400e'}">${tf.status==='entregue'?'✅':'📝'}</div>
-                <div class="li-body"><b>${tf.descricao}</b><small>${a?a.nome+' · '+a.idioma:'—'} · entrega ${fmtDate(tf.dataEntrega)}</small></div>
+                <div class="li-ic" style="background:${a?colorFor(a.nome):'#ccc'}">${a?initials(a.nome):'?'}</div>
+                <div class="li-body"><b>${tf.descricao}</b><small>${a?a.nome:'—'} · entrega ${fmtDate(tf.dataEntrega)}</small></div>
                 <div style="display:flex;gap:6px;align-items:center">
-                  ${tf.status !== 'entregue' ? `<button class="btn btn-sm btn-ghost" onclick="markEntregue('${tf.id}')">Marcar entregue</button>` : `<span class="badge b-green">Entregue</span>`}
-                  <button class="btn btn-sm btn-danger" onclick="del('tarefas','${tf.id}','esta tarefa')" aria-label="Excluir">🗑️</button>
+                  <span class="badge ${statusMap[tf.status]||'b-gray'}">${tf.status}</span>
+                  ${tf.status !== 'entregue' ? `<button class="btn btn-sm btn-ghost" onclick="markEntregue('${tf.id}')">✓</button>` : ""}
+                  <button class="btn btn-sm btn-danger" onclick="del('tarefas','${tf.id}','esta tarefa')">🗑️</button>
                 </div>
               </div>
             `;
-          }).join("") : `<div class="empty"><div class="e-ic">📝</div>Nenhuma tarefa</div>`}
+          }).join("") : `<div class="empty">Nenhuma tarefa</div>`}
         </div>
       `;
     };
     function openTarefaModal() {
       if (!DB.alunos.length) { toast("Cadastre um aluno primeiro"); route("alunos"); return; }
       openModal("Nova Tarefa", `
-        <div class="field"><label for="t_al">Aluno</label><select id="t_al">${DB.alunos.map(o => `<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
-        <div class="field"><label for="t_desc">Descrição da tarefa</label><textarea id="t_desc"></textarea></div>
-        <div class="field"><label for="t_dt">Data de entrega</label><input id="t_dt" type="date" value="${todayISO()}"></div>
+        <div class="field"><label>Aluno</label><select id="t_al">${DB.alunos.map(o => `<option value="${o.id}">${o.nome}</option>`).join("")}</select></div>
+        <div class="field"><label>Descrição</label><textarea id="t_desc"></textarea></div>
+        <div class="field-row">
+          <div class="field"><label>Data entrega</label><input id="t_dt" type="date" value="${todayISO()}"></div>
+          <div class="field"><label>Status</label><select id="t_st">${["pendente","em andamento","entregue","atrasado"].map(o => `<option>${o}</option>`).join("")}</select></div>
+        </div>
       `,
       `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveTarefa()">Salvar</button>`
       );
     }
     function saveTarefa() {
       if (!t_desc.value.trim()) { toast("Descreva a tarefa"); return; }
-      DB.tarefas.push({
-        id: uid('tarefas'),
-        alunoId: t_al.value,
-        descricao: t_desc.value.trim(),
-        dataEntrega: t_dt.value,
-        status: "pendente"
-      });
+      DB.tarefas.push({ id: uid('tarefas'), alunoId: t_al.value, descricao: t_desc.value.trim(), dataEntrega: t_dt.value, status: t_st.value });
       save(); closeModal(); route("tarefas"); toast("Tarefa criada");
     }
     function markEntregue(id) {
@@ -1797,121 +1680,122 @@
       save(); route("tarefas"); toast("Marcada como entregue");
     }
 
-    // ----- RELATÓRIOS (sem alterações) -----
+    /* ----- RELATÓRIOS (completo + por aluno) ----- */
+    let relAlunoFilter = "todos";
     PAGES.relatorios = () => {
       const ym = todayISO().slice(0,7);
       const porIdioma = {};
-      DB.alunos.forEach(a => porIdioma[a.idioma] = (porIdioma[a.idioma]||0) + 1);
-      const maxId = Math.max(...Object.values(porIdioma), 1);
+      DB.alunos.forEach(a => porIdioma[a.idioma] = (porIdioma[a.idioma]||0)+1);
+      const maxId = Math.max(...Object.values(porIdioma),1);
       const rec = DB.fin.filter(f => f.tipo==="receita" && f.data.startsWith(ym)).reduce((s,f)=>s+f.valor,0);
       const aulasCon = DB.aulas.filter(a => a.status === "concluida").length;
-      const taxa = DB.aulas.length ? Math.round(DB.aulas.filter(a=>a.status==="concluida").length/DB.aulas.length*100) : 0;
-      return `
-        <div class="page-head">
-          <div><h1>Relatórios</h1><p>Métricas do seu negócio de idiomas.</p></div>
-          <button class="btn btn-ghost" onclick="resetDemo()">↺ Restaurar demo</button>
-        </div>
-        <div class="grid g3" style="margin-bottom:20px">
-          ${statCard("🎓","Total de alunos",DB.alunos.length,"","#d1fae5","#065f46",`${DB.alunos.filter(a=>a.status==='ativo').length} ativos`,"")}
-          ${statCard("✅","Aulas concluídas",aulasCon,"","#dbeafe","#1e40af",`taxa ${taxa}%`,"")}
-          ${statCard("💰","Receita do mês",BRL(rec),"up","#d1fae5","#065f46","acumulado","")}
-        </div>
-        <div class="grid g2">
-          <div class="card"><div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🌍 Alunos por idioma</div>
-            ${Object.entries(porIdioma).map(([k,v]) => `
-              <div style="margin-bottom:12px">
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${k}</span><b>${v}</b></div>
-                <div style="height:8px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:${v/maxId*100}%;background:linear-gradient(90deg,var(--green),var(--green-d));border-radius:99px"></div></div>
+      const taxa = DB.aulas.length ? Math.round(DB.aulas.filter(a=>a.status==="concluida"||a.status==="confirmada").length/DB.aulas.length*100) : 0;
+
+      const alunoOptions = DB.alunos.map(a => `<option value="${a.id}">${a.nome}</option>`).join("");
+      let alunoData = "";
+      if (relAlunoFilter !== "todos") {
+        const al = DB.alunos.find(a => a.id === relAlunoFilter);
+        if (al) {
+          const aulasAluno = DB.aulas.filter(a => a.alunoId === al.id);
+          const pagamentos = DB.fin.filter(f => f.alunoId === al.id && f.tipo==="receita");
+          const totalAulas = aulasAluno.length;
+          const concluidas = aulasAluno.filter(a => a.status==="concluida"||a.status==="confirmada").length;
+          const faltas = aulasAluno.filter(a => a.status==="cancelada").length;
+          alunoData = `
+            <div style="margin-top:16px;padding:16px;background:var(--hover-bg);border-radius:12px;">
+              <h4 style="margin-bottom:10px;">📘 ${al.nome}</h4>
+              <div class="grid g3">
+                <div><b>Total aulas</b> ${totalAulas}</div>
+                <div><b>Concluídas</b> ${concluidas}</div>
+                <div><b>Faltas</b> ${faltas}</div>
+                <div><b>Mensalidade</b> ${BRL(al.mensalidade)}</div>
+                <div><b>Pagamentos</b> ${pagamentos.length}</div>
+                <div><b>Total recebido</b> ${BRL(pagamentos.reduce((s,f)=>s+f.valor,0))}</div>
               </div>
-            `).join("") || '<div class="empty">Sem dados</div>'}
+            </div>
+          `;
+        }
+      }
+
+      return `
+        <div class="page-head"><div><h1>Relatórios</h1><p>Métricas do seu negócio.</p></div></div>
+        <div class="grid g3" style="margin-bottom:20px">
+          ${statCard("🎓","Alunos",DB.alunos.length,`${DB.alunos.filter(a=>a.status==='ativo').length} ativos`,"","#d1fae5","#065f46")}
+          ${statCard("✅","Aulas concluídas",aulasCon,`taxa ${taxa}%`,"","#dbeafe","#1e40af")}
+          ${statCard("💰","Receita mês",BRL(rec),"","up","#d1fae5","#065f46")}
+        </div>
+        <div class="grid g2" style="margin-bottom:20px">
+          <div class="card"><div style="font-size:15px;font-weight:700;margin-bottom:14px;">🌍 Alunos por idioma</div>
+            ${Object.entries(porIdioma).map(([k,v]) => `
+              <div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:13px;"><span>${k}</span><b>${v}</b></div>
+              <div style="height:6px;background:var(--border);border-radius:99px;"><div style="height:100%;width:${v/maxId*100}%;background:linear-gradient(90deg,var(--green),var(--green-d));border-radius:99px;"></div></div></div>
+            `).join("")}
           </div>
-          <div class="card"><div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📊 Distribuição de níveis</div>
-            ${(() => {
-              const n = {};
-              DB.alunos.forEach(a => n[a.nivel] = (n[a.nivel]||0) + 1);
-              const mx = Math.max(...Object.values(n), 1);
-              return Object.entries(n).map(([k,v]) => `
-                <div style="margin-bottom:12px">
-                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${k}</span><b>${v}</b></div>
-                  <div style="height:8px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:${v/mx*100}%;background:linear-gradient(90deg,var(--blue),#60a5fa);border-radius:99px"></div></div>
-                </div>
-              `).join("") || '<div class="empty">Sem dados</div>';
-            })()}
+          <div class="card"><div style="font-size:15px;font-weight:700;margin-bottom:14px;">📊 Níveis</div>
+            ${(() => { const n={}; DB.alunos.forEach(a=>n[a.nivel]=(n[a.nivel]||0)+1); const mx=Math.max(...Object.values(n),1); return Object.entries(n).map(([k,v])=>`<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:13px;"><span>${k}</span><b>${v}</b></div><div style="height:6px;background:var(--border);border-radius:99px;"><div style="height:100%;width:${v/mx*100}%;background:linear-gradient(90deg,var(--blue),#60a5fa);border-radius:99px;"></div></div></div>`).join("") })()}
           </div>
+        </div>
+        <div class="card">
+          <div style="font-size:15px;font-weight:700;margin-bottom:14px;">📋 Relatório por aluno</div>
+          <div class="toolbar">
+            <select class="sel" onchange="relAlunoFilter=this.value;route('relatorios')">
+              <option value="todos" ${relAlunoFilter==='todos'?'selected':''}>Selecione um aluno</option>
+              ${alunoOptions}
+            </select>
+          </div>
+          ${alunoData || `<div class="empty">Escolha um aluno para ver o relatório individual.</div>`}
         </div>
       `;
     };
 
-    // ----- CONFIG (com ID fixo) -----
+    /* ----- CONFIG ----- */
     PAGES.config = () => {
       return `
-        <div class="page-head"><div><h1>Configurações</h1><p>Personalize sua plataforma.</p></div></div>
-        <div class="card" style="max-width:560px">
-          <div class="field"><label for="cfg_nome">Seu nome (aparece no dashboard e contratos)</label><input id="cfg_nome" value="${DB.config.nomeProf}"></div>
-          <div class="field"><label for="cfg_moeda">Moeda</label><select id="cfg_moeda">${["BRL","USD","EUR"].map(o => `<option ${DB.config.moeda===o?'selected':''}>${o}</option>`).join("")}</select></div>
-          <button class="btn btn-primary" onclick="saveConfig()">Salvar configurações</button>
-          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
-          <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--red)">⚠️ Zona de perigo</div>
-          <button class="btn btn-danger" onclick="resetDemo()">Restaurar dados de demonstração</button>
+        <div class="page-head"><div><h1>Configurações</h1></div></div>
+        <div class="card" style="max-width:560px;">
+          <div class="field"><label>Seu nome</label><input id="cfg_nome" value="${DB.config.nomeProf}"></div>
+          <div class="field"><label>Idioma que ensina</label><input id="cfg_idioma" value="${DB.config.idioma||'Inglês'}"></div>
+          <div class="field"><label>Moeda</label><select id="cfg_moeda">${["BRL","USD","EUR"].map(o => `<option ${DB.config.moeda===o?'selected':''}>${o}</option>`).join("")}</select></div>
+          <button class="btn btn-primary" onclick="saveConfig()">Salvar</button>
+          <hr style="margin:24px 0;border-top:1px solid var(--border);">
+          <button class="btn btn-danger" onclick="resetDemo()">Restaurar demo</button>
         </div>
       `;
     };
     function saveConfig() {
-      DB.config.nomeProf = cfg_nome.value || "Professor(a)";
+      DB.config.nomeProf = cfg_nome.value || "Professor";
+      DB.config.idioma = cfg_idioma.value || "Inglês";
       DB.config.moeda = cfg_moeda.value;
       save(); toast("Configurações salvas"); route("dashboard");
     }
 
-    // ----- AJUDA (sem alterações) -----
-    PAGES.ajuda = () => {
-      const feats = [
-        { ic:"👥", t:"Gestão completa de alunos", d:"Cadastre alunos com idioma, nível, contato, mensalidade e acompanhe status (ativo/inadimplente)." },
-        { ic:"📅", t:"Agenda inteligente", d:"Calendário visual com todas as aulas. Agende, reponha e marque conclusão em poucos cliques." },
-        { ic:"💰", t:"Controle financeiro", d:"Registre receitas e despesas, veja saldo do mês e mantenha seu caixa organizado." },
-        { ic:"🔮", t:"Previsão de caixa", d:"Projete entradas e saídas dos próximos 30 dias com base nas mensalidades ativas." },
-        { ic:"📄", t:"Contratos digitais", d:"Gere contratos de prestação de serviço prontos para imprimir ou salvar em PDF." },
-        { ic:"💬", t:"Mensagens e lembretes", d:"Envie comunicados e agende lembretes de pagamento para seus alunos." },
-        { ic:"📊", t:"Dashboard com métricas", d:"Visão geral do negócio: alunos, aulas do dia, receita, saldo e inadimplência." },
-        { ic:"📝", t:"Tarefas de casa", d:"Atribua e acompanhe as atividades entregues por cada aluno." },
-        { ic:"📈", t:"Relatórios", d:"Métricas por idioma, nível, aulas concluídas e receita acumulada." },
-        { ic:"💬", t:"Suporte por chat", d:"Equipe pronta para ajudar você a aproveitar 100% da plataforma." },
-        { ic:"🔄", t:"Atualizações gratuitas", d:"Novas funcionalidades incluídas automaticamente, sem custo adicional." },
-        { ic:"🔓", t:"Sem fidelidade", d:"Cancele quando quiser. Sem multa, sem burocracia." }
-      ];
+    /* ----- COMPARTILHAR (placeholder) ----- */
+    PAGES.compartilhar = () => {
       return `
-        <div class="page-head"><div><h1>Central de Ajuda</h1><p>Tudo o que sua plataforma oferece — e como começar.</p></div></div>
-        <div class="grid g2" style="margin-bottom:20px">
-          <div class="price-card">
-            <div style="opacity:0.85;font-size:13px">Plano Completo</div>
-            <div class="pr"><small>R$</small> 99 <small>/mês</small></div>
-            <div style="opacity:0.85;font-size:13px;margin-top:4px">Sem fidelidade · Acesso completo</div>
-            <ul>${feats.map(f => `<li>${f.t}</li>`).join("")}</ul>
-            <button class="btn" style="background:#fff;color:#065f46;width:100%;justify-content:center;font-weight:700" onclick="toast('Começando seu teste grátis 🎉');route('dashboard')">Começar Teste Grátis →</button>
-            <div style="font-size:11px;opacity:0.75;margin-top:10px">Cobrança inicia após o período de teste.</div>
-          </div>
-          <div class="card">
-            <div class="sec-title" style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🚀 Como começar em 3 passos</div>
-            <div style="display:grid;gap:14px">
-              ${[
-                { n:1, t:"Cadastre seus alunos", d:"Vá em Alunos → Novo Aluno e preencha idioma, nível e mensalidade." },
-                { n:2, t:"Monte sua agenda", d:"Em Agenda → Nova Aula, escolha o aluno, data e horário." },
-                { n:3, t:"Acompanhe o financeiro", d:"Registre recebimentos em Finanças e consulte a previsão de caixa." }
-              ].map(s => `
-                <div style="display:flex;gap:12px">
-                  <div style="width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex-shrink:0">${s.n}</div>
-                  <div><b>${s.t}</b><br><small class="muted">${s.d}</small></div>
-                </div>
-              `).join("")}
+        <div class="page-head"><div><h1>Compartilhar</h1><p>Convide outros professores para a plataforma.</p></div></div>
+        <div class="card" style="max-width:560px;">
+          <div style="text-align:center;padding:20px;">
+            <div style="font-size:48px;margin-bottom:16px;">🔗</div>
+            <h3 style="margin-bottom:8px;">Link de convite</h3>
+            <p class="muted">Compartilhe com outros professores e ganhe benefícios.</p>
+            <div style="display:flex;gap:10px;margin:20px 0;">
+              <input type="text" value="https://profempreendedor.com/convite/abc123" readonly style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);">
+              <button class="btn btn-primary" onclick="navigator.clipboard.writeText('https://profempreendedor.com/convite/abc123');toast('Copiado!')">Copiar</button>
             </div>
-            <div style="margin-top:18px;padding:14px;background:#f0fdf4;border-radius:12px;font-size:13px;color:#065f46">
-              💡 <b>Dica:</b> todos os dados ficam salvos automaticamente no seu navegador (localStorage). Nada é enviado para servidores externos nesta demonstração.
-            </div>
+            <p class="muted" style="font-size:12px;">Em breve: gestão de indicações e comissões.</p>
           </div>
         </div>
-        <div class="sec-title" style="font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;">✨ Todos os recursos</div>
-        <div class="help-grid">${feats.map(f => `
-          <div class="feat"><div class="f-ic">${f.ic}</div><h4>${f.t}</h4><p>${f.d}</p></div>
-        `).join("")}</div>
+      `;
+    };
+
+    /* ----- AJUDA ----- */
+    PAGES.ajuda = () => {
+      return `
+        <div class="page-head"><div><h1>Ajuda</h1></div></div>
+        <div class="card">
+          <p>📖 Para dúvidas, entre em contato pelo suporte@profempreendedor.com</p>
+          <p style="margin-top:8px;">⚡ Versão BETA • Em constante evolução.</p>
+        </div>
       `;
     };
 
@@ -1919,7 +1803,18 @@
        INICIALIZAÇÃO
        ================================================================ */
     (async function init() {
-      await initDB();
+      DB = await loadData();
+      if (!DB || !DB.alunos || DB.alunos.length === 0) {
+        DB = seed();
+        if (!USE_SUPABASE) localStorage.setItem(LS_KEY, JSON.stringify(DB));
+        else await saveData(DB);
+      }
+      applyTheme();
+      renderNav();
+      const nome = DB.config.nomeProf || "Professor";
+      document.getElementById("topbarName").textContent = nome;
+      document.getElementById("topbarAvatar").textContent = initials(nome);
+      route("dashboard");
     })();
   </script>
 </body>
