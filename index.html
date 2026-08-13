@@ -8,19 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     /* ===== RESET & VARIÁVEIS ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg: #f1f5f9;
       --card: #ffffff;
       --text: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
-      --shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+      --shadow: 0 4px 12px rgba(15,23,42,0.06);
+      --shadow-lg: 0 12px 32px rgba(15,23,42,0.10);
       --radius: 14px;
       --green: #10b981;
       --green-d: #059669;
@@ -28,9 +24,9 @@
       --blue-d: #1d4ed8;
       --red: #ef4444;
       --amber: #f59e0b;
-      --sidebar-bg: linear-gradient(145deg, #0f172a, #1e293b);
+      --sidebar-bg: linear-gradient(145deg,#0f172a,#1e293b);
       --sidebar-text: #ecfdf5;
-      --topbar-bg: linear-gradient(90deg, #0f172a, #1e293b);
+      --topbar-bg: linear-gradient(90deg,#0f172a,#1e293b);
       --topbar-text: #ffffff;
       --input-bg: #fff;
       --input-border: #e2e8f0;
@@ -47,8 +43,8 @@
       --text: #f1f5f9;
       --muted: #94a3b8;
       --border: #334155;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+      --shadow: 0 4px 12px rgba(0,0,0,0.3);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.4);
       --input-bg: #1e293b;
       --input-border: #475569;
       --hover-bg: #2d3748;
@@ -57,8 +53,8 @@
       --card-hover: #2d3748;
       --toggle-bg: #475569;
       --toggle-dot: #0f172a;
-      --sidebar-bg: linear-gradient(145deg, #0b1120, #1a2634);
-      --topbar-bg: linear-gradient(90deg, #0b1120, #1a2634);
+      --sidebar-bg: linear-gradient(145deg,#0b1120,#1a2634);
+      --topbar-bg: linear-gradient(90deg,#0b1120,#1a2634);
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -68,17 +64,8 @@
       line-height: 1.5;
       transition: background 0.25s, color 0.25s;
     }
-    button, input, select, textarea {
-      font-family: inherit;
-      font-size: 14px;
-      border: none;
-      outline: none;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    /* ===== SCROLLBAR ===== */
+    button, input, select, textarea { font-family: inherit; font-size: 14px; border: none; outline: none; }
+    a { color: inherit; text-decoration: none; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 99px; }
@@ -95,7 +82,7 @@
       top: 0;
       z-index: 60;
       gap: 14px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .brand {
       display: flex;
@@ -184,7 +171,7 @@
       height: calc(100vh - 64px);
       overflow-y: auto;
       transition: transform 0.3s ease, background 0.25s;
-      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 2px 0 12px rgba(0,0,0,0.06);
     }
     .sidebar .nav-item {
       display: flex;
@@ -209,29 +196,28 @@
       font-size: 17px;
     }
     .sidebar .nav-item:hover {
-      background: rgba(255, 255, 255, 0.10);
+      background: rgba(255,255,255,0.10);
       color: #fff;
     }
     .sidebar .nav-item.active {
       background: #fff;
-      color: var(--green-dd, #065f46);
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       color: #065f46;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .dark .sidebar .nav-item.active {
       background: #1e293b;
       color: #10b981;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .sidebar .nav-sep {
       height: 1px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,0.15);
       margin: 12px 6px;
     }
     .side-foot {
       margin-top: 18px;
-      background: rgba(0, 0, 0, 0.20);
+      background: rgba(0,0,0,0.20);
       border-radius: 12px;
       padding: 14px;
       font-size: 12.5px;
@@ -287,9 +273,7 @@
       box-shadow: var(--shadow);
       transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
     }
-    .card:hover {
-      box-shadow: var(--shadow-lg);
-    }
+    .card:hover { box-shadow: var(--shadow-lg); }
     .grid {
       display: grid;
       gap: 18px;
@@ -379,10 +363,7 @@
     .btn-sm { padding: 5px 14px; font-size: 12px; }
 
     /* ===== TABLES ===== */
-    .tbl-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -459,7 +440,7 @@
       color: var(--text);
       transition: 0.2s;
     }
-    .search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+    .search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
     .search::before {
       content: "🔍";
       position: absolute;
@@ -484,7 +465,7 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.55);
+      background: rgba(15,23,42,0.55);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       display: none;
@@ -564,7 +545,7 @@
     }
     .field input:focus, .field select:focus, .field textarea:focus {
       border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.12);
     }
     .field textarea { resize: vertical; min-height: 70px; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -633,7 +614,7 @@
     .cal-cell.today .dnum {
       background: var(--blue);
       color: #fff;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
     }
     .dnum {
       font-size: 13px;
@@ -711,7 +692,7 @@
       font-weight: 500;
       box-shadow: var(--shadow-lg);
       transform: translateY(120%);
-      transition: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: 0.35s cubic-bezier(0.34,1.56,0.64,1);
       z-index: 200;
       max-width: 90vw;
     }
@@ -736,7 +717,7 @@
       height: 48px;
       border-radius: 14px;
       background: #d1fae5;
-      color: var(--green-dd, #065f46);
+      color: #065f46;
       display: grid;
       place-items: center;
       font-size: 22px;
@@ -748,12 +729,12 @@
 
     /* ===== PRICE CARD ===== */
     .price-card {
-      background: linear-gradient(135deg, #065f46, #059669);
+      background: linear-gradient(135deg,#065f46,#059669);
       color: #fff;
       border-radius: 18px;
       padding: 32px;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
+      box-shadow: 0 8px 24px rgba(5,150,105,0.25);
     }
     .price-card .pr {
       font-size: 48px;
@@ -779,7 +760,7 @@
     }
     .price-card li::before {
       content: "✓";
-      background: rgba(255, 255, 255, 0.20);
+      background: rgba(255,255,255,0.20);
       width: 22px;
       height: 22px;
       border-radius: 50%;
@@ -847,7 +828,7 @@
         z-index: 40;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 4px 0 20px rgba(0,0,0,0.15);
         height: calc(100vh - 64px);
         width: 260px;
       }
@@ -912,90 +893,116 @@
     /* ================================================================
        CONFIGURAÇÃO
        ================================================================ */
-    // Altere para true quando quiser usar o Supabase (banco de dados real)
-    const USE_SUPABASE = false;
+    const USE_SUPABASE = false; // Altere para true quando quiser usar o Supabase
 
-    // Credenciais do Supabase (válidas mesmo se USE_SUPABASE = false)
+    // Credenciais do Supabase
     const SUPABASE_URL = 'https://rvgcniaowzmsudzliozf.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_N_xCS0lbbTvG7qWTpAw0ag_vlg1lbHb'; // substitua se necessário
+    const SUPABASE_KEY = 'sb_publishable_N_xCS0lbbTvG7qWTpAw0ag_vlg1lbHb';
 
-    // Inicializa o cliente Supabase (disponível globalmente)
+    // Inicializa o cliente Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Teste de conexão (assíncrono, não bloqueia)
+    // Teste de conexão (não bloqueia)
     (async function testSupabase() {
       try {
         const { data, error } = await supabaseClient.from('alunos').select('id').limit(1);
         if (error) {
-          console.warn('⚠️ Supabase conectado, mas tabela "alunos" não encontrada ou erro de permissão.', error.message);
+          console.warn('⚠️ Supabase: tabela "alunos" não acessível. Verifique permissões.', error.message);
         } else {
-          console.log('✅ Conexão com Supabase estabelecida e tabela "alunos" acessível.');
+          console.log('✅ Conexão com Supabase estabelecida.');
         }
       } catch (e) {
-        console.warn('⚠️ Não foi possível conectar ao Supabase. Verifique sua chave e URL.', e.message);
+        console.warn('⚠️ Erro ao conectar ao Supabase:', e.message);
       }
     })();
+
+    /* ================================================================
+       GERADOR DE ID PERSONALIZADO
+       ================================================================ */
+    const uid = (prefix = 'id') => {
+      const ts = new Date().toISOString().slice(0,10).replace(/-/g, '');
+      const rand = Math.random().toString(36).slice(2,6);
+      return `${prefix}_${ts}_${rand}`;
+    };
 
     /* ================================================================
        STATE / STORAGE (unificado)
        ================================================================ */
     const LS_KEY = "profEmpreendedor_v2";
 
-    // Função que gera os dados iniciais (demo)
+    // Dados de exemplo (seed)
     function seed() {
       const t = todayISO();
       const d = new Date();
       const mk = (off,h,al,dur=60,tipo="Aula",status="agendada") => {
         const x = new Date(d);
         x.setDate(x.getDate()+off);
-        return { id: uid(), alunoId: al, data: x.toISOString().slice(0,10), hora: h, duracao: dur, tipo, status };
+        return {
+          id: uid('aulas'),
+          alunoId: al,
+          data: x.toISOString().slice(0,10),
+          hora: h,
+          duracao: dur,
+          tipo,
+          status
+        };
       };
       const alunos = [
-        { id:"a1", nome:"Maria Silva", idioma:"Inglês", nivel:"Intermediário", telefone:"(11) 98888-1111", email:"maria@email.com", mensalidade:280, diaSemana:"Seg/Qua", horario:"18:00", status:"ativo" },
-        { id:"a2", nome:"João Pereira", idioma:"Espanhol", nivel:"Iniciante", telefone:"(11) 97777-2222", email:"joao@email.com", mensalidade:250, diaSemana:"Ter/Qui", horario:"19:00", status:"ativo" },
-        { id:"a3", nome:"Ana Costa", idioma:"Inglês", nivel:"Avançado", telefone:"(21) 96666-3333", email:"ana@email.com", mensalidade:320, diaSemana:"Qua/Sex", horario:"17:00", status:"ativo" },
-        { id:"a4", nome:"Pedro Lima", idioma:"Francês", nivel:"Iniciante", telefone:"(11) 95555-4444", email:"pedro@email.com", mensalidade:260, diaSemana:"Seg", horario:"20:00", status:"ativo" },
-        { id:"a5", nome:"Carla Souza", idioma:"Inglês", nivel:"Intermediário", telefone:"(31) 94444-5555", email:"carla@email.com", mensalidade:280, diaSemana:"Ter", horario:"18:30", status:"inadimplente" },
-        { id:"a6", nome:"Lucas Rocha", idioma:"Alemão", nivel:"Iniciante", telefone:"(11) 93333-6666", email:"lucas@email.com", mensalidade:300, diaSemana:"Qui", horario:"19:30", status:"ativo" },
+        { id: uid('alunos'), nome:"Maria Silva", idioma:"Inglês", nivel:"Intermediário", telefone:"(11) 98888-1111", email:"maria@email.com", mensalidade:280, diaSemana:"Seg/Qua", horario:"18:00", status:"ativo" },
+        { id: uid('alunos'), nome:"João Pereira", idioma:"Espanhol", nivel:"Iniciante", telefone:"(11) 97777-2222", email:"joao@email.com", mensalidade:250, diaSemana:"Ter/Qui", horario:"19:00", status:"ativo" },
+        { id: uid('alunos'), nome:"Ana Costa", idioma:"Inglês", nivel:"Avançado", telefone:"(21) 96666-3333", email:"ana@email.com", mensalidade:320, diaSemana:"Qua/Sex", horario:"17:00", status:"ativo" },
+        { id: uid('alunos'), nome:"Pedro Lima", idioma:"Francês", nivel:"Iniciante", telefone:"(11) 95555-4444", email:"pedro@email.com", mensalidade:260, diaSemana:"Seg", horario:"20:00", status:"ativo" },
+        { id: uid('alunos'), nome:"Carla Souza", idioma:"Inglês", nivel:"Intermediário", telefone:"(31) 94444-5555", email:"carla@email.com", mensalidade:280, diaSemana:"Ter", horario:"18:30", status:"inadimplente" },
+        { id: uid('alunos'), nome:"Lucas Rocha", idioma:"Alemão", nivel:"Iniciante", telefone:"(11) 93333-6666", email:"lucas@email.com", mensalidade:300, diaSemana:"Qui", horario:"19:30", status:"ativo" },
       ];
       const aulas = [
-        mk(0,"18:00","a1"), mk(0,"19:00","a2"), mk(1,"17:00","a3"),
-        mk(1,"20:00","a4"), mk(2,"18:30","a5"), mk(3,"19:30","a6"),
-        mk(-1,"18:00","a1",60,"Aula","concluida"),
-        mk(-2,"19:00","a2",60,"Aula","concluida")
+        mk(0,"18:00", alunos[0].id),
+        mk(0,"19:00", alunos[1].id),
+        mk(1,"17:00", alunos[2].id),
+        mk(1,"20:00", alunos[3].id),
+        mk(2,"18:30", alunos[4].id),
+        mk(3,"19:30", alunos[5].id),
+        mk(-1,"18:00", alunos[0].id,60,"Aula","concluida"),
+        mk(-2,"19:00", alunos[1].id,60,"Aula","concluida")
       ];
       const ym = t.slice(0,7);
       const fin = [
-        { id:uid(), tipo:"receita", descricao:"Mensalidade — Maria Silva", valor:280, data:t, categoria:"Mensalidade", alunoId:"a1" },
-        { id:uid(), tipo:"receita", descricao:"Mensalidade — João Pereira", valor:250, data:t, categoria:"Mensalidade", alunoId:"a2" },
-        { id:uid(), tipo:"receita", descricao:"Mensalidade — Ana Costa", valor:320, data:t, categoria:"Mensalidade", alunoId:"a3" },
-        { id:uid(), tipo:"despesa", descricao:"Plataforma de videochamada", valor:79, data:t, categoria:"Software" },
-        { id:uid(), tipo:"despesa", descricao:"Material didático", valor:120, data:t, categoria:"Material" },
-        { id:uid(), tipo:"receita", descricao:"Mensalidade — Pedro Lima", valor:260, data:`${ym}-05`, categoria:"Mensalidade", alunoId:"a4" },
-        { id:uid(), tipo:"despesa", descricao:"Internet", valor:99, data:`${ym}-10`, categoria:"Infraestrutura" },
+        { id: uid('financas'), tipo:"receita", descricao:"Mensalidade — Maria Silva", valor:280, data:t, categoria:"Mensalidade", alunoId:alunos[0].id },
+        { id: uid('financas'), tipo:"receita", descricao:"Mensalidade — João Pereira", valor:250, data:t, categoria:"Mensalidade", alunoId:alunos[1].id },
+        { id: uid('financas'), tipo:"receita", descricao:"Mensalidade — Ana Costa", valor:320, data:t, categoria:"Mensalidade", alunoId:alunos[2].id },
+        { id: uid('financas'), tipo:"despesa", descricao:"Plataforma de videochamada", valor:79, data:t, categoria:"Software" },
+        { id: uid('financas'), tipo:"despesa", descricao:"Material didático", valor:120, data:t, categoria:"Material" },
+        { id: uid('financas'), tipo:"receita", descricao:"Mensalidade — Pedro Lima", valor:260, data:`${ym}-05`, categoria:"Mensalidade", alunoId:alunos[3].id },
+        { id: uid('financas'), tipo:"despesa", descricao:"Internet", valor:99, data:`${ym}-10`, categoria:"Infraestrutura" },
       ];
       const contratos = [
-        { id:uid(), alunoId:"a1", dataInicio:`${ym}-01`, valor:280, vigencia:"12 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Pagamento até o dia 5." },
-        { id:uid(), alunoId:"a3", dataInicio:`${ym}-03`, valor:320, vigencia:"6 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Material incluso." },
+        { id: uid('contratos'), alunoId:alunos[0].id, dataInicio:`${ym}-01`, valor:280, vigencia:"12 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Pagamento até o dia 5." },
+        { id: uid('contratos'), alunoId:alunos[2].id, dataInicio:`${ym}-03`, valor:320, vigencia:"6 meses", status:"ativo", termos:"Aula de 60 minutos, 2x por semana. Material incluso." },
       ];
       const msgs = [
-        { id:uid(), destinatario:"Todos os alunos", texto:"Lembrete: pagamento da mensalidade vence dia 5.", data:t, hora:"09:00", enviado:true },
-        { id:uid(), destinatario:"Carla Souza", texto:"Oi Carla! Sua mensalidade está pendente. Podemos regularizar?", data:t, hora:"10:30", enviado:false },
+        { id: uid('mensagens'), destinatario:"Todos os alunos", texto:"Lembrete: pagamento da mensalidade vence dia 5.", data:t, hora:"09:00", enviado:true },
+        { id: uid('mensagens'), destinatario:"Carla Souza", texto:"Oi Carla! Sua mensalidade está pendente. Podemos regularizar?", data:t, hora:"10:30", enviado:false },
       ];
       const tarefas = [
-        { id:uid(), alunoId:"a1", descricao:"Exercícios Unit 5 — Past Tense", dataEntrega:t, status:"pendente" },
-        { id:uid(), alunoId:"a2", descricao:"Vocabulário: comidas e restaurantes", dataEntrega:t, status:"pendente" },
-        { id:uid(), alunoId:"a3", descricao:"Redação: My last vacation", dataEntrega:t, status:"entregue" },
+        { id: uid('tarefas'), alunoId:alunos[0].id, descricao:"Exercícios Unit 5 — Past Tense", dataEntrega:t, status:"pendente" },
+        { id: uid('tarefas'), alunoId:alunos[1].id, descricao:"Vocabulário: comidas e restaurantes", dataEntrega:t, status:"pendente" },
+        { id: uid('tarefas'), alunoId:alunos[2].id, descricao:"Redação: My last vacation", dataEntrega:t, status:"entregue" },
       ];
-      return { alunos, aulas, fin, contratos, msgs, tarefas, config:{ nomeProf:"Professor(a)", moeda:"BRL" } };
+      return {
+        alunos,
+        aulas,
+        fin,
+        contratos,
+        msgs,
+        tarefas,
+        config: { id: 'config_001', nomeProf:"Professor(a)", moeda:"BRL" }
+      };
     }
 
-    // Carrega os dados de acordo com a flag USE_SUPABASE
+    // Carrega dados (Supabase ou localStorage)
     async function loadData() {
       if (USE_SUPABASE) {
-        // --- MODO SUPABASE ---
         try {
-          // Busca todas as tabelas
           const [alunosRes, aulasRes, finRes, contratosRes, msgsRes, tarefasRes, configRes] = await Promise.all([
             supabaseClient.from('alunos').select('*'),
             supabaseClient.from('aulas').select('*'),
@@ -1005,7 +1012,6 @@
             supabaseClient.from('tarefas').select('*'),
             supabaseClient.from('config').select('*').single(),
           ]);
-
           if (alunosRes.error) throw alunosRes.error;
           if (aulasRes.error) throw aulasRes.error;
           if (finRes.error) throw finRes.error;
@@ -1013,8 +1019,7 @@
           if (msgsRes.error) throw msgsRes.error;
           if (tarefasRes.error) throw tarefasRes.error;
 
-          const config = configRes.data || { nomeProf: "Professor(a)", moeda: "BRL" };
-
+          const config = configRes.data || { id:'config_001', nomeProf:"Professor(a)", moeda:"BRL" };
           return {
             alunos: alunosRes.data || [],
             aulas: aulasRes.data || [],
@@ -1025,13 +1030,11 @@
             config: config,
           };
         } catch (err) {
-          console.error('Erro ao carregar dados do Supabase:', err);
-          toast('Erro ao carregar dados do banco. Usando fallback local.');
-          // Fallback para localStorage
+          console.error('Erro ao carregar do Supabase:', err);
+          toast('Erro ao carregar do banco. Usando fallback local.');
           return loadFromLocalStorage();
         }
       } else {
-        // --- MODO LOCALSTORAGE (demo) ---
         return loadFromLocalStorage();
       }
     }
@@ -1045,15 +1048,11 @@
       return data;
     }
 
-    // Salva os dados de acordo com a flag USE_SUPABASE
+    // Salva dados (upsert no Supabase ou localStorage)
     async function saveData(data) {
       if (USE_SUPABASE) {
-        // --- MODO SUPABASE (upsert em cada tabela) ---
         try {
-          // Para simplificar, vamos substituir todos os registros de cada tabela (clear + insert)
-          // Ou poderíamos fazer upsert baseado no campo 'id'. Vou fazer um replace simples.
-          // ATENÇÃO: Isso apaga todos os dados existentes no Supabase e insere os novos.
-          // Em produção, você deve usar upsert ou operações individuais.
+          // Usa upsert para cada tabela (insere ou atualiza baseado no id)
           const tables = [
             { name: 'alunos', rows: data.alunos },
             { name: 'aulas', rows: data.aulas },
@@ -1063,63 +1062,49 @@
             { name: 'tarefas', rows: data.tarefas },
             { name: 'config', rows: [data.config] },
           ];
-
           for (const table of tables) {
-            // Primeiro deleta tudo (cuidado em produção!)
-            const { error: delError } = await supabaseClient.from(table.name).delete().neq('id', '00000000-0000-0000-0000-000000000000');
-            if (delError && delError.code !== 'PGRST116') throw delError; // ignora "no rows"
-
-            // Insere os novos dados
             if (table.rows.length) {
-              const { error: insError } = await supabaseClient.from(table.name).insert(table.rows);
-              if (insError) throw insError;
+              const { error } = await supabaseClient.from(table.name).upsert(table.rows, { onConflict: 'id' });
+              if (error) throw error;
             }
           }
-          console.log('✅ Dados salvos no Supabase com sucesso.');
+          console.log('✅ Dados salvos no Supabase.');
           toast('Dados salvos no banco de dados.');
         } catch (err) {
           console.error('Erro ao salvar no Supabase:', err);
           toast('Erro ao salvar no banco. Dados mantidos localmente.');
-          // Fallback: salvar no localStorage mesmo assim?
           localStorage.setItem(LS_KEY, JSON.stringify(data));
         }
       } else {
-        // --- MODO LOCALSTORAGE ---
         localStorage.setItem(LS_KEY, JSON.stringify(data));
         console.log('💾 Dados salvos no localStorage.');
       }
     }
 
-    // Variável global que conterá os dados (será preenchida após load)
+    // Variável global e funções de inicialização
     let DB = null;
 
-    // Função para inicializar/carregar os dados (chamada no início)
     async function initDB() {
       DB = await loadData();
-      // Se não houver dados (ex: Supabase vazio), usar seed como fallback
+      // Se não houver dados, carrega seed
       if (!DB || !DB.alunos || DB.alunos.length === 0) {
-        console.warn('⚠️ Dados vazios ou inexistentes. Carregando seed.');
+        console.warn('⚠️ Dados vazios. Carregando seed.');
         DB = seed();
         if (!USE_SUPABASE) {
           localStorage.setItem(LS_KEY, JSON.stringify(DB));
         } else {
-          // Tenta salvar os dados de seed no Supabase
           await saveData(DB);
         }
       }
-      // Aplica a configuração de tema
       applyTheme();
-      // Renderiza navegação e rota inicial
       renderNav();
       route('dashboard');
     }
 
-    // Função de salvar (wrapper) que chama saveData com o DB atual
     function save() {
       saveData(DB);
     }
 
-    // Função para restaurar dados de demo (apenas no modo localStorage)
     function resetDemo() {
       if (USE_SUPABASE) {
         toast('Modo Supabase ativo. Para restaurar demo, desative USE_SUPABASE e recarregue.');
@@ -1134,13 +1119,12 @@
     }
 
     /* ================================================================
-       DEMais FUNÇÕES AUXILIARES (mantidas)
+       DEMais FUNÇÕES AUXILIARES
        ================================================================ */
     const COLORS = ["#10b981","#2563eb","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4","#f97316"];
     const colorFor = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0) % COLORS.length];
     const initials = n => n.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
     const BRL = v => "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
-    const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
     const todayISO = () => new Date().toISOString().slice(0,10);
     const fmtDate = d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}/${y}`; };
     const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
@@ -1206,7 +1190,7 @@
     }
 
     /* ================================================================
-       HELPERS (toast, modal, etc.)
+       HELPERS
        ================================================================ */
     function toast(msg) {
       const t = document.getElementById("toast");
@@ -1248,11 +1232,11 @@
     }
 
     /* ================================================================
-       PÁGINAS (tudo igual, mas usando DB global)
+       PÁGINAS (mesmas funções, usando DB global)
        ================================================================ */
     const PAGES = {};
 
-    // ----- DASHBOARD -----
+    // ----- DASHBOARD (idêntico ao anterior, apenas referências a DB) -----
     PAGES.dashboard = () => {
       const ativos = DB.alunos.filter(a => a.status === "ativo").length;
       const inad = DB.alunos.filter(a => a.status === "inadimplente").length;
@@ -1355,7 +1339,7 @@
       </div>`;
     }
 
-    // ----- ALUNOS -----
+    // ----- ALUNOS (com ID personalizado) -----
     let alunoSearch = "", alunoFilter = "todos";
     PAGES.alunos = () => {
       let list = DB.alunos.slice();
@@ -1440,12 +1424,16 @@
         status: f_st.value
       };
       if (!data.nome) { toast("Informe o nome"); return; }
-      if (id) Object.assign(DB.alunos.find(x => x.id === id), data);
-      else DB.alunos.push({ id: uid(), ...data });
+      if (id) {
+        Object.assign(DB.alunos.find(x => x.id === id), data);
+      } else {
+        data.id = uid('alunos');
+        DB.alunos.push(data);
+      }
       save(); closeModal(); route("alunos"); toast("Aluno salvo");
     }
 
-    // ----- AGENDA -----
+    // ----- AGENDA (com ID personalizado) -----
     let calYear, calMonth;
     PAGES.agenda = () => {
       if (calYear == null) { const d = new Date(); calYear = d.getFullYear(); calMonth = d.getMonth(); }
@@ -1537,12 +1525,16 @@
     }
     function saveAula(id) {
       const data = { alunoId: g_al.value, data: g_dt.value, hora: g_hr.value, duracao: +g_dur.value||60, tipo: g_tp.value, status: g_st.value };
-      if (id) Object.assign(DB.aulas.find(x => x.id === id), data);
-      else DB.aulas.push({ id: uid(), ...data });
+      if (id) {
+        Object.assign(DB.aulas.find(x => x.id === id), data);
+      } else {
+        data.id = uid('aulas');
+        DB.aulas.push(data);
+      }
       save(); closeModal(); route("agenda"); toast("Aula salva");
     }
 
-    // ----- FINANÇAS -----
+    // ----- FINANÇAS (com ID personalizado) -----
     let finTab = "movimentacoes";
     PAGES.financas = () => {
       const ym = todayISO().slice(0,7);
@@ -1627,11 +1619,12 @@
     function saveFin() {
       const data = { tipo: h_tp.value, descricao: h_desc.value.trim(), valor: +h_val.value||0, data: h_dt.value, categoria: h_cat.value };
       if (!data.descricao || !data.valor) { toast("Preencha descrição e valor"); return; }
-      DB.fin.push({ id: uid(), ...data });
+      data.id = uid('financas');
+      DB.fin.push(data);
       save(); closeModal(); route("financas"); toast("Lançamento salvo");
     }
 
-    // ----- CONTRATOS -----
+    // ----- CONTRATOS (com ID personalizado) -----
     PAGES.contratos = () => {
       return `
         <div class="page-head">
@@ -1674,7 +1667,16 @@
       );
     }
     function saveContrato() {
-      DB.contratos.push({ id: uid(), alunoId: c_al.value, dataInicio: c_dt.value, valor: +c_val.value||0, vigencia: c_vig.value, status:"ativo", termos: c_term.value });
+      const data = {
+        id: uid('contratos'),
+        alunoId: c_al.value,
+        dataInicio: c_dt.value,
+        valor: +c_val.value||0,
+        vigencia: c_vig.value,
+        status:"ativo",
+        termos: c_term.value
+      };
+      DB.contratos.push(data);
       save(); closeModal(); route("contratos"); toast("Contrato gerado");
     }
     function verContrato(id) {
@@ -1695,7 +1697,7 @@
       );
     }
 
-    // ----- MENSAGENS -----
+    // ----- MENSAGENS (com ID personalizado) -----
     PAGES.mensagens = () => {
       return `
         <div class="page-head">
@@ -1730,7 +1732,14 @@
     }
     function saveMsg() {
       if (!m_txt.value.trim()) { toast("Escreva uma mensagem"); return; }
-      DB.msgs.push({ id: uid(), destinatario: m_dest.value, texto: m_txt.value.trim(), data: m_dt.value, hora: m_hr.value, enviado: false });
+      DB.msgs.push({
+        id: uid('mensagens'),
+        destinatario: m_dest.value,
+        texto: m_txt.value.trim(),
+        data: m_dt.value,
+        hora: m_hr.value,
+        enviado: false
+      });
       save(); closeModal(); route("mensagens"); toast("Lembrete agendado");
     }
     function enviarMsg(id) {
@@ -1738,7 +1747,7 @@
       save(); route("mensagens"); toast("Mensagem enviada");
     }
 
-    // ----- TAREFAS -----
+    // ----- TAREFAS (com ID personalizado) -----
     PAGES.tarefas = () => {
       return `
         <div class="page-head">
@@ -1774,7 +1783,13 @@
     }
     function saveTarefa() {
       if (!t_desc.value.trim()) { toast("Descreva a tarefa"); return; }
-      DB.tarefas.push({ id: uid(), alunoId: t_al.value, descricao: t_desc.value.trim(), dataEntrega: t_dt.value, status: "pendente" });
+      DB.tarefas.push({
+        id: uid('tarefas'),
+        alunoId: t_al.value,
+        descricao: t_desc.value.trim(),
+        dataEntrega: t_dt.value,
+        status: "pendente"
+      });
       save(); closeModal(); route("tarefas"); toast("Tarefa criada");
     }
     function markEntregue(id) {
@@ -1782,7 +1797,7 @@
       save(); route("tarefas"); toast("Marcada como entregue");
     }
 
-    // ----- RELATÓRIOS -----
+    // ----- RELATÓRIOS (sem alterações) -----
     PAGES.relatorios = () => {
       const ym = todayISO().slice(0,7);
       const porIdioma = {};
@@ -1827,7 +1842,7 @@
       `;
     };
 
-    // ----- CONFIG -----
+    // ----- CONFIG (com ID fixo) -----
     PAGES.config = () => {
       return `
         <div class="page-head"><div><h1>Configurações</h1><p>Personalize sua plataforma.</p></div></div>
@@ -1847,7 +1862,7 @@
       save(); toast("Configurações salvas"); route("dashboard");
     }
 
-    // ----- AJUDA -----
+    // ----- AJUDA (sem alterações) -----
     PAGES.ajuda = () => {
       const feats = [
         { ic:"👥", t:"Gestão completa de alunos", d:"Cadastre alunos com idioma, nível, contato, mensalidade e acompanhe status (ativo/inadimplente)." },
@@ -1903,7 +1918,6 @@
     /* ================================================================
        INICIALIZAÇÃO
        ================================================================ */
-    // Chama a função assíncrona para carregar os dados e iniciar a aplicação
     (async function init() {
       await initDB();
     })();
